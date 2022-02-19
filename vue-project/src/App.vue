@@ -1,12 +1,36 @@
 <template>
   <div>
-    <nav>
+    <nav v-if="authIsReady">
       <router-link to="/">Home</router-link>
       <router-link to="/about">About</router-link>
+      <router-link to="/signup" v-if="!user">Sign Up</router-link>
+      <router-link to="/login" v-if="!user">Login</router-link>
+      <span v-if="user">
+        <span>Logged in as {{ user.email }}</span>
+        <button @click="handleClick">Logout</button>
+      </span>
+      
     </nav>
     <router-view/>
   </div>
 </template>
+
+<script>
+  import { useStore } from 'vuex'
+  import { computed } from 'vue'
+
+  export default{
+    setup() {
+      const store = useStore()
+      const handleClick = () => {
+        store.dispatch('logout')
+      }
+      return { handleClick, user: computed(() => store.state.user), authIsReady: computed(() => store.state.authIsReady)}
+    }
+  }
+  
+
+</script>
 
 <style>
 @import '@/assets/base.css';
