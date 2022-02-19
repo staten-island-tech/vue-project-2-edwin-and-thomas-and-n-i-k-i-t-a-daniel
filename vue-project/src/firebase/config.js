@@ -1,5 +1,7 @@
 import { initializeApp } from "firebase/app";
+import { getFirestore, collection } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { ref, onUnmounted } from "vue";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAgk-Qx8FBYTH0PduOhJys3a18rwCiipG8",
@@ -17,4 +19,32 @@ initializeApp(firebaseConfig);
 // init firebase auth
 const auth = getAuth();
 
-export { auth };
+// init firestore
+const db = getFirestore();
+
+const usersCollection = collection(db, "users");
+
+// helpful functions
+export const getUser = async (id) => {
+  const user = await usersCollection.doc(id).get();
+  return user.exists ? user.data() : null;
+};
+
+export const updateUser = (id, user) => {
+  return usersCollection.doc(id).update(user);
+};
+
+export const deleteUser = (id) => {
+  return usersCollection.doc(id).delete();
+};
+
+export const useLoadUsers = () => {
+  const users = ref([]);
+  const close = usersCollection.onSnapshot((snapshot) => {
+    users.value = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  });
+  onUnmounted(close);
+  return users;
+};
+
+export { auth, db };

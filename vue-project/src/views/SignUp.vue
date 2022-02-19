@@ -2,6 +2,12 @@
     <form @submit.prevent="handleSubmit">
         <h3>Sign up</h3>
 
+        <label for="fname">First Name:</label>
+        <input type="fname" name="fname" v-model="fname" required>
+
+        <label for="lname">Last Name:</label>
+        <input type="lname" name="lname" v-model="lname" required>
+
         <label for="email">Email:</label>
         <input type="email" name="email" v-model="email" required>
 
@@ -22,6 +28,8 @@ export default {
     setup () {
         const email = ref('')
         const password = ref('')
+        const fname = ref('')
+        const lname = ref('')
         const error = ref(null)
 
         const store = useStore()
@@ -31,7 +39,9 @@ export default {
             try {
                 await store.dispatch('signup', {
                     email: email.value,
-                    password: password.value
+                    password: password.value,
+                    fname: fname.value,
+                    lname: lname.value
                 })
                 router.push('/')
             } catch (err) {
@@ -39,7 +49,7 @@ export default {
             }
         } 
 
-        return { handleSubmit, email, password, error }
+        return { handleSubmit, email, password, error, fname, lname }
     }
 }
 </script>
