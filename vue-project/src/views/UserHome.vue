@@ -1,31 +1,21 @@
 <template>
     <div>
         <div v-if="user">
-            <h2>Welcome to the user home, {{user.email}}</h2>
+            <h2>Welcome to the user home, {{ user.email.substring(0, user.email.lastIndexOf("@")) }}</h2>
         </div>
         <div v-if="!user">
             <!-- TODO: make a 404 component -->
+            <h2>404</h2>
         </div>
     </div>
 </template>
 
-<script>
-    import { ref } from 'vue'
-    import { useStore } from 'vuex'
-    import { useRouter } from 'vue-router'
-    import { computed } from 'vue'
+<script setup>
+import { useStore } from 'vuex'
+import { computed } from 'vue'
 
-
-export default {
-    setup () {
-        const store = useStore();
-        const router = useRouter()
-
-        const user = computed(() => store.state.user)
-
-        return { user }
-    }
-}
+const store = useStore()
+const user = computed(() => store.state.user)
 </script>
 
 <style scoped>

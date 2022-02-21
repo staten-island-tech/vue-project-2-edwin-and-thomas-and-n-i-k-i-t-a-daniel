@@ -5,31 +5,24 @@
       <router-link to="/about">About</router-link>
       <router-link to="/signup" v-if="!user">Sign Up</router-link>
       <router-link to="/login" v-if="!user">Login</router-link>
+      <router-link to="/userhome" v-if="user">User Home</router-link>
       <span v-if="user">
-        <span>Logged in as {{ user.email }}</span>
+        <span>Logged in as {{ user.email.substring(0, user.email.lastIndexOf("@")) }}</span>
         <button @click="handleClick">Logout</button>
       </span>
-      
     </nav>
     <router-view/>
   </div>
 </template>
 
-<script>
-  import { useStore } from 'vuex'
-  import { computed } from 'vue'
+<script setup>
+import { useStore } from 'vuex'
+import { computed } from 'vue'
 
-  export default{
-    setup() {
-      const store = useStore()
-      const handleClick = () => {
-        store.dispatch('logout')
-      }
-      return { handleClick, user: computed(() => store.state.user), authIsReady: computed(() => store.state.authIsReady)}
-    }
-  }
-  
-
+const store = useStore()
+const handleClick = () => store.dispatch('logout')
+const user = computed(() => store.state.user)
+const authIsReady = computed(() => store.state.authIsReady)
 </script>
 
 <style>

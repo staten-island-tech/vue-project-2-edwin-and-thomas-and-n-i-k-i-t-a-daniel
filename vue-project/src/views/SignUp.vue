@@ -19,41 +19,37 @@
     </form>
 </template>
 
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
-export default {
-    setup () {
-        const email = ref('')
-        const password = ref('')
-        const fname = ref('')
-        const lname = ref('')
-        const error = ref(null)
+const email = ref('')
+const password = ref('')
+const fname = ref('')
+const lname = ref('')
+const error = ref(null)
 
-        const store = useStore()
-        const router = useRouter()
+const store = useStore()
+const router = useRouter()
 
-        const handleSubmit = async () => {
-            try {
-                await store.dispatch('signup', {
-                    email: email.value,
-                    password: password.value,
-                    fname: fname.value,
-                    lname: lname.value
-                })
-                router.push('/')
-            } catch (err) {
-                error.value = err.message
-            }
-        } 
-
-        return { handleSubmit, email, password, error, fname, lname }
+const handleSubmit = async () => {
+    try {
+        await store.dispatch('signup', {
+            email: email.value,
+            password: password.value,
+            fname: fname.value,
+            lname: lname.value
+        })
+        router.push('/')
+    } catch (err) {
+        error.value = err.message
     }
-}
+} 
 </script>
 
 <style scoped>
+
+
 
 </style>
