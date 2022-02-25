@@ -7,7 +7,7 @@
       <router-link to="/login" v-if="!user">Login</router-link>
       <router-link to="/userhome" v-if="user">User Home</router-link>
       <span v-if="user">
-        <span>Logged in as {{ user.email.substring(0, user.email.lastIndexOf("@")) }}</span>
+        <span>Logged in as {{ user.displayName }}</span>
         <button @click="handleClick">Logout</button>
       </span>
     </nav>
@@ -18,9 +18,14 @@
 <script setup>
 import { useStore } from 'vuex'
 import { computed } from 'vue'
+import { useRouter } from 'vue-router';
 
+const router = useRouter()
 const store = useStore()
-const handleClick = () => store.dispatch('logout')
+const handleClick = () => {
+  store.dispatch('logout')
+  router.push("/")
+}
 const user = computed(() => store.state.user)
 const authIsReady = computed(() => store.state.authIsReady)
 </script>

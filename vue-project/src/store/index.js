@@ -7,8 +7,9 @@ import {
   signInWithEmailAndPassword,
   signOut,
   onAuthStateChanged,
+  updateProfile,
 } from "firebase/auth";
-import { setDoc, doc, getDoc } from "firebase/firestore";
+import { setDoc, doc } from "firebase/firestore";
 
 const store = createStore({
   state: {
@@ -25,16 +26,18 @@ const store = createStore({
     },
   },
   actions: {
-    async signup(context, { email, password, fname, lname }) {
+    async signup(context, { email, password, fname, lname, dname }) {
       console.log("signup action");
 
       const res = await createUserWithEmailAndPassword(auth, email, password);
       if (res) {
+        updateProfile(res.user, { displayName: dname });
         context.commit("setUser", res.user);
-        // creates an entry in firestore under users/{user's uid}
-        const docRef = await setDoc(doc(db, "users", res.user.uid), {
+        // creates an entry in firestore under users/{user's uid} // later use setDoc with merge to add other stuff
+        await setDoc(doc(db, "users", res.user.uid), {
           fname: fname,
           lname: lname,
+          dname: dname,
         });
       } else {
         throw new Error("could not complete signup");

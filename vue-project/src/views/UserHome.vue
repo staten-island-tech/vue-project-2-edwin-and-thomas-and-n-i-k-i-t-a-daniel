@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-if="user">
-            <h2>Welcome to the user home, {{ user.email.substring(0, user.email.lastIndexOf("@")) }}</h2>
+            <h2>Welcome to the user home, {{ user.displayName }}</h2>
         </div>
         <div v-if="!user">
             <!-- TODO: make a 404 component -->

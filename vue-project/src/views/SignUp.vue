@@ -8,6 +8,9 @@
         <label for="lname">Last Name:</label>
         <input type="lname" name="lname" v-model="lname" required>
 
+        <label for="dname">Display Name:</label>
+        <input type="dname" name="dname" v-model="dname" required>
+
         <label for="email">Email:</label>
         <input type="email" name="email" v-model="email" required>
 
@@ -28,6 +31,7 @@ const email = ref('')
 const password = ref('')
 const fname = ref('')
 const lname = ref('')
+const dname = ref('')
 const error = ref(null)
 
 const store = useStore()
@@ -39,9 +43,10 @@ const handleSubmit = async () => {
             email: email.value,
             password: password.value,
             fname: fname.value,
-            lname: lname.value
+            lname: lname.value,
+            dname: dname.value
         })
-        router.push('/')
+        router.push('/userhome')
     } catch (err) {
         error.value = err.message
     }
