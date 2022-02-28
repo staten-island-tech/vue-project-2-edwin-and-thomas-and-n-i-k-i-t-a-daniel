@@ -9,12 +9,13 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, collection, getDocs } from "firebase/firestore";
 
 const store = createStore({
   state: {
     user: null,
     authIsReady: false,
+    posts: [],
   },
   mutations: {
     setUser(state, payload) {
@@ -23,6 +24,9 @@ const store = createStore({
     },
     setAuthIsReady(state, payload) {
       state.authIsReady = payload;
+    },
+    addPost(state, payload) {
+      state.posts.push(payload);
     },
   },
   actions: {
@@ -58,6 +62,13 @@ const store = createStore({
 
       await signOut(auth);
       context.commit("setUser", null);
+    },
+    async getPosts(context) {
+      console.log("get posts action");
+      const querySnapshot = await getDocs(collection(db, "posts"));
+      querySnapshot.forEach((doc) => {
+        context.commit("addPost", doc.data());
+      });
     },
   },
 });
