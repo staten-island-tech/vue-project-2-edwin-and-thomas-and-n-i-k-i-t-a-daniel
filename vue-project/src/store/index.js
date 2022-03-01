@@ -28,6 +28,9 @@ const store = createStore({
     addPost(state, payload) {
       state.posts.push(payload);
     },
+    clearPosts(state) {
+      state.posts = [];
+    },
   },
   actions: {
     async signup(context, { email, password, fname, lname, dname }) {
@@ -65,6 +68,7 @@ const store = createStore({
     },
     async getPosts(context) {
       console.log("get posts action");
+      context.commit("clearPosts");
       const querySnapshot = await getDocs(collection(db, "posts"));
       querySnapshot.forEach((doc) => {
         context.commit("addPost", doc.data());
