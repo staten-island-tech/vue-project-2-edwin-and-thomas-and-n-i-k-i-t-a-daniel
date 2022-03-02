@@ -9,13 +9,14 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { setDoc, doc, collection, getDocs } from "firebase/firestore";
+import { setDoc, doc, collection, getDocs, getDoc } from "firebase/firestore";
 
 const store = createStore({
   state: {
     user: null,
     authIsReady: false,
     posts: [],
+    viewingProfile: null,
   },
   mutations: {
     setUser(state, payload) {
@@ -30,6 +31,10 @@ const store = createStore({
     },
     clearPosts(state) {
       state.posts = [];
+    },
+    setViewing(state, payload) {
+      state.viewingProfile = payload;
+      console.log("viewing user:", payload);
     },
   },
   actions: {
@@ -73,6 +78,12 @@ const store = createStore({
       querySnapshot.forEach((doc) => {
         context.commit("addPost", doc.data());
       });
+    },
+    async getViewingProfile(context, uid) {
+      context.commit("setViewing", null);
+      const docRef = doc(db, "users", uid);
+      const docSnap = await getDoc(docRef);
+      context.commit("setViewing", docSnap.data());
     },
   },
 });
