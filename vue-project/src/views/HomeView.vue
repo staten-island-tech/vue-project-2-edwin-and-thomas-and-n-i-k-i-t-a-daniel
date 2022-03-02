@@ -2,7 +2,7 @@
   <main>
     <div v-for="post in store.state.posts" :key="post.name">
       <h2>{{ post.title }}</h2>
-      <router-link :to="`/user/${post.author.uid}`">by {{ post.author.dname }}</router-link>
+      <h4>by <router-link :to="`/user/${post.author.uid}`">{{ post.author.dname }}</router-link></h4> 
       <p>{{ post.content }}</p>
     </div>
   </main>
