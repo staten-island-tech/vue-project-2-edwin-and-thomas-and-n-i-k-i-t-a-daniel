@@ -1,7 +1,7 @@
 <template>
     <div>
         <editor 
-            api-key="no-api-key" 
+            api-key="ffugz7x38mw73x297de4hhgulrnsse6ldbn7cumiyo99w54f" 
             :init="{
                 height: 500,
                 menubar: false,
