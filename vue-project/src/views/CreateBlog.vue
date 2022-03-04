@@ -1,26 +1,57 @@
 <template>
     <div>
-        <editor 
-            api-key="ffugz7x38mw73x297de4hhgulrnsse6ldbn7cumiyo99w54f" 
-            :init="{
-                height: 500,
-                menubar: false,
-                plugins: [
-                'advlist autolink lists link image charmap print preview anchor',
-                'searchreplace visualblocks code fullscreen',
-                'insertdatetime media table paste code help wordcount'
-                ],
-                toolbar:
-                'undo redo | formatselect | bold italic backcolor | \
-                alignleft aligncenter alignright alignjustify | \
-                bullist numlist outdent indent | removeformat | help'
-            }"
-        />
+        <form @submit.prevent="handleSubmit">
+
+            <label for="title">Title:</label>
+            <input type="title" name="title" v-model="title" required>
+
+            <label for="title">Description:</label>
+            <input type="description" name="description" v-model="desciption" required>
+
+            <editor 
+                api-key="ffugz7x38mw73x297de4hhgulrnsse6ldbn7cumiyo99w54f" 
+                :init="{
+                    height: 500,
+                    menubar: false,
+                    plugins: [
+                    'advlist autolink lists link image charmap print preview anchor',
+                    'searchreplace visualblocks code fullscreen',
+                    'insertdatetime media table paste code help wordcount'
+                    ],
+                    toolbar:
+                    'undo redo | formatselect | bold italic backcolor | \
+                    alignleft aligncenter alignright alignjustify | \
+                    bullist numlist outdent indent | removeformat | help'
+                }"
+            v-model="content" required />
+
+            <button>Upload Post</button>
+        </form>
+        
     </div>
 </template>
 
 <script setup>
 import Editor from '@tinymce/tinymce-vue'
+import { ref } from 'vue'
+
+const title = ref('')
+const desciption = ref('')
+const content = ref('')
+
+const handleSubmit = async () => {
+    try {
+        await store.dispatch('createPost', {
+            title: title.value,
+            desciption: desciption.value,
+            content: content.value
+        })
+        router.push('/userhome')
+    } catch (err) {
+        error.value = err.message
+    }
+}
+
 </script>
 
 <style scoped>
