@@ -100,7 +100,7 @@ const store = createStore({
       const docData = {
         author: {
           uid: this.state.user.uid,
-          dname: this.state.user.dname,
+          dname: this.state.user.displayName,
         },
         content: content,
         description: description,
