@@ -5,7 +5,7 @@
       <router-link to="/about">About</router-link>
       <router-link to="/signup" v-if="!user">Sign Up</router-link>
       <router-link to="/login" v-if="!user">Login</router-link>
-      <router-link to="/userhome" v-if="user">User Home</router-link>
+      <router-link :to="`/user/${user.uid}`" v-if="user">Profile</router-link>
       <span v-if="user">
         <span>Logged in as {{ user.displayName }}</span>
         <button @click="handleClick">Logout</button>
