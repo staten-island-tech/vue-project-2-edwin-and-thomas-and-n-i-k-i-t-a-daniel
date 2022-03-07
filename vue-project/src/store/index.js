@@ -96,6 +96,7 @@ const store = createStore({
       const docRef = doc(db, "users", uid);
       const docSnap = await getDoc(docRef);
       context.commit("setViewing", docSnap.data());
+      context.dispatch("getProfilePosts");
     },
     async createPost(context, { title, description, content }) {
       console.log("create post action");
@@ -112,6 +113,15 @@ const store = createStore({
       const postRef = doc(db, "users", this.state.user.uid);
       await updateDoc(postRef, {
         posts: arrayUnion(docRef.id),
+      });
+    },
+    async getProfilePosts(context) {
+      context.commit("clearPosts");
+      const postIds = this.state.viewingProfile.posts;
+      postIds.forEach(async (postId) => {
+        const docRef = doc(db, "posts", postId);
+        const docSnap = await getDoc(docRef);
+        context.commit("addPost", docSnap.data());
       });
     },
   },
