@@ -14,7 +14,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 
@@ -29,7 +29,7 @@ const handleSubmit = async () => {
             email: email.value,
             password: password.value
         })
-        router.push('/userhome')
+        router.push('/')
     }
     catch (err) {
         error.value = err.message

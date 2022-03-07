@@ -51,7 +51,7 @@ const handleSubmit = async () => {
             description: description.value,
             content: content.value
         })
-        router.push('/userhome')
+        router.push('/')
     } catch (err) {
         console.log(err)
     }

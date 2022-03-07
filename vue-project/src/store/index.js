@@ -16,6 +16,8 @@ import {
   getDocs,
   getDoc,
   addDoc,
+  updateDoc,
+  arrayUnion,
 } from "firebase/firestore";
 
 const store = createStore({
@@ -107,11 +109,10 @@ const store = createStore({
         title: title,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
-      await setDoc(
-        doc(db, "users", this.state.user.uid),
-        { posts: docRef.id },
-        { merge: true }
-      );
+      const postRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(postRef, {
+        posts: arrayUnion(docRef.id),
+      });
     },
   },
 });
