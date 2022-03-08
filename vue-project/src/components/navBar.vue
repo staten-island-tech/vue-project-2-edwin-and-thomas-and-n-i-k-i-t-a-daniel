@@ -5,7 +5,7 @@
 <!--       <router-link class=router to="/about">About</router-link> -->
       <div class=notHome><router-link class=router to="/signup" v-if="!user">SIGN UP</router-link>
       <router-link class=router to="/login" v-if="!user">LOGIN</router-link>
-      <router-link class=router :to="`/user/${user.uid}`" v-if="user">{{ user.displayName.toUpperCase() }}/profile ig   </router-link> <!-- your choice to make it profile or person's username -->
+      <router-link class=router :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link> <!-- your choice to make it profile or person's username -->
 <!--         <span>Logged in as {{ user.displayName }}</span> looked bad -->
         <a v-if="user" class=router @click="handleClick">SIGN OUT</a>
       </div>
@@ -33,6 +33,9 @@ const authIsReady = computed(() => store.state.authIsReady)
 nav {
     background-color:#724949;
     height: 11.2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 a {
   color: white;

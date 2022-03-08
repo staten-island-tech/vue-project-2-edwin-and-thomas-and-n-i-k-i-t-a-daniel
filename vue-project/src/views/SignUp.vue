@@ -2,15 +2,21 @@
     <form @submit.prevent="handleSubmit">
         <h3>Sign up</h3>
 
-        <label for="dname">Display Name:</label>
-        <input type="dname" name="dname" v-model="dname" required>
+        <div class="form-input">
+            <label for="dname">Display Name:</label>
+            <input type="dname" name="dname" v-model="dname" required>
+        </div>
 
-        <label for="email">Email:</label>
-        <input type="email" name="email" v-model="email" required>
+        <div class="form-input">
+            <label for="email">Email:</label>
+            <input type="email" name="email" v-model="email" required>
+        </div>
 
-        <label for="email">Password:</label>
-        <input type="password" name="password" v-model="password" required>
-
+        <div class="form-input">
+            <label for="email">Password:</label>
+            <input type="password" name="password" v-model="password" required>
+        </div>
+        
         <button>Sign up</button>
         <div v-if="error">{{ error }}</div>
     </form>
@@ -44,6 +50,50 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
+
+form {
+    width: 100%;
+    height: 75vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column nowrap;
+}
+
+.form-input {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 2rem;
+}
+
+button {
+    color: white;
+    background-color: #724646;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: .75rem 2rem;
+    display: inline-block;
+    margin: 1rem;
+    font-size: 1rem;
+    border: none;
+    border-radius: 0;
+    transition: all 0.2s;
+}
+
+input {
+    background-color: #c4c4c4;
+    border: none;
+    width: 33vw;
+    height: 7vh;
+    padding: .75rem 2rem;
+    font-size: 2rem;
+    text-align: center;
+}
+
+label {
+    font-size: 1rem;
+}
 
 
 
