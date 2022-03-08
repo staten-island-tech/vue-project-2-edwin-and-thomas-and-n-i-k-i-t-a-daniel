@@ -1,15 +1,14 @@
 <template>
     <div>
     <nav v-if="authIsReady">
-      <router-link class=router id=Home to="/">Home</router-link>
+      <router-link class=router id=Home to="/">HOME</router-link>
 <!--       <router-link class=router to="/about">About</router-link> -->
-      <router-link class=router to="/signup" v-if="!user">Sign Up</router-link>
-      <router-link class=router to="/login" v-if="!user">Login</router-link>
-      <router-link class=router :to="`/user/${user.uid}`" v-if="user">Profile</router-link>
-      <span v-if="user">
-        <span>Logged in as {{ user.displayName }}</span>
-        <button @click="handleClick">Logout</button>
-      </span>
+      <div class=notHome><router-link class=router to="/signup" v-if="!user">SIGN UP</router-link>
+      <router-link class=router to="/login" v-if="!user">LOGIN</router-link>
+      <router-link class=router :to="`/user/${user.uid}`" v-if="user">{{ user.displayName.toUpperCase() }}/profile ig   </router-link> <!-- your choice to make it profile or person's username -->
+<!--         <span>Logged in as {{ user.displayName }}</span> looked bad -->
+        <a v-if="user" class=router @click="handleClick">SIGN OUT</a>
+      </div>
     </nav>
     </div>
 </template>
@@ -34,15 +33,21 @@ const authIsReady = computed(() => store.state.authIsReady)
 nav {
     background-color:#724949;
     height: 11.2rem;
-    text-align: right;
+}
+a {
+  color: white;
+  text-decoration: underline;
+}
+.notHome {
+  text-align: right;
+  float: right;
+  margin-top: 1rem;
 }
 .router {
     font-size: 3.6rem;
-    margin-left: 3rem;
+    margin-right: 4rem;
 }
 #Home {
     font-size: 4.8rem;
-    margin: 0;
-    text-align: left;
 }
 </style>
