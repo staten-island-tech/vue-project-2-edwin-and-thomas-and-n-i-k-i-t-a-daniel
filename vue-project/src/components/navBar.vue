@@ -1,14 +1,12 @@
 <template>
     <div>
     <nav v-if="authIsReady">
-      <router-link class=router id=Home to="/">HOME</router-link>
-<!--       <router-link class=router to="/about">About</router-link> -->
-      <div class=notHome><router-link class=router to="/signup" v-if="!user">SIGN UP</router-link>
-      <router-link class=router to="/login" v-if="!user">LOGIN</router-link>
-      <router-link class=router :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link> <!-- your choice to make it profile or person's username -->
-<!--         <span>Logged in as {{ user.displayName }}</span> looked bad -->
-        <a v-if="user" class=router @click="handleClick">SIGN OUT</a>
-      </div>
+      <router-link class="router" id="Home" to="/">HOME</router-link>
+
+      <router-link class="router right" to="/signup" v-if="!user">SIGN UP</router-link>
+      <router-link class="router right" to="/login" v-if="!user">LOGIN</router-link>
+      <router-link class="router right" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
+      <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
     </nav>
     </div>
 </template>
@@ -31,26 +29,22 @@ const authIsReady = computed(() => store.state.authIsReady)
 
 <style scoped>
 nav {
-    background-color:#724949;
-    height: 11.2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+  background-color:#724949;
+  height: 9rem;
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
 }
 a {
   color: white;
   text-decoration: underline;
 }
-.notHome {
-  text-align: right;
-  float: right;
-  margin-top: 1rem;
-}
 .router {
-    font-size: 3.6rem;
-    margin-right: 4rem;
+  font-size: 3.6rem;
+  width: fit-content
 }
 #Home {
-    font-size: 4.8rem;
+  font-size: 4.8rem;
+  grid-column: 2;
 }
 </style>

@@ -13,6 +13,9 @@
         </div>
 
         <button>Login</button>
+
+        <h4><router-link to="/signup">Don't have an account?</router-link></h4>
+
         <div v-if="error">{{ error }}</div>
     </form>
 </template>
@@ -64,10 +67,10 @@ button {
     background-color: #724646;
     text-transform: uppercase;
     text-decoration: none;
-    padding: .75rem 2rem;
+    padding: 1.2rem 3.2rem;
     display: inline-block;
-    margin: 1rem;
-    font-size: 1rem;
+    margin: 1.6rem;
+    font-size: 1.6rem;
     border: none;
     border-radius: 0;
     transition: all 0.2s;
@@ -78,13 +81,13 @@ input {
     border: none;
     width: 33vw;
     height: 7vh;
-    padding: .75rem 2rem;
-    font-size: 2rem;
+    padding: 1.2rem 3.2rem;
+    font-size: 3.2rem;
     text-align: center;
 }
 
 label {
-    font-size: 1rem;
+    font-size: 1.6rem;
 }
 
 
