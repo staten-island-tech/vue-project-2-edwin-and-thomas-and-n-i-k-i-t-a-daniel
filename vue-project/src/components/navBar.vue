@@ -33,6 +33,7 @@ nav {
   height: 9rem;
   display: flex;
   flex-flow: row nowrap;
+  flex-direction: row;
   align-items: center;
 }
 a {
@@ -45,6 +46,10 @@ a {
 }
 #Home {
   font-size: 4.8rem;
-  grid-column: 2;
+  margin-left: 2rem;
+}
+.right {
+  margin-left: 5rem;
+  left: 125rem;
 }
 </style>
