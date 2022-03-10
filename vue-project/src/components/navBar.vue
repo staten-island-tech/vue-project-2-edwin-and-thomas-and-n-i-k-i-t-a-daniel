@@ -1,6 +1,7 @@
 <template>
     <div>
     <nav v-if="authIsReady">
+      <img src="logo.svg" alt="Dropdown logo" @click="toggleDropdown">
       <router-link class="router" id="Home" to="/">HOME</router-link>
 
       <router-link class="router right" to="/signup" v-if="!user">SIGN UP</router-link>
@@ -8,6 +9,7 @@
       <router-link class="router right" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
       <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
     </nav>
+    <h2 v-if="showDropdown">DROPDOWN</h2>
     </div>
 </template>
 
@@ -25,15 +27,19 @@ const handleClick = () => {
 const user = computed(() => store.state.user)
 const authIsReady = computed(() => store.state.authIsReady)
 
+
+
 </script>
 
 <style scoped>
 nav {
   background-color:#724949;
   height: 9rem;
+  width: 100vw;
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  justify-content: flex-end;
 }
 a {
   color: white;
@@ -41,10 +47,16 @@ a {
 }
 .router {
   font-size: 3.6rem;
-  width: fit-content
+  width: fit-content;
+  margin-right: 3rem
 }
 #Home {
   font-size: 4.8rem;
-  grid-column: 2;
+  margin-right: auto;
+  margin-left: 3rem
+}
+img {
+  height: 85%;
+  margin-left: 1rem
 }
 </style>
