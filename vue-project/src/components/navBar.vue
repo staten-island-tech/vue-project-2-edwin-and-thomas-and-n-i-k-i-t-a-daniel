@@ -35,6 +35,7 @@ nav {
   flex-flow: row nowrap;
   flex-direction: row;
   align-items: center;
+  
 }
 a {
   color: white;
