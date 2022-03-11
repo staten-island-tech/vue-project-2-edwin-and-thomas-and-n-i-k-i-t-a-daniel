@@ -9,7 +9,16 @@ import {
   onAuthStateChanged,
   updateProfile,
 } from "firebase/auth";
-import { setDoc, doc, collection, getDocs, getDoc } from "firebase/firestore";
+import {
+  setDoc,
+  doc,
+  collection,
+  getDocs,
+  getDoc,
+  addDoc,
+  updateDoc,
+  arrayUnion,
+} from "firebase/firestore";
 
 const store = createStore({
   state: {
@@ -38,17 +47,21 @@ const store = createStore({
     },
   },
   actions: {
-    async signup(context, { email, password, fname, lname, dname }) {
+    async signup(context, { email, password, dname }) {
       console.log("signup action");
-
+      const querySnapshot = await getDocs(collection(db, "users"));
+      querySnapshot.forEach((doc) => {
+        const user = doc.data();
+        if (user.dname === dname) {
+          throw new Error("Display name already taken");
+        }
+      });
       const res = await createUserWithEmailAndPassword(auth, email, password);
       if (res) {
         updateProfile(res.user, { displayName: dname });
         context.commit("setUser", res.user);
         // creates an entry in firestore under users/{user's uid} // later use setDoc with merge to add other stuff
         await setDoc(doc(db, "users", res.user.uid), {
-          fname: fname,
-          lname: lname,
           dname: dname,
         });
       } else {
@@ -67,7 +80,6 @@ const store = createStore({
     },
     async logout(context) {
       console.log("logout action");
-
       await signOut(auth);
       context.commit("setUser", null);
     },
@@ -84,6 +96,33 @@ const store = createStore({
       const docRef = doc(db, "users", uid);
       const docSnap = await getDoc(docRef);
       context.commit("setViewing", docSnap.data());
+      context.dispatch("getProfilePosts");
+    },
+    async createPost(context, { title, description, content }) {
+      console.log("create post action");
+      const docData = {
+        author: {
+          uid: this.state.user.uid,
+          dname: this.state.user.displayName,
+        },
+        content: content,
+        description: description,
+        title: title,
+      };
+      const docRef = await addDoc(collection(db, "posts"), docData);
+      const postRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(postRef, {
+        posts: arrayUnion(docRef.id),
+      });
+    },
+    async getProfilePosts(context) {
+      context.commit("clearPosts");
+      const postIds = this.state.viewingProfile.posts;
+      postIds.forEach(async (postId) => {
+        const docRef = doc(db, "posts", postId);
+        const docSnap = await getDoc(docRef);
+        context.commit("addPost", docSnap.data());
+      });
     },
   },
 });

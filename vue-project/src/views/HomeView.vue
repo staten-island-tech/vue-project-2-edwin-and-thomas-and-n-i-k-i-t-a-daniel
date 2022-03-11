@@ -20,7 +20,7 @@
       @before-enter="beforeEnter"
       @enter="bodyEnter"
       > 
-      <p>{{ post.content }}</p>
+      <p v-html="post.content"></p>
        </transition>
     </div>
   </main>

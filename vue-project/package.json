@@ -7,6 +7,7 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
+    "@tinymce/tinymce-vue": "^4.0.6",
     "firebase": "^9.6.7",
     "gsap": "^3.9.1",
     "vue": "^3.2.29",
