@@ -26,9 +26,17 @@ const handleClick = () => {
 }
 const user = computed(() => store.state.user)
 const authIsReady = computed(() => store.state.authIsReady)
+</script>
 
-
-
+<script> // this is just for the dropdown
+export default {
+  data() {
+    return { showDropdown: false }
+  },
+  methods: {
+    toggleDropdown() { this.showDropdown = !this.showDropdown }
+  }
+}
 </script>
 
 <style scoped>
