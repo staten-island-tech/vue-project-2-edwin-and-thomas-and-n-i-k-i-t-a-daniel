@@ -1,15 +1,18 @@
 <template>
     <div>
-    <nav v-if="authIsReady">
-      <img src="logo.svg" alt="Dropdown logo" @click="toggleDropdown">
-      <router-link class="router" id="Home" to="/">HOME</router-link>
+      <nav v-if="authIsReady">
+        <img src="logo.svg" alt="Dropdown logo" @click="toggleDropdown">
+        <router-link class="router" id="Home" to="/">HOME</router-link>
 
-      <router-link class="router right" to="/signup" v-if="!user">SIGN UP</router-link>
-      <router-link class="router right" to="/login" v-if="!user">LOGIN</router-link>
-      <router-link class="router right" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
-      <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
-    </nav>
-    <h2 v-if="showDropdown">DROPDOWN</h2>
+        <router-link class="router right" to="/signup" v-if="!user">SIGN UP</router-link>
+        <router-link class="router right" to="/login" v-if="!user">LOGIN</router-link>
+        <router-link class="router right" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
+        <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
+      </nav>
+      <div v-if="showDropdown" class="dropdown">
+        <h2>Dropdown</h2>
+        <h3>Options</h3>
+      </div>
     </div>
 </template>
 
@@ -66,5 +69,11 @@ a {
 img {
   height: 85%;
   margin-left: 1rem
+}
+.dropdown {
+  position: absolute;
+  background-color: #724949;
+  z-index: 3;
+  height: 100vh
 }
 </style>
