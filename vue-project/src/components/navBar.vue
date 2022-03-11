@@ -10,16 +10,18 @@
         <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
       </nav>
       <div v-if="showDropdown" class="dropdown">
-        <h2>Dropdown</h2>
-        <h3>Options</h3>
+        <input type="search" name="search" v-model="search" />
+        <h3 class="dropdown-item">Your Posts</h3>
       </div>
     </div>
 </template>
 
 <script setup>
 import { useStore } from 'vuex'
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router';
+
+const search = ref('')
 
 const router = useRouter()
 const store = useStore()
@@ -72,8 +74,36 @@ img {
 }
 .dropdown {
   position: absolute;
-  background-color: #724949;
+  background-color: #975F5F;
   z-index: 3;
-  height: 100vh
+  height: 50rem;
+  width: 30rem;
+  color: white;
+  display: flex;
+  flex-flow: column nowrap;
+  align-items: center;
+  border-bottom-right-radius: 2rem;
 }
+input {
+  background-color: #e08b8b43;
+  background-image: url('search.svg');
+  background-repeat: no-repeat;
+  background-position: left center;
+  background-position-x: 5%;
+  border: none;
+  border-radius: 2rem;
+  width: 85%;
+  height: 5rem;
+  padding: .6rem 1.6rem;
+  font-size: 2rem;
+  text-align: left;
+  margin-top: 2rem;
+  color: white;
+  text-indent: 3rem
+}
+
+.dropdown-item {
+  background-color: #e08b8b43;
+}
+
 </style>
