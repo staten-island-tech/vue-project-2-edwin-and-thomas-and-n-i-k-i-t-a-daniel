@@ -18,6 +18,7 @@
 body {
   display: flex;
   padding: 0;
+  position: relative;
   box-sizing: border-box;
 }
 div {
@@ -26,19 +27,24 @@ div {
   color: white;
   width: 120rem;
   height: 15rem;
-
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0rem 1.5rem 7rem -3rem black;
 }
 a {
   color:white;
-  font-size: 1.8rem
+  font-size: 1.8rem;
 }
 h2 {
   font-size: 4.8rem;
+  margin-left: 1rem;
 }
 h4 {
-  font-size: 1.8rem
+  font-size: 1.8rem;
+  margin-left: 1rem;
 }
 p{
   font-size: 1.4rem;
+  margin-left: 1rem;
 }
 </style>

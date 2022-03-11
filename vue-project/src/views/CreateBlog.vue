@@ -60,5 +60,15 @@ const handleSubmit = async () => {
 </script>
 
 <style scoped>
-
+input {
+    font-size: 3rem;
+}
+label {
+    margin-left:2rem;
+    margin-right:1rem;
+    font-size: 3rem;
+}
+button {
+    font-size: 3rem;
+}
 </style>

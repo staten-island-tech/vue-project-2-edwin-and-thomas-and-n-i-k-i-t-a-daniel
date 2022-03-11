@@ -9,7 +9,11 @@
       <router-link class="router right" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
       <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
     </nav>
-    <h2 v-if="showDropdown">DROPDOWN</h2>
+    <div class=dropdown v-if="showDropdown">
+    <input type=search class=dropdownItem>
+    <h3 class=dropdownItem>Your Posts</h3>
+    <h3 class=dropdownItem>Following</h3>
+    </div>
     </div>
 </template>
 
@@ -49,6 +53,7 @@ nav {
   flex-direction: row;
   align-items: center;
   justify-content: flex-end;
+  box-shadow: 0rem -2.5rem 6rem black;
 }
 a {
   color: white;
@@ -66,6 +71,25 @@ a {
 }
 img {
   height: 85%;
-  margin-left: 1rem
+  margin-left: 1rem;
+}
+.dropdown {
+  text-align: center;
+  align-items: center;
+  width: 30rem;
+  background: #975F5F;
+  height: 100vh;
+  z-index:1;
+  position: relative;
+}
+.dropdownItem {
+  background-color: #E08B8B;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top:2rem;
+  max-width: 16rem;
+  max-height: 4rem;
+  border-radius: 2.5rem;
+  font-size: 2.4rem;
 }
 </style>
