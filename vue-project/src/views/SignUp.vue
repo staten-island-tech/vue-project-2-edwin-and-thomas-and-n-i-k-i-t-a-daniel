@@ -21,7 +21,7 @@
 
         <h4><router-link to="/login">Already have an account?</router-link></h4>
 
-        <div v-if="error">{{ error }}</div>
+        <h5 v-if="error">{{ error }}</h5>
     </form>
 </template>
 
