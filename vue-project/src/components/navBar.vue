@@ -9,7 +9,7 @@
         <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
       </nav>
       <div v-if="showDropdown" class="dropdown">
-        <input type="search" name="search" v-model="search" />
+        <input type="search" name="search" v-model="search" @keypress="console"/>
         <router-link to="/" class="dropdown-item">Your Posts</router-link>
         <router-link to="/login" class="dropdown-item">Following</router-link>
         <router-link to="/create" class="dropdown-item">Create</router-link>
@@ -27,7 +27,12 @@ export default {
     return { showDropdown: false }
   },
   methods: {
-    toggleDropdown() { this.showDropdown = !this.showDropdown }
+    toggleDropdown() { this.showDropdown = !this.showDropdown },
+    console() {
+    console.log(this.store.state.posts.filter((post) => {
+      return post.title.includes(this.search) 
+    }))
+    }
   },
   setup() {
     const search = ref('')
@@ -40,8 +45,10 @@ export default {
       store.dispatch('logout')
       router.push("/")
     }
-
-    return { search, router, route, store, handleClick, user, authIsReady}
+    const usedPosts = store.state.posts.filter((posts) => {
+      return posts.title.toLowerCase.includes(search.toLowerCase) || posts.content.toLowerCase.includes(search.toLowerCase)
+    })
+    return { search, router, route, store, handleClick, user, authIsReady, usedPosts}
   }
 }
 </script>
