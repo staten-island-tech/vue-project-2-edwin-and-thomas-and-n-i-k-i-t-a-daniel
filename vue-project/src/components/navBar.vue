@@ -11,35 +11,38 @@
       </nav>
       <div v-if="showDropdown" class="dropdown">
         <input type="search" name="search" v-model="search" />
-        <h3 class="dropdown-item">Your Posts</h3>
+        <router-link to="/" class="dropdown-item">Your Posts</router-link>
+        <router-link to="/login" class="dropdown-item">Following</router-link>
+        <router-link to="/create" class="dropdown-item">Create</router-link>
       </div>
     </div>
 </template>
 
-<script setup>
+<script>
 import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 
-const search = ref('')
-
-const router = useRouter()
-const store = useStore()
-const handleClick = () => {
-  store.dispatch('logout')
-  router.push("/")
-}
-const user = computed(() => store.state.user)
-const authIsReady = computed(() => store.state.authIsReady)
-</script>
-
-<script> // this is just for the dropdown
 export default {
   data() {
     return { showDropdown: false }
   },
   methods: {
     toggleDropdown() { this.showDropdown = !this.showDropdown }
+  },
+  setup() {
+    const search = ref('')
+    const router = useRouter()
+    const route = useRoute()
+    const store = useStore()
+    const user = computed(() => store.state.user)
+    const authIsReady = computed(() => store.state.authIsReady)
+    const handleClick = () => {
+      store.dispatch('logout')
+      router.push("/")
+    }
+
+    return { search, router, route, store, handleClick, user, authIsReady}
   }
 }
 </script>
@@ -70,7 +73,8 @@ a {
 }
 img {
   height: 85%;
-  margin-left: 1rem
+  margin-left: 1rem;
+  cursor: help;
 }
 .dropdown {
   position: absolute;
@@ -104,6 +108,16 @@ input {
 
 .dropdown-item {
   background-color: #e08b8b43;
+  border: none;
+  border-radius: 2rem;
+  width: 85%;
+  height: 5rem;
+  padding: .6rem 1.6rem;
+  font-size: 2.4rem;
+  margin-top: 2rem;
+  color: white;
+  text-align: center;
+  text-decoration-line: none;
 }
 
 </style>
