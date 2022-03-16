@@ -1,5 +1,6 @@
 <template>
   <main>  
+    
     <div v-for="post in store.state.posts" :key="post.name" class="post">
       <transition
       appear
@@ -15,19 +16,21 @@
       > 
       <h4>by <router-link :to="`/user/${post.author.uid}`">{{ post.author.dname }}</router-link></h4> 
         </transition>
-       <transition
+       <!-- <transition
       appear
       @before-enter="beforeEnter"
       @enter="bodyEnter"
-      > 
+      >  -->
       <p v-html="post.content"></p>
-       </transition>
+       <!-- </transition> -->
     </div>
   </main>
 </template>
 
 <script setup>
+// import showDropdown from '../components/navBar'
   import { useStore } from 'vuex' 
+  import showDropdown from '../components/navBar.vue'
   import gsap from 'gsap'
   const store = useStore();  
   store.dispatch("getPosts");
@@ -43,22 +46,44 @@
         })
       }
       const bodyEnter = (el) => {
-       setTimeout(
-        function() {gsap.to(el,{
-          duration: 2,
-          opacity: 1,
-        })}, 1000)
+       gsap.to(el,{
+          duration:1.75,
+          opacity:1,
+        })
       }  
       const subtextEnter = (el) => {
-       setTimeout(
-        function() {gsap.to(el,{
-          duration: 2,
-          opacity: 1,
-        })}, 750)
+       gsap.to(el,{
+          duration:2,
+          opacity:1,
+        })
       }  
 </script>
 
 
 <style scoped>
-
+main{
+  display: flex;
+  justify-content: center;
+  flex-flow: wrap;
+  margin-top: 3rem;
+}
+.post{
+  background-color: #724949;
+  width: 83%;
+  height: 25%;
+  margin: 3rem;
+  color: white;
+}
+.post h2,h4,p{
+  margin: .5rem
+}
+#overlay {
+  background-color: rgba(0,0,0,0.5);
+  position:fixed;
+  left:0;
+  top: 0;
+  width:100%;
+  height:100%;
+  z-index: 1;
+}
 </style>
