@@ -11,7 +11,7 @@
       </nav>
       <div v-if="showDropdown" class="dropdown">
         <input type="search" name="search" v-model="search" />
-        <router-link to="/" class="dropdown-item">Your Posts</router-link>
+        <router-link :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
         <router-link to="/login" class="dropdown-item">Following</router-link>
         <router-link to="/create" class="dropdown-item">Create</router-link>
       </div>
