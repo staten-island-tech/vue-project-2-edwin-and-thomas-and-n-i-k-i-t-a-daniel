@@ -49,11 +49,12 @@ const bodyEnter = (el) => {
           duration: 1,
           opacity: 1,
           x: 0,
-          ease: 'power2'
+          ease: 'power2',
+          reversed: false
         })}
       }  
 const beforeLeave = (el) => {
-        el.style.transform = 'translateX(0)'
+        el.style.transform = 'translateX(-100%)'
       }
 const bodyLeave = (el) => {
        {gsap.to(el,{
