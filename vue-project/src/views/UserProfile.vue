@@ -4,7 +4,7 @@
         <h3 v-if="user.uid === route.params.uid"><router-link to="/create">Create a Post</router-link></h3>
         <!-- Temporary Blog Thing, make component -->
         <div class="post" v-for="post in store.state.posts" :key="post.name">
-            <h3>{{ post.title }}</h3>
+            <router-link class="post-link" :to="`/post/${post.id}`">{{post.title}}</router-link>
             <h4>{{ post.description }}</h4>
         </div>
     </div>
@@ -31,6 +31,10 @@ watch(
 <style scoped>
 .post{
     outline: medium solid red;
-} 
+}
+
+.post-link {
+    font-size: 3.375rem
+}
 
 </style>
