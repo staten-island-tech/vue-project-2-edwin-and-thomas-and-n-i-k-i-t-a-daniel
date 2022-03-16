@@ -9,7 +9,7 @@
         <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
       </nav>
       <div v-if="showDropdown" class="dropdown">
-        <input type="search" name="search" v-model="search" @keypress="console"/>
+        <input type="search" name="search" v-model="search" @keypress="searchBar"/>
         <router-link to="/" class="dropdown-item">Your Posts</router-link>
         <router-link to="/login" class="dropdown-item">Following</router-link>
         <router-link to="/create" class="dropdown-item">Create</router-link>
@@ -30,7 +30,7 @@ export default {
     toggleDropdown() { this.showDropdown = !this.showDropdown },
     console() {
     console.log(this.store.state.posts.filter((post) => {
-      return post.title.includes(this.search) 
+      return post.title.toLowerCase().includes(this.search.toLowerCase()) || post.description.toLowerCase().includes(this.search.toLowerCase()) || post.content.toLowerCase().includes(this.search.toLowerCase()) || post.author.dname.toLowerCase().includes(this.search.toLowerCase()) /* doing this until i do what edwinning wants (sorry) */
     }))
     }
   },
@@ -45,10 +45,15 @@ export default {
       store.dispatch('logout')
       router.push("/")
     }
-    const usedPosts = store.state.posts.filter((posts) => {
-      return posts.title.toLowerCase.includes(search.toLowerCase) || posts.content.toLowerCase.includes(search.toLowerCase)
-    })
-    return { search, router, route, store, handleClick, user, authIsReady, usedPosts}
+    const searchBar = async () => {
+      try {
+        await store.commit('clearPosts')
+        console.log(store.state.posts)
+      } catch (err) {
+        console.log(err)
+      }
+    }
+    return { search, router, route, store, handleClick, user, authIsReady, }
   }
 }
 </script>
