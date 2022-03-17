@@ -151,12 +151,12 @@ const store = createStore({
         { id: docRef.id },
         { merge: true }
       );
-      const otherRef = doc(db, "posts", id);
-      await updateDoc(otherRef, {
+      const postRef = doc(db, "posts", id);
+      await updateDoc(postRef, {
         comments: arrayUnion(docRef.id),
       });
-      const postRef = doc(db, "users", this.state.user.uid);
-      await updateDoc(postRef, {
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(userRef, {
         comments: arrayUnion(docRef.id),
       });
     },
