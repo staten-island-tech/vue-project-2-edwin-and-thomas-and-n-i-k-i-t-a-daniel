@@ -110,6 +110,11 @@ const store = createStore({
         title: title,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
+      await setDoc(
+        doc(db, "posts", docRef.id),
+        { id: docRef.id },
+        { merge: true }
+      );
       const postRef = doc(db, "users", this.state.user.uid);
       await updateDoc(postRef, {
         posts: arrayUnion(docRef.id),
@@ -122,6 +127,37 @@ const store = createStore({
         const docRef = doc(db, "posts", postId);
         const docSnap = await getDoc(docRef);
         context.commit("addPost", docSnap.data());
+      });
+    },
+    async getSinglePost(context, id) {
+      context.commit("clearPosts");
+      const docRef = doc(db, "posts", id);
+      const docSnap = await getDoc(docRef);
+      console.log(docSnap.data());
+      context.commit("addPost", docSnap.data());
+    },
+    async postComment(context, { content, id }) {
+      const docData = {
+        author: {
+          uid: this.state.user.uid,
+          dname: this.state.user.displayName,
+        },
+        content: content,
+        post: id,
+      };
+      const docRef = await addDoc(collection(db, "comments"), docData);
+      await setDoc(
+        doc(db, "comments", docRef.id),
+        { id: docRef.id },
+        { merge: true }
+      );
+      const postRef = doc(db, "posts", id);
+      await updateDoc(postRef, {
+        comments: arrayUnion(docRef.id),
+      });
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(userRef, {
+        comments: arrayUnion(docRef.id),
       });
     },
   },

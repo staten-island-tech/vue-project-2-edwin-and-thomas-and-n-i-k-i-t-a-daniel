@@ -11,7 +11,7 @@
       </nav>
       <div v-if="showDropdown" class="dropdown">
         <input type="search" name="search" v-model="search" />
-        <router-link to="/" class="dropdown-item">Your Posts</router-link>
+        <router-link :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
         <router-link to="/login" class="dropdown-item">Following</router-link>
         <router-link to="/create" class="dropdown-item">Create</router-link>
       </div>
@@ -25,10 +25,25 @@ import { useRouter, useRoute } from 'vue-router';
 
 export default {
   data() {
-    return { showDropdown: false }
+    return {
+      showDropdown: false
+    }
   },
   methods: {
-    toggleDropdown() { this.showDropdown = !this.showDropdown }
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown
+    },
+    close(e) {
+      if(!this.$el.contains(e.target)) {
+        this.showDropdown = false
+      }
+    }
+  },
+  mounted() {
+    document.addEventListener('click', this.close)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.close)
   },
   setup() {
     const search = ref('')
@@ -105,7 +120,6 @@ input {
   color: white;
   text-indent: 3rem
 }
-
 .dropdown-item {
   background-color: #e08b8b43;
   border: none;
@@ -119,5 +133,4 @@ input {
   text-align: center;
   text-decoration-line: none;
 }
-
 </style>
