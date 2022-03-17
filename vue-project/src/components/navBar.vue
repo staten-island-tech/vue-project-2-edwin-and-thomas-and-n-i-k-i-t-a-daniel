@@ -1,7 +1,9 @@
 <template>
     <div>
       <nav v-if="authIsReady">
-        <img src="logo.svg" alt="Dropdown logo" @click="toggleDropdown">
+        <transition-group>
+        <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
+        </transition-group>
         <router-link class="router" id="Home" to="/">HOME</router-link>
 
         <router-link class="router right" to="/signup" v-if="!user">SIGN UP</router-link>
@@ -9,13 +11,7 @@
         <router-link class="router right" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
         <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
       </nav>
-      <transition-group
-      appear
-      @before-enter="beforeEnter"
-      @enter="bodyEnter"
-      @before-leave="beforeLeave"
-      @leave="bodyLeave"
-      > 
+      <transition-group> 
       <div v-if="showDropdown" class="dropdown">
         <input type="search" name="search" v-model="search" />
         <router-link to="/" class="dropdown-item">Your Posts</router-link>
@@ -41,29 +37,6 @@ const handleClick = () => {
 }
 const user = computed(() => store.state.user)
 const authIsReady = computed(() => store.state.authIsReady)
-  const beforeEnter = (el) => {
-        el.style.transform = 'translateX(-100%)'
-      }
-const bodyEnter = (el) => {
-       {gsap.to(el,{
-          duration: 1,
-          opacity: 1,
-          x: 0,
-          ease: 'power2',
-          reversed: false
-        })}
-      }  
-const beforeLeave = (el) => {
-        el.style.transform = 'translateX(-100%)'
-      }
-const bodyLeave = (el) => {
-       {gsap.to(el,{
-          duration: 1,
-          opacity: 1,
-          x: -100,
-          ease: 'power2'
-        })}
-      } 
 </script>
 
 <script> // this is just for the dropdown
@@ -75,7 +48,7 @@ export default {
     return { showDropdown: false }
   },
   methods: {
-    toggleDropdown() { this.showDropdown = !this.showDropdown }
+    toggleDropdown() { this.showDropdown = !this.showDropdown },
   },
   setup() {
     const search = ref('')
@@ -120,10 +93,11 @@ a {
   margin-right: auto;
   margin-left: 3rem
 }
-img {
+#logo {
   height: 85%;
   margin-left: 1rem;
   cursor: help;
+  transition: transform 1s ease-in-out;
 }
 .dropdown {
   position: absolute;
@@ -175,6 +149,18 @@ input {
   color: white;
   text-align: center;
   text-decoration-line: none;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+.v-on-click{
+  transition: transform 0.5s ease;
+  transform: rotateZ(360deg);
+}
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 
 </style>
