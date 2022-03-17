@@ -122,8 +122,12 @@ const store = createStore({
         const docRef = doc(db, "posts", postId);
         const docSnap = await getDoc(docRef);
         context.commit("addPost", docSnap.data());
+        console.log("docRef", docRef)
       });
     },
+    async searchPosts(context, { search} ) {
+      console.log( { search } )
+    }
   },
 });
 

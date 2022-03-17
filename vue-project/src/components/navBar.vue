@@ -9,7 +9,7 @@
         <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
       </nav>
       <div v-if="showDropdown" class="dropdown">
-        <input type="search" name="search" v-model="search" @keypress="searchBar"/>
+        <input type="search" name="search" v-model="search" @keypress.enter="searchBar"/>
         <router-link to="/" class="dropdown-item">Your Posts</router-link>
         <router-link to="/login" class="dropdown-item">Following</router-link>
         <router-link to="/create" class="dropdown-item">Create</router-link>
@@ -45,16 +45,11 @@ export default {
       store.dispatch('logout')
       router.push("/")
     }
-    const searchBar = async () => {
-      try {
-        await store.commit('clearPosts')
-        console.log(store.state.posts)
-      } catch (err) {
-        console.log(err)
-      }
+    const searchBar = () => {
+      store.dispatch('searchPosts', {search: search.value})
     }
-    return { search, router, route, store, handleClick, user, authIsReady, }
-  }
+    return { search, router, route, store, handleClick, user, authIsReady, searchBar}
+  },
 }
 </script>
 
