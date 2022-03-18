@@ -122,12 +122,27 @@ const store = createStore({
         const docRef = doc(db, "posts", postId);
         const docSnap = await getDoc(docRef);
         context.commit("addPost", docSnap.data());
-        console.log("docRef", docRef)
+        console.log("docRef", docRef);
       });
     },
-    async searchPosts(context, { search} ) {
-      console.log( { search } )
-    }
+    async searchPosts(context, { search }) {
+      const searchedPosts = this.state.posts.filter((post) => {
+        return (
+          post.title.toLowerCase().includes(search.toLowerCase()) ||
+          post.description.toLowerCase().includes(search.toLowerCase()) ||
+          post.content.toLowerCase().includes(search.toLowerCase()) ||
+          post.author.dname.toLowerCase().includes(search.toLowerCase())
+        );
+      });
+      context.commit("clearPosts");
+      console.log(this.state.posts);
+      searchedPosts.forEach((post) => {
+        context.commit("addPost", post);
+        console.log(post);
+      });
+      console.log(searchedPosts);
+      console.log(this.state.posts);
+    },
   },
 });
 

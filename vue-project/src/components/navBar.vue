@@ -28,11 +28,6 @@ export default {
   },
   methods: {
     toggleDropdown() { this.showDropdown = !this.showDropdown },
-    console() {
-    console.log(this.store.state.posts.filter((post) => {
-      return post.title.toLowerCase().includes(this.search.toLowerCase()) || post.description.toLowerCase().includes(this.search.toLowerCase()) || post.content.toLowerCase().includes(this.search.toLowerCase()) || post.author.dname.toLowerCase().includes(this.search.toLowerCase()) /* doing this until i do what edwinning wants (sorry) */
-    }))
-    }
   },
   setup() {
     const search = ref('')
@@ -46,7 +41,7 @@ export default {
       router.push("/")
     }
     const searchBar = () => {
-      store.dispatch('searchPosts', {search: search.value})
+      store.dispatch('searchPosts', {search: search.value}) // Works but doesnt re-add all the posts
     }
     return { search, router, route, store, handleClick, user, authIsReady, searchBar}
   },
