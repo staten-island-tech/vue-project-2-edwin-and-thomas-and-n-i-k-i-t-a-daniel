@@ -26,8 +26,8 @@
                         'insertdatetime media table paste code help wordcount'
                         ],
                         toolbar:
-                        'undo redo | bold italic | \
-                        bullist numlist outdent indent | removeformat | help',
+                        'undo redo | bold italic underline | \
+                        bullist numlist outdent indent | removeformat',
                     }"
                     v-model="content" 
                     name="content" />
