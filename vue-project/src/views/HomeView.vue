@@ -16,13 +16,13 @@
       > 
       <h4>by <router-link :to="`/user/${post.author.uid}`">{{ post.author.dname }}</router-link></h4> 
         </transition>
-       <!-- <transition
+       <transition
       appear
       @before-enter="beforeEnter"
       @enter="bodyEnter"
-      >  -->
+      > 
       <p v-html="post.content"></p>
-       <!-- </transition> -->
+       </transition>
     </div>
   </main>
 </template>
@@ -30,7 +30,6 @@
 <script setup>
 // import showDropdown from '../components/navBar'
   import { useStore } from 'vuex' 
-  import showDropdown from '../components/navBar.vue'
   import gsap from 'gsap'
   const store = useStore();  
   store.dispatch("getPosts");
@@ -65,7 +64,7 @@ main{
   display: flex;
   justify-content: center;
   flex-flow: wrap;
-  margin-top: 3rem;
+  margin-top: 8rem;
 }
 .post{
   background-color: #724949;
@@ -76,6 +75,9 @@ main{
 }
 .post h2,h4,p{
   margin: .5rem
+}
+.post p{
+  font-size: 2rem;
 }
 #overlay {
   background-color: rgba(0,0,0,0.5);

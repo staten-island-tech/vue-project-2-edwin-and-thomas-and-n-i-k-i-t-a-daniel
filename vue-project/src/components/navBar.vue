@@ -1,9 +1,18 @@
 <template>
-    <div>
+    <div class="navBar">
       <nav v-if="authIsReady">
-        <transition-group>
+        <!-- <transition 
+        @click="rotate">
         <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
-        </transition-group>
+        </transition> -->
+        <transition name="rotate" appear>
+          <div v-if="showDropdown">
+          <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
+          </div>
+          <div v-else>
+            <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" >
+          </div>
+        </transition>
         <router-link class="router" id="Home" to="/">HOME</router-link>
 
         <router-link class="router right" to="/signup" v-if="!user">SIGN UP</router-link>
@@ -20,28 +29,16 @@
       </div>
       <div id="overlay" v-if="showDropdown"></div>
       </transition-group>
+      <img src="BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
+      <img src="FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
     </div>
 </template>
 
-<script setup>
-import { useStore } from 'vuex'
-import { computed } from 'vue'
-import { useRouter } from 'vue-router';
-import gsap from 'gsap';
-
-const router = useRouter()
-const store = useStore()
-const handleClick = () => {
-  store.dispatch('logout')
-  router.push("/")
-}
-const user = computed(() => store.state.user)
-const authIsReady = computed(() => store.state.authIsReady)
-</script>
 
 <script> // this is just for the dropdown
 import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
+import { useStore } from 'vuex'
 
 export default {
   data() {
@@ -69,6 +66,8 @@ export default {
 
 <style scoped>
 nav {
+  position: fixed;
+  top:0;
   background-color:#724949;
   height: 9rem;
   width: 100vw;
@@ -77,7 +76,7 @@ nav {
   align-items: center;
   justify-content: flex-end;
   box-shadow: 0px 17.7238px 12.6977px rgba(0, 0, 0, 0.131624), 0px 10.7582px 7.7074px rgba(0, 0, 0, 0.113389);
-  z-index: 2;
+  z-index: 3;
 }
 a {
   color: white;
@@ -99,17 +98,25 @@ a {
   cursor: help;
   transition: transform 1s ease-in-out;
 }
+.wave{
+  z-index: -1;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
+}
 .dropdown {
-  position: absolute;
+  position: fixed;
   background-color: #975F5F;
-  z-index: 3;
-  height: 50rem;
+  z-index: 2;
+  /* height: 50rem; */
+  height: 100%;
   width: 30rem;
   color: white;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  border-bottom-right-radius: 2rem;
+  /* border-bottom-right-radius: 2rem; */
 }
 input {
   background-color: #e08b8b43;
@@ -124,7 +131,7 @@ input {
   padding: .6rem 1.6rem;
   font-size: 2rem;
   text-align: left;
-  margin-top: 2rem;
+  margin-top: 10rem;
   color: white;
   text-indent: 3rem
 }
@@ -154,13 +161,15 @@ input {
 .v-leave-active {
   transition: opacity 0.5s ease;
 }
-.v-on-click{
-  transition: transform 0.5s ease;
-  transform: rotateZ(360deg);
-}
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
 }
-
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.rotate-enter-active {
+    animation: rotate 1s;
+}
 </style>
