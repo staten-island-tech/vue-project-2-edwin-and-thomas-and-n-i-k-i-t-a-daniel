@@ -13,6 +13,8 @@
 
         <div v-if="radio === 'comments'">
             <h2>Comments</h2>
+            <input type="text" v-model="comment">
+            <button @click="handleComment">Post</button>
         </div>
     </div>
 </template>
@@ -25,9 +27,24 @@ const route = useRoute()
 const store = useStore()
 const user = computed(() => store.state.user)
 const post = computed(() => store.state.posts[0])
+const comments = computed(() => store.state.comments)
 store.dispatch("getSinglePost", route.params.id)
 
 const radio = ref('post')
+const comment = ref('')
+
+
+const handleComment = () => {
+    try {
+        store.dispatch("postComment", {
+            content: comment.value,
+            id: route.params.id
+        })
+        comment.value = ''
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 watch(
     () => route.params.id,
