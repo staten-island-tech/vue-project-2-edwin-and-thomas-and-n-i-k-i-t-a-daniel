@@ -10,10 +10,10 @@
         <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
       </nav>
       <div v-if="showDropdown" class="dropdown">
-        <input type="search" name="search" v-model="search" />
-        <router-link :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
-        <router-link to="/login" class="dropdown-item">Following</router-link>
-        <router-link to="/create" class="dropdown-item">Create</router-link>
+        <input type="search" name="search" v-model="search" class="top-item" />
+        <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
+        <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
+        <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
       </div>
     </div>
 </template>
@@ -37,6 +37,11 @@ export default {
       if(!this.$el.contains(e.target)) {
         this.showDropdown = false
       }
+    }
+  },
+  watch: {
+    $route (to, from) {
+      this.showDropdown = false
     }
   },
   mounted() {
@@ -95,7 +100,7 @@ img {
   position: absolute;
   background-color: #975F5F;
   z-index: 3;
-  height: 50rem;
+  height: fit-content;
   width: 30rem;
   color: white;
   display: flex;
@@ -120,6 +125,10 @@ input {
   color: white;
   text-indent: 3rem
 }
+.top-item {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
 .dropdown-item {
   background-color: #e08b8b43;
   border: none;
@@ -128,7 +137,7 @@ input {
   height: 5rem;
   padding: .6rem 1.6rem;
   font-size: 2.4rem;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
   color: white;
   text-align: center;
   text-decoration-line: none;

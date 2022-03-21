@@ -2,8 +2,8 @@
   <main>
     <div v-for="post in store.state.posts" :key="post.name">
       <h2>{{ post.title }}</h2>
-      <h4>by <router-link :to="`/user/${post.author.uid}`">{{ post.author.dname }}</router-link></h4> 
-      <p v-html="post.content"></p>
+      <h4>by <router-link class="profile-link" :to="`/user/${post.author.uid}`">{{ post.author.dname }}</router-link></h4> 
+      <p v-html="post.description"></p>
     </div>
   </main>
 </template>
