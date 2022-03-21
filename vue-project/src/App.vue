@@ -8,6 +8,7 @@
 <script setup>
 import { useStore } from "vuex";
 import navBar from "./components/navBar.vue";
+document.title = "Review Site"
 </script>
 
 <style>

@@ -21,7 +21,7 @@
       @before-enter="beforeEnter"
       @enter="bodyEnter"
       > 
-      <p v-html="post.content"></p>
+      <p v-html="post.description"></p>
        </transition>
     </div>
   </main>

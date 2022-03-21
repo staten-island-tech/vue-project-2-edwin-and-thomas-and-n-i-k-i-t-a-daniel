@@ -12,10 +12,11 @@
 
 <script setup>
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { computed, watch } from 'vue';
 const route = useRoute()
 const store = useStore()
+const router = useRouter()
 const user = computed(() => store.state.user)
 store.dispatch("getViewingProfile", route.params.uid)
 

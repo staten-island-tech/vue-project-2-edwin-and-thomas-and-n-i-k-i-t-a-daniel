@@ -22,10 +22,10 @@
       </nav>
       <transition-group> 
       <div v-if="showDropdown" class="dropdown">
-        <input type="search" name="search" v-model="search" />
-        <router-link to="/" class="dropdown-item">Your Posts</router-link>
-        <router-link to="/login" class="dropdown-item">Following</router-link>
-        <router-link to="/create" class="dropdown-item">Create</router-link>
+        <input type="search" name="search" v-model="search" class="top-item" />
+        <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
+        <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
+        <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
       </div>
       <div id="overlay" v-if="showDropdown"></div>
       </transition-group>
@@ -42,10 +42,30 @@ import { useStore } from 'vuex'
 
 export default {
   data() {
-    return { showDropdown: false }
+    return {
+      showDropdown: false
+    }
   },
   methods: {
-    toggleDropdown() { this.showDropdown = !this.showDropdown },
+    toggleDropdown() {
+      this.showDropdown = !this.showDropdown
+    },
+    close(e) {
+      if(!this.$el.contains(e.target)) {
+        this.showDropdown = false
+      }
+    }
+  },
+  watch: {
+    $route (to, from) {
+      this.showDropdown = false
+    }
+  },
+  mounted() {
+    document.addEventListener('click', this.close)
+  },
+  beforeDestroy() {
+    document.removeEventListener('click', this.close)
   },
   setup() {
     const search = ref('')
@@ -109,8 +129,7 @@ a {
   position: fixed;
   background-color: #975F5F;
   z-index: 2;
-  /* height: 50rem; */
-  height: 100%;
+  height: fit-content;
   width: 30rem;
   color: white;
   display: flex;
@@ -144,6 +163,10 @@ input {
   height:100%;
   z-index: 1;}
 
+.top-item {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
 .dropdown-item {
   background-color: #e08b8b43;
   border: none;
@@ -152,7 +175,7 @@ input {
   height: 5rem;
   padding: .6rem 1.6rem;
   font-size: 2.4rem;
-  margin-top: 2rem;
+  margin-bottom: 2rem;
   color: white;
   text-align: center;
   text-decoration-line: none;

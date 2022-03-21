@@ -25,6 +25,7 @@ const store = createStore({
     user: null,
     authIsReady: false,
     posts: [],
+    comments: [],
     viewingProfile: null,
   },
   mutations: {
@@ -45,6 +46,12 @@ const store = createStore({
       state.viewingProfile = payload;
       console.log("viewing user:", payload);
     },
+    clearComments(state) {
+      state.comments = [];
+    },
+    addComment(state, payload) {
+      state.comments.push(payload);
+    },
   },
   actions: {
     async signup(context, { email, password, dname }) {
@@ -63,6 +70,8 @@ const store = createStore({
         // creates an entry in firestore under users/{user's uid} // later use setDoc with merge to add other stuff
         await setDoc(doc(db, "users", res.user.uid), {
           dname: dname,
+          posts: [],
+          comments: [],
         });
       } else {
         throw new Error("could not complete signup");
@@ -108,6 +117,7 @@ const store = createStore({
         content: content,
         description: description,
         title: title,
+        comments: [],
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
       await setDoc(
@@ -135,6 +145,7 @@ const store = createStore({
       const docSnap = await getDoc(docRef);
       console.log(docSnap.data());
       context.commit("addPost", docSnap.data());
+      context.dispatch("getComments");
     },
     async postComment(context, { content, id }) {
       const docData = {
@@ -151,13 +162,22 @@ const store = createStore({
         { id: docRef.id },
         { merge: true }
       );
-      const otherRef = doc(db, "posts", id);
-      await updateDoc(otherRef, {
-        comments: arrayUnion(docRef.id),
-      });
-      const postRef = doc(db, "users", this.state.user.uid);
+      const postRef = doc(db, "posts", id);
       await updateDoc(postRef, {
         comments: arrayUnion(docRef.id),
+      });
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(userRef, {
+        comments: arrayUnion(docRef.id),
+      });
+    },
+    async getComments(context) {
+      context.commit("clearComments");
+      const commentIds = this.state.posts[0].comments;
+      commentIds.forEach(async (commentId) => {
+        const docRef = doc(db, "comments", commentId);
+        const docSnap = await getDoc(docRef);
+        context.commit("addComment", docSnap.data());
       });
     },
   },
