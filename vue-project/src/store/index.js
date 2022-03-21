@@ -110,6 +110,11 @@ const store = createStore({
         title: title,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
+      await setDoc(
+        doc(db, "posts", docRef.id),
+        { id: docRef.id },
+        { merge: true }
+      );
       const postRef = doc(db, "users", this.state.user.uid);
       await updateDoc(postRef, {
         posts: arrayUnion(docRef.id),
@@ -125,23 +130,36 @@ const store = createStore({
         console.log("docRef", docRef);
       });
     },
-    async searchPosts(context, { search }) {
-      const searchedPosts = this.state.posts.filter((post) => {
-        return (
-          post.title.toLowerCase().includes(search.toLowerCase()) ||
-          post.description.toLowerCase().includes(search.toLowerCase()) ||
-          post.content.toLowerCase().includes(search.toLowerCase()) ||
-          post.author.dname.toLowerCase().includes(search.toLowerCase())
-        );
-      });
+    async getSinglePost(context, id) {
       context.commit("clearPosts");
-      console.log(this.state.posts);
-      searchedPosts.forEach((post) => {
-        context.commit("addPost", post);
-        console.log(post);
+      const docRef = doc(db, "posts", id);
+      const docSnap = await getDoc(docRef);
+      console.log(docSnap.data());
+      context.commit("addPost", docSnap.data());
+    },
+    async postComment(context, { content, id }) {
+      const docData = {
+        author: {
+          uid: this.state.user.uid,
+          dname: this.state.user.displayName,
+        },
+        content: content,
+        post: id,
+      };
+      const docRef = await addDoc(collection(db, "comments"), docData);
+      await setDoc(
+        doc(db, "comments", docRef.id),
+        { id: docRef.id },
+        { merge: true }
+      );
+      const postRef = doc(db, "posts", id);
+      await updateDoc(postRef, {
+        comments: arrayUnion(docRef.id),
       });
-      console.log(searchedPosts);
-      console.log(this.state.posts);
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(userRef, {
+        comments: arrayUnion(docRef.id),
+      });
     },
   },
 });
