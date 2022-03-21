@@ -18,6 +18,8 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
+  query,
+  where,
 } from "firebase/firestore";
 
 const store = createStore({
@@ -161,6 +163,12 @@ const store = createStore({
         comments: arrayUnion(docRef.id),
       });
     },
+    async searchPosts(context, search) {
+      const allPosts = await getDocs(collection(db, "posts"))
+      allPosts.forEach((post) => {
+        console.log(post.data().title, ' array-contains ', search)
+      })
+    }
   },
 });
 
