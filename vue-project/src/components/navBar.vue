@@ -1,18 +1,20 @@
 <template>
     <div class="navBar">
       <nav v-if="authIsReady">
-        <!-- <transition 
-        @click="rotate">
+        <transition 
+        name="rotate">
+        <div :key="showDropdown">
         <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
-        </transition> -->
-        <transition name="rotate" appear>
+        </div>
+        </transition>
+        <!-- <transition name="rotate" appear>
           <div v-if="showDropdown">
           <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
           </div>
           <div v-else>
             <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" >
           </div>
-        </transition>
+        </transition> -->
         <router-link class="router" id="Home" to="/">HOME</router-link>
 
         <router-link class="router right" to="/signup" v-if="!user">SIGN UP</router-link>
@@ -43,12 +45,14 @@ import { useStore } from 'vuex'
 export default {
   data() {
     return {
-      showDropdown: false
+      componentKey: 0,
+      showDropdown: false,
     }
   },
   methods: {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
+      this.componentKey += 1
     },
     close(e) {
       if(!this.$el.contains(e.target)) {
@@ -129,7 +133,7 @@ a {
   position: fixed;
   background-color: #975F5F;
   z-index: 2;
-  height: fit-content;
+  height: 100%;
   width: 30rem;
   color: white;
   display: flex;
@@ -164,7 +168,7 @@ input {
   z-index: 1;}
 
 .top-item {
-  margin-top: 2rem;
+  margin-top: 5rem;
   margin-bottom: 2rem;
 }
 .dropdown-item {
@@ -189,10 +193,11 @@ input {
   opacity: 0;
 }
 @keyframes rotate {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% { transform: rotate(0deg) scale(100%);}
+    50% { transform: rotate(180deg) scale(65%);}
+    100% { transform: rotate(0deg) scale(100%); }
 }
 .rotate-enter-active {
-    animation: rotate 1s;
+    animation:  rotate 1.5s;
 }
 </style>
