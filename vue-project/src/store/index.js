@@ -164,10 +164,14 @@ const store = createStore({
       });
     },
     async searchPosts(context, search) {
-      const allPosts = await getDocs(collection(db, "posts"))
-      allPosts.forEach((post) => {
-        console.log(post.data().title, ' array-contains ', search) //https://cloud.google.com/firestore/docs/query-data/queries#query_operators
-      })
+      console.log(search.search)
+      const q = query(collection(db, "posts"), where(`title`, ">=", `${search.search}`))//https://cloud.google.com/firestore/docs/query-data/queries#query_operators works but now tryna get it to filter by if it contains. so far it has to be an array. Using the greater than or equal to kind of works but it has to have some of the letters
+      const searchedPosts = await getDocs(q)
+      searchedPosts.forEach((doc) => {
+        console.log(doc.data(), " => ", search);
+      });
+      console.log(q) // error: TypeError: Cannot read properties of undefined (reading '_freezeSettings')
+      //WTF is freezeSettings?
     }
   },
 });
