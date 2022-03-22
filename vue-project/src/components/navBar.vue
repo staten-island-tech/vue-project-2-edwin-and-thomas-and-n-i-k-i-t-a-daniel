@@ -7,7 +7,7 @@
         </transition> -->
         <transition name="rotate" appear>
           <div v-if="showDropdown">
-          <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
+            <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
           </div>
           <div v-else>
             <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" >
@@ -21,13 +21,13 @@
         <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
       </nav>
       <transition-group> 
-      <div v-if="showDropdown" class="dropdown">
-        <input type="search" name="search" v-model="search" class="top-item" />
-        <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
-        <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
-        <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
-      </div>
-      <div id="overlay" v-if="showDropdown"></div>
+        <div v-if="showDropdown" class="dropdown">
+          <input type="search" name="search" v-model="search" class="top-item" />
+          <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
+          <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
+          <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
+        </div>
+        <div id="overlay" v-if="showDropdown" @click="close"></div>
       </transition-group>
       <img src="BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
       <img src="FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
@@ -35,7 +35,7 @@
 </template>
 
 
-<script> // this is just for the dropdown
+<script>
 import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex'
@@ -50,22 +50,14 @@ export default {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
     },
-    close(e) {
-      if(!this.$el.contains(e.target)) {
-        this.showDropdown = false
-      }
+    close() {
+      this.showDropdown = false
     }
   },
   watch: {
     $route (to, from) {
       this.showDropdown = false
     }
-  },
-  mounted() {
-    document.addEventListener('click', this.close)
-  },
-  beforeDestroy() {
-    document.removeEventListener('click', this.close)
   },
   setup() {
     const search = ref('')
@@ -135,7 +127,7 @@ a {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  /* border-bottom-right-radius: 2rem; */
+  border-bottom-right-radius: 2rem;
 }
 input {
   background-color: #e08b8b43;
