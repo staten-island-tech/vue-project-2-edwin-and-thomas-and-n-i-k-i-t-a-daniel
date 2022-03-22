@@ -166,7 +166,7 @@ const store = createStore({
     async searchPosts(context, search) {
       const allPosts = await getDocs(collection(db, "posts"))
       allPosts.forEach((post) => {
-        console.log(post.data().title, ' array-contains ', search)
+        console.log(post.data().title, ' array-contains ', search) //https://cloud.google.com/firestore/docs/query-data/queries#query_operators
       })
     }
   },
