@@ -1,7 +1,18 @@
 <template>
-    <div>
+    <div class="navBar">
       <nav v-if="authIsReady">
-        <img src="logo.svg" alt="Dropdown logo" @click="toggleDropdown">
+        <!-- <transition 
+        @click="rotate">
+        <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
+        </transition> -->
+        <transition name="rotate" appear>
+          <div v-if="showDropdown">
+            <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
+          </div>
+          <div v-else>
+            <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" >
+          </div>
+        </transition>
         <router-link class="router" id="Home" to="/">HOME</router-link>
 
         <router-link class="router right" to="/signup" v-if="!user">SIGN UP</router-link>
@@ -9,19 +20,25 @@
         <router-link class="router right" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
         <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
       </nav>
-      <div v-if="showDropdown" class="dropdown">
-        <input type="search" name="search" v-model="search" class="top-item" />
-        <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
-        <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
-        <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
-      </div>
+      <transition-group> 
+        <div v-if="showDropdown" class="dropdown">
+          <input type="search" name="search" v-model="search" class="top-item" />
+          <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
+          <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
+          <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
+        </div>
+        <div id="overlay" v-if="showDropdown" @click="close"></div>
+      </transition-group>
+      <img src="BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
+      <img src="FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
     </div>
 </template>
 
+
 <script>
-import { useStore } from 'vuex'
 import { computed, ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router';
+import { useStore } from 'vuex'
 
 export default {
   data() {
@@ -33,22 +50,14 @@ export default {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
     },
-    close(e) {
-      if(!this.$el.contains(e.target)) {
-        this.showDropdown = false
-      }
+    close() {
+      this.showDropdown = false
     }
   },
   watch: {
     $route (to, from) {
       this.showDropdown = false
     }
-  },
-  mounted() {
-    document.addEventListener('click', this.close)
-  },
-  beforeDestroy() {
-    document.removeEventListener('click', this.close)
   },
   setup() {
     const search = ref('')
@@ -69,6 +78,8 @@ export default {
 
 <style scoped>
 nav {
+  position: fixed;
+  top:0;
   background-color:#724949;
   height: 9rem;
   width: 100vw;
@@ -76,6 +87,8 @@ nav {
   flex-flow: row nowrap;
   align-items: center;
   justify-content: flex-end;
+  box-shadow: 0px 17.7238px 12.6977px rgba(0, 0, 0, 0.131624), 0px 10.7582px 7.7074px rgba(0, 0, 0, 0.113389);
+  z-index: 3;
 }
 a {
   color: white;
@@ -91,15 +104,23 @@ a {
   margin-right: auto;
   margin-left: 3rem
 }
-img {
+#logo {
   height: 85%;
   margin-left: 1rem;
   cursor: help;
+  transition: transform 1s ease-in-out;
+}
+.wave{
+  z-index: -1;
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 100%;
 }
 .dropdown {
-  position: absolute;
+  position: fixed;
   background-color: #975F5F;
-  z-index: 3;
+  z-index: 2;
   height: fit-content;
   width: 30rem;
   color: white;
@@ -121,10 +142,19 @@ input {
   padding: .6rem 1.6rem;
   font-size: 2rem;
   text-align: left;
-  margin-top: 2rem;
+  margin-top: 10rem;
   color: white;
   text-indent: 3rem
 }
+#overlay {
+  background-color: rgba(0,0,0,0.2);
+  position:fixed;
+  left:0;
+  top: 0;
+  width:100%;
+  height:100%;
+  z-index: 1;}
+
 .top-item {
   margin-top: 2rem;
   margin-bottom: 2rem;
@@ -141,5 +171,20 @@ input {
   color: white;
   text-align: center;
   text-decoration-line: none;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+.rotate-enter-active {
+    animation: rotate 1s;
 }
 </style>

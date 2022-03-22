@@ -61,6 +61,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
+    margin-top: 9rem;
 }
 
 .form-input {
