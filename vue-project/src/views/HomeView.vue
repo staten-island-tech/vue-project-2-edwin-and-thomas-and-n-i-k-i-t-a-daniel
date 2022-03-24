@@ -1,6 +1,6 @@
 <template>
   <main>  
-    
+    <div class="posts">
     <div v-for="post in store.state.posts" :key="post.name" class="post">
       <transition
       appear
@@ -23,6 +23,7 @@
       > 
       <p v-html="post.description"></p>
        </transition>
+    </div>
     </div>
   </main>
 </template>
@@ -64,12 +65,11 @@ main{
   display: flex;
   justify-content: center;
   flex-flow: wrap;
-  margin-top: 8rem;
 }
 .post{
   background-color: #724949;
-  width: 83%;
-  height: 25%;
+  width: 83vw;
+  height: 25vh;
   margin: 3rem;
   color: white;
 }
@@ -78,6 +78,11 @@ main{
 }
 .post p{
   font-size: 2rem;
+}
+.posts{
+  margin-top: 8rem;
+  width: inherit;
+  height: inherit;
 }
 #overlay {
   background-color: rgba(0,0,0,0.5);

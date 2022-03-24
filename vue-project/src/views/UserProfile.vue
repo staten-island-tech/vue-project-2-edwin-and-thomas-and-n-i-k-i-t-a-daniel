@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="content">
         <h2>User {{ store.state.viewingProfile.dname }}</h2>
         <h3 v-if="user.uid === route.params.uid"><router-link to="/create">Create a Post</router-link></h3>
         <!-- Temporary Blog Thing, make component -->
@@ -36,6 +36,9 @@ watch(
 
 .post-link {
     font-size: 3.375rem
+}
+.content{
+    margin-top: 10rem;
 }
 
 </style>

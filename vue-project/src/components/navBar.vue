@@ -3,9 +3,7 @@
       <nav v-if="authIsReady">
         <transition 
         name="rotate">
-        <div :key="showDropdown">
-        <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
-        </div>
+        <img src="weblogo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" :key="showDropdown">
         </transition>
         <!-- <transition name="rotate" appear>
           <div v-if="showDropdown">
@@ -39,20 +37,18 @@
 
 <script> // this is just for the dropdown
 import { computed, ref } from 'vue'
-import { useRouter, useRoute } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 
 export default {
   data() {
     return {
-      componentKey: 0,
       showDropdown: false,
     }
   },
   methods: {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
-      this.componentKey += 1
     },
     close(e) {
       if(!this.$el.contains(e.target)) {
@@ -141,7 +137,18 @@ a {
   align-items: center;
   /* border-bottom-right-radius: 2rem; */
 }
-input {
+
+#overlay {
+  background-color: rgba(0,0,0,0.2);
+  position:fixed;
+  left:0;
+  top: 0;
+  width:100%;
+  height:100%;
+  z-index: 1;}
+
+.top-item {
+  margin-bottom: 2rem;
   background-color: #e08b8b43;
   background-image: url('search.svg');
   background-repeat: no-repeat;
@@ -154,22 +161,9 @@ input {
   padding: .6rem 1.6rem;
   font-size: 2rem;
   text-align: left;
-  margin-top: 10rem;
+  margin-top: 12rem;
   color: white;
   text-indent: 3rem
-}
-#overlay {
-  background-color: rgba(0,0,0,0.2);
-  position:fixed;
-  left:0;
-  top: 0;
-  width:100%;
-  height:100%;
-  z-index: 1;}
-
-.top-item {
-  margin-top: 5rem;
-  margin-bottom: 2rem;
 }
 .dropdown-item {
   background-color: #e08b8b43;
@@ -198,6 +192,10 @@ input {
     100% { transform: rotate(0deg) scale(100%); }
 }
 .rotate-enter-active {
-    animation:  rotate 1.5s;
+    animation:  rotate 1s;
+}
+.rotate-leave-active, 
+.rotate-leave-to{
+  display: none;
 }
 </style>
