@@ -3,6 +3,7 @@
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Post</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
+            <h3 class="radio-item" @click="radio = 'edit'" v-if="user.uid === post.author.uid">Edit</h3>
         </div>
 
         <div v-if="radio === 'post'">
@@ -17,16 +18,27 @@
                 <p>{{ comment.content }}</p>
             </div>
             <input type="text" v-model="comment">
-            <button @click="handleComment">Post</button>
+            <BasicButton @click="handleComment">Post</BasicButton>
+        </div>
+
+        <div v-if="radio === 'edit'">
+            <h2>Edit</h2>
+
+            <BasicButton @click="handleDelete">Delete</BasicButton>
+
+            <h5 v-if="error">{{ error }}</h5>
         </div>
     </div>
 </template>
 
 <script setup>
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { computed, watch, ref } from 'vue';
+import BasicButton from '../components/BasicButton.vue'
+
 const route = useRoute()
+const router = useRouter()
 const store = useStore()
 const user = computed(() => store.state.user)
 const post = computed(() => store.state.posts[0])
@@ -35,6 +47,7 @@ store.dispatch("getSinglePost", route.params.id)
 
 const radio = ref('post')
 const comment = ref('')
+const error = ref(null)
 
 
 const handleComment = () => {
@@ -46,6 +59,14 @@ const handleComment = () => {
         comment.value = ''
     } catch (err) {
         console.log(err)
+    }
+}
+const handleDelete = async () => {
+    try {
+        await store.dispatch("deletePost", route.params.id)
+        router.push('/')
+    } catch (err) {
+        error.value = err
     }
 }
 

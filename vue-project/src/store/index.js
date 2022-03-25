@@ -18,6 +18,7 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
+  deleteDoc,
 } from "firebase/firestore";
 
 const store = createStore({
@@ -179,6 +180,15 @@ const store = createStore({
         const docSnap = await getDoc(docRef);
         context.commit("addComment", docSnap.data());
       });
+    },
+    async deletePost(context, postID) {
+      if (this.state.user.uid != this.state.posts[0].author.uid) {
+        throw new Error("This is not your post to delete");
+      } else if (this.state.posts[0].id != postID) {
+        throw new Error("Trying to delete a post that you do not have open");
+      } else {
+        await deleteDoc(doc(db, "posts", postID)); // make it also delete the id references
+      }
     },
   },
 });
