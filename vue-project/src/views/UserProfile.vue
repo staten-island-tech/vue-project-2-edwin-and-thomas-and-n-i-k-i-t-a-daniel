@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div class="page">
         <h2>User {{ store.state.viewingProfile.dname }}</h2>
         <h3 v-if="user.uid === route.params.uid"><router-link to="/create">Create a Post</router-link></h3>
         <!-- Temporary Blog Thing, make component -->
@@ -31,7 +31,7 @@ watch(
 
 <style scoped>
 .page {
-    margin-top: 9rem;
+    padding-top: 9rem;
 }
 .post{
     outline: medium solid red;

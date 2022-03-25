@@ -77,7 +77,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    margin-top: 10rem;
+    padding-top: 25rem;
 }
 label {
     font-size: 1.6rem;
@@ -99,6 +99,7 @@ input {
 }
 .editor {
     width: 30vw;
+    z-index: 0;
 }
 button {
     color: white;

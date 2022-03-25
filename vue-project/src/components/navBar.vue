@@ -3,7 +3,7 @@
       <nav v-if="authIsReady">
         <transition 
         name="rotate">
-        <img src="weblogo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" :key="showDropdown">
+        <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" :key="showDropdown">
         </transition>
         <!-- <transition name="rotate" appear>
           <div v-if="showDropdown">
@@ -29,8 +29,13 @@
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
       </transition-group>
-      <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
-      <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
+      <transition name="moveRight">
+      <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave" :key="showDropdown">
+      </transition>
+      <transition name="moveLeft">
+      <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave" :key="showDropdown">
+      </transition>
+
     </div>
 </template>
 
@@ -112,10 +117,17 @@ a {
 }
 .wave{
   z-index: -1;
-  position: fixed;
+  width: 200%;
+}
+#frontWave{
+    position: fixed;
+  bottom: 0;
+  left: 0;
+}
+#backWave{
+    position: fixed;
   bottom: 0;
   right: 0;
-  width: 100%;
 }
 .dropdown {
   position: fixed;
@@ -183,11 +195,26 @@ a {
     50% { transform: rotate(180deg) scale(65%);}
     100% { transform: rotate(0deg) scale(100%); }
 }
+@keyframes moveRight {
+  0% {transform: translateX(0%);}
+  50% {transform: translateX(25%);}
+  100% {transform: translateX(0%);}
+}
+@keyframes moveLeft {
+  0% {transform: translateX(0%);}
+  50% {transform: translateX(-25%);}
+  100% {transform: translateX(0%);}
+}
 .rotate-enter-active {
     animation:  rotate 1s;
 }
-.rotate-leave-active, 
-.rotate-leave-to{
+.rotate-leave-active{
   display: none;
+}
+.moveRight-enter-active{
+  animation: moveRight 3s ease-in-out;
+}
+.moveLeft-enter-active{
+  animation: moveLeft 3s ease-in-out;
 }
 </style>
