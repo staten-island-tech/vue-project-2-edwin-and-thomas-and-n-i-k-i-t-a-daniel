@@ -165,12 +165,24 @@ const store = createStore({
     },
     async searchPosts(context, search) {
       context.commit("clearPosts");
-      console.log(search.search)
-      const titleSearch = query(collection(db, "posts"), where(`title`, ">=", `${search.search}`))//https://cloud.google.com/firestore/docs/query-data/queries#query_operators
-      const searchedPosts = await getDocs(titleSearch)
-      searchedPosts.forEach((doc) => {
-        context.commit("addPost", doc.data());
-      });
+      const titleSearch = await getDocs(query(collection(db, "posts"), where(`title`, "==", `${search.search}`)))//https://cloud.google.com/firestore/docs/query-data/queries#query_operators desperatly needs .toLowerCase and .includes type things
+      const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, "==", `${search.search}`))) // content has paragraph tags so it doesnt work for now
+      const descriptionSearch = await getDocs (query(collection(db, "posts"), where(`description`, "==", `${search.search}`)))
+      if (descriptionSearch === titleSearch || contentSearch === titleSearch) {
+        titleSearch.forEach((doc) => {
+          context.commit("addPost", doc.data());
+        }); 
+      }
+      else if (descriptionSearch === contentSearch) {
+        descriptionSearch.forEach((doc) => {
+          context.commit("addPost", doc.data());
+        });
+      }
+      else {
+        contentSearch.forEach((doc) => {
+          context.commit("addPost", doc.data());
+        });
+      }
     }
   },
 });
