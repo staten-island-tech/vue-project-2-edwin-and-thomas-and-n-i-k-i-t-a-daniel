@@ -30,15 +30,13 @@ watch(
 </script>
 
 <style scoped>
+.page {
+    margin-top: 9rem;
+}
 .post{
     outline: medium solid red;
 }
-
 .post-link {
     font-size: 3.375rem
 }
-.content{
-    margin-top: 10rem;
-}
-
 </style>

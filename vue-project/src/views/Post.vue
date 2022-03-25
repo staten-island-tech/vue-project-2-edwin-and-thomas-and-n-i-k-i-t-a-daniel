@@ -13,6 +13,9 @@
 
         <div v-if="radio === 'comments'">
             <h2>Comments</h2>
+            <div v-for="comment in comments" :key="comment.id" class="comment">
+                <p>{{ comment.content }}</p>
+            </div>
             <input type="text" v-model="comment">
             <button @click="handleComment">Post</button>
         </div>
@@ -60,6 +63,7 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    margin-top: 9rem;
 }
 .radio {
     display: flex;
@@ -82,6 +86,9 @@ watch(
 }
 #content {
     font-size: 2rem;
+}
+.comment {
+    outline: medium solid red;
 }
 
 </style>
