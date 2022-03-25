@@ -7,10 +7,10 @@
         </transition> -->
         <transition name="rotate" appear>
           <div v-if="showDropdown">
-            <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
+            <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
           </div>
           <div v-else>
-            <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" >
+            <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" >
           </div>
         </transition>
         <router-link class="router" id="Home" to="/">HOME</router-link>
@@ -29,8 +29,8 @@
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
       </transition-group>
-      <img src="BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
-      <img src="FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
+      <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
+      <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
     </div>
 </template>
 
@@ -131,7 +131,7 @@ a {
 }
 input {
   background-color: #e08b8b43;
-  background-image: url('search.svg');
+  background-image: url('/assets/search.svg');
   background-repeat: no-repeat;
   background-position: left center;
   background-position-x: 5%;
