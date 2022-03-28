@@ -1,10 +1,6 @@
 <template>
     <div class="navBar">
       <nav v-if="authIsReady">
-        <!-- <transition 
-        @click="rotate">
-        <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
-        </transition> -->
         <transition name="rotate" appear>
           <div v-if="showDropdown">
             <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
