@@ -165,9 +165,9 @@ const store = createStore({
     },
     async searchPosts(context, search) {
       context.commit("clearPosts");
-      const titleSearch = await getDocs(query(collection(db, "posts"), where(`title`, "==", `${search.search}`)))//https://cloud.google.com/firestore/docs/query-data/queries#query_operators desperatly needs .toLowerCase and .includes type things
-      const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, "==", `${search.search}`))) // content has paragraph tags so it doesnt work for now
-      const descriptionSearch = await getDocs (query(collection(db, "posts"), where(`description`, "==", `${search.search}`)))
+      const titleSearch = await getDocs(query(collection(db, "posts"), where(`title`, ">=", `${search.search}`)))//https://cloud.google.com/firestore/docs/query-data/queries#query_operators desperatly needs .toLowerCase and .includes type things
+      const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, ">=", `<p>${search.search}</p>`))) // content value in database has paragraph tags so i need them in the search
+      const descriptionSearch = await getDocs (query(collection(db, "posts"), where(`description`, ">=", `${search.search}`)))
       if (descriptionSearch === titleSearch || contentSearch === titleSearch) {
         titleSearch.forEach((doc) => {
           context.commit("addPost", doc.data());
@@ -186,6 +186,21 @@ const store = createStore({
     }
   },
 });
+/*shitty version im trying to incorporate to actually make search work like intended:
+      const allposts = collection(db, "posts")
+      allposts.forEach((post) => {console.log(post)})
+      const filteredPosts = allposts.filter((post) => {
+        return (
+          post.title.toLowerCase().includes(search.toLowerCase()) ||
+          post.description.toLowerCase().includes(search.toLowerCase()) ||
+          post.content.toLowerCase().includes(search.toLowerCase()) ||
+          post.author.dname.toLowerCase().includes(search.toLowerCase())
+        );
+      })
+      const Search = await getDocs(filteredPosts)//https://cloud.google.com/firestore/docs/query-data/queries#query_operators desperatly needs .toLowerCase and .includes type things
+      Search.forEach((doc) => {
+      context.commit("addPost", doc.data());
+    }) */
 
 // wait until auth is ready
 const unsub = onAuthStateChanged(auth, (user) => {
