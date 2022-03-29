@@ -16,8 +16,8 @@
             <div v-for="comment in comments" :key="comment.id" class="comment">
                 <p>{{ comment.content }}</p>
             </div>
-            <input type="text" v-model="comment">
-            <button @click="handleComment">Post</button>
+            <input type="text" v-model="comment" class="commentBox">
+            <button @click="handleComment" class="commentButton">Post</button>
         </div>
     </div>
 </template>
@@ -86,6 +86,12 @@ watch(
 }
 #content {
     font-size: 2rem;
+}
+.commentBox{
+    font-size: 5rem;
+}
+.commentButton{
+    font-size: 5rem;
 }
 .comment {
     outline: medium solid red;

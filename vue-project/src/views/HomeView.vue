@@ -29,7 +29,6 @@
 </template>
 
 <script setup>
-// import showDropdown from '../components/navBar'
 import { useStore } from 'vuex' 
 import gsap from 'gsap'
 import { useRouter } from 'vue-router';
@@ -42,30 +41,6 @@ const postClick = (postID) => {
 const userClick = (userID) => {
   router.push(`/user/${userID}`)
 }
-
-const beforeEnter = (el) => {
-  console.log("test1");
-  el.style.opacity = 0
-}
-const headerEnter = (el) => {
-  console.log("test2");
-  gsap.to(el,{
-    duration:1.5,
-    opacity:1,
-  })
-}
-const bodyEnter = (el) => {
- gsap.to(el,{
-    duration:1.75,
-    opacity:1,
-  })
-}  
-const subtextEnter = (el) => {
- gsap.to(el,{
-    duration:2,
-    opacity:1,
-  })
-}  
 </script>
 
 
