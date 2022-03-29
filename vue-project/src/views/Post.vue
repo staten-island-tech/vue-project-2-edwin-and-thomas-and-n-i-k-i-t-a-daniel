@@ -6,9 +6,9 @@
             <h3 class="radio-item" @click="radio = 'edit'" v-if="user.uid === post.author.uid">Edit</h3>
         </div>
 
-        <div v-if="radio === 'post'">
+        <div v-if="radio === 'post'" class="post">
             <h2>{{ post.title }}</h2>
-            <h4>by {{ post.author.dname }}</h4>
+            <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
             <div id="content" v-html="post.content"></div>
         </div>
 
@@ -49,7 +49,9 @@ const radio = ref('post')
 const comment = ref('')
 const error = ref(null)
 
-
+const userClick = (uid) => {
+    router.push(`/user/${uid}`)
+}
 const handleComment = () => {
     try {
         store.dispatch("postComment", {
@@ -110,6 +112,19 @@ watch(
 }
 .comment {
     outline: medium solid red;
+}
+.post {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 80vw;
+}
+
+.post h2, h4, div {
+    align-self: center;
+}
+
+.post h4 {
+    cursor: pointer;
 }
 
 </style>

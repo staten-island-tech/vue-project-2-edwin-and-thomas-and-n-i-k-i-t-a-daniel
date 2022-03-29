@@ -19,6 +19,7 @@ import {
   updateDoc,
   arrayUnion,
   deleteDoc,
+  arrayRemove,
 } from "firebase/firestore";
 
 const store = createStore({
@@ -188,6 +189,10 @@ const store = createStore({
         throw new Error("Trying to delete a post that you do not have open");
       } else {
         await deleteDoc(doc(db, "posts", postID)); // make it also delete the id references
+        const userRef = doc(db, "users", this.state.user.uid);
+        await updateDoc(userRef, {
+          posts: arrayRemove(postID),
+        });
       }
     },
   },
