@@ -109,6 +109,8 @@ h5 {
 
 p,
 li,
+em,
+span,
 .profile-link {
   font-size: var(--h4);
 }
@@ -120,4 +122,9 @@ label {
 button {
   padding: 0 1rem;
   margin: 0 10px;
+}
+
+.clickable:hover {
+  color: rgba(255, 255, 255, 0.467);
+  transition: all 0.2s;
 }
