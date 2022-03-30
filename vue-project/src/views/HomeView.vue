@@ -1,50 +1,38 @@
 <template>
   <main>
-    <div v-for="post in store.state.posts" :key="post.name">
-      <h2>{{ post.title }}</h2>
-      <h4>by <router-link class="profile-link" :to="`/user/${post.author.uid}`">{{ post.author.dname }}</router-link></h4> 
-      <p v-html="post.description"></p>
+    <!-- lint says error but it's fine dw -->
+    <PostPreview v-if="user" v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />  
+    <div v-if="!user">
+      <h2>Please sign in to view posts</h2>
     </div>
   </main>
 </template>
 
 <script setup>
-  import { useStore } from 'vuex'
-  const store = useStore()
-  store.dispatch("getPosts")
+import PostPreview from '../components/PostPreview.vue'
+import { useStore } from 'vuex' 
+import { computed } from '@vue/runtime-core';
+const store = useStore();  
+store.dispatch("getPosts");
+const posts = computed(() => store.state.posts)
+const user = computed(() => store.state.user)
 </script>
 
+
 <style scoped>
-body {
+main {
   display: flex;
-  padding: 0;
-  position: relative;
-  box-sizing: border-box;
+  justify-content: center;
+  flex-flow: wrap;
+  margin-top: 8rem;
 }
-div {
-  background: #724949;
-  margin-top: 9.5rem;
-  color: white;
-  width: 120rem;
-  height: 15rem;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: 0rem 1.5rem 7rem -3rem black;
-}
-a {
-  color:white;
-  font-size: 1.8rem;
-}
-h2 {
-  font-size: 4.8rem;
-  margin-left: 1rem;
-}
-h4 {
-  font-size: 1.8rem;
-  margin-left: 1rem;
-}
-p{
-  font-size: 1.4rem;
-  margin-left: 1rem;
+#overlay {
+  background-color: rgba(0,0,0,0.5);
+  position:fixed;
+  left:0;
+  top: 0;
+  width:100%;
+  height:100%;
+  z-index: 1;
 }
 </style>

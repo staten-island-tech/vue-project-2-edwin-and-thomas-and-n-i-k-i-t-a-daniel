@@ -20,6 +20,8 @@ import {
   arrayUnion,
   query,
   where,
+  deleteDoc,
+  arrayRemove,
 } from "firebase/firestore";
 
 const store = createStore({
@@ -27,6 +29,7 @@ const store = createStore({
     user: null,
     authIsReady: false,
     posts: [],
+    comments: [],
     viewingProfile: null,
   },
   mutations: {
@@ -47,6 +50,12 @@ const store = createStore({
       state.viewingProfile = payload;
       console.log("viewing user:", payload);
     },
+    clearComments(state) {
+      state.comments = [];
+    },
+    addComment(state, payload) {
+      state.comments.push(payload);
+    },
   },
   actions: {
     async signup(context, { email, password, dname }) {
@@ -65,6 +74,8 @@ const store = createStore({
         // creates an entry in firestore under users/{user's uid} // later use setDoc with merge to add other stuff
         await setDoc(doc(db, "users", res.user.uid), {
           dname: dname,
+          posts: [],
+          comments: [],
         });
       } else {
         throw new Error("could not complete signup");
@@ -110,6 +121,7 @@ const store = createStore({
         content: content,
         description: description,
         title: title,
+        comments: [],
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
       await setDoc(
@@ -138,6 +150,7 @@ const store = createStore({
       const docSnap = await getDoc(docRef);
       console.log(docSnap.data());
       context.commit("addPost", docSnap.data());
+      context.dispatch("getComments");
     },
     async postComment(context, { content, id }) {
       const docData = {
@@ -183,25 +196,31 @@ const store = createStore({
           context.commit("addPost", doc.data());
         });
       }
-    }
+    },
+    async getComments(context) {
+      context.commit("clearComments");
+      const commentIds = this.state.posts[0].comments;
+      commentIds.forEach(async (commentId) => {
+        const docRef = doc(db, "comments", commentId);
+        const docSnap = await getDoc(docRef);
+        context.commit("addComment", docSnap.data());
+      });
+    },
+    async deletePost(context, postID) {
+      if (this.state.user.uid != this.state.posts[0].author.uid) {
+        throw new Error("This is not your post to delete");
+      } else if (this.state.posts[0].id != postID) {
+        throw new Error("Trying to delete a post that you do not have open");
+      } else {
+        await deleteDoc(doc(db, "posts", postID)); // make it also delete the id references
+        const userRef = doc(db, "users", this.state.user.uid);
+        await updateDoc(userRef, {
+          posts: arrayRemove(postID),
+        });
+      }
+    },
   },
 });
-/*shitty version im trying to incorporate to actually make search work like intended:
-      const allposts = collection(db, "posts")
-      allposts.forEach((post) => {console.log(post)})
-      const filteredPosts = allposts.filter((post) => {
-        return (
-          post.title.toLowerCase().includes(search.toLowerCase()) ||
-          post.description.toLowerCase().includes(search.toLowerCase()) ||
-          post.content.toLowerCase().includes(search.toLowerCase()) ||
-          post.author.dname.toLowerCase().includes(search.toLowerCase())
-        );
-      })
-      const Search = await getDocs(filteredPosts)//https://cloud.google.com/firestore/docs/query-data/queries#query_operators desperatly needs .toLowerCase and .includes type things
-      Search.forEach((doc) => {
-      context.commit("addPost", doc.data());
-    }) */
-
 // wait until auth is ready
 const unsub = onAuthStateChanged(auth, (user) => {
   store.commit("setAuthIsReady", true);
