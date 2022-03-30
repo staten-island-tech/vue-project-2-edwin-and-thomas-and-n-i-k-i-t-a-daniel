@@ -1,51 +1,26 @@
 <template>
-  <main>  
-    <div class="posts">
-    <div v-for="post in store.state.posts" :key="post.name" class="post">
-      <transition
-        appear
-        @before-enter="beforeEnter"
-        @enter="headerEnter"
-      > 
-        <h2 @click="postClick(post.id)" class="clickable">{{ post.title }}</h2> 
-      </transition>
-      <transition
-        appear
-        @before-enter="beforeEnter"
-        @enter="subtextEnter"
-      > 
-        <h4 @click="userClick(post.author.uid)" class="clickable">by {{ post.author.dname }}</h4>
-      </transition>
-      <transition
-        appear
-        @before-enter="beforeEnter"
-        @enter="bodyEnter"
-      > 
-        <p v-html="post.description"></p>
-      </transition>
-    </div>
+  <main>
+    <!-- lint says error but it's fine dw -->
+    <PostPreview v-if="user" v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />  
+    <div v-if="!user">
+      <h2>Please sign in to view posts</h2>
     </div>
   </main>
 </template>
 
 <script setup>
+import PostPreview from '../components/PostPreview.vue'
 import { useStore } from 'vuex' 
-import gsap from 'gsap'
-import { useRouter } from 'vue-router';
+import { computed } from '@vue/runtime-core';
 const store = useStore();  
-const router = useRouter()
 store.dispatch("getPosts");
-const postClick = (postID) => {
-  router.push(`/post/${postID}`)
-}
-const userClick = (userID) => {
-  router.push(`/user/${userID}`)
-}
+const posts = computed(() => store.state.posts)
+const user = computed(() => store.state.user)
 </script>
 
 
 <style scoped>
-main{
+main {
   display: flex;
   justify-content: center;
   flex-flow: wrap;
@@ -76,9 +51,5 @@ main{
   width:100%;
   height:100%;
   z-index: 1;
-}
-.clickable {
-  cursor: pointer;
-  width: fit-content
 }
 </style>

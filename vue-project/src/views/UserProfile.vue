@@ -2,41 +2,30 @@
     <div class="page">
         <h2>User {{ store.state.viewingProfile.dname }}</h2>
         <h3 v-if="user.uid === route.params.uid"><router-link to="/create">Create a Post</router-link></h3>
-        <!-- Temporary Blog Thing, make component -->
-        <div class="post" v-for="post in store.state.posts" :key="post.name">
-            <router-link class="post-link" :to="`/post/${post.id}`">{{post.title}}</router-link>
-            <h4>{{ post.description }}</h4>
-        </div>
+        <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />
     </div>
 </template>
 
 <script setup>
+import PostPreview from '../components/PostPreview.vue'
 import { useStore } from 'vuex'
-import { useRoute, useRouter } from 'vue-router';
+import { useRoute } from 'vue-router';
 import { computed, watch } from 'vue';
 const route = useRoute()
 const store = useStore()
-const router = useRouter()
 const user = computed(() => store.state.user)
+const posts = computed(() => store.state.posts)
 store.dispatch("getViewingProfile", route.params.uid)
-
 watch(
     () => route.params.uid,
     async (newId) => {
         store.dispatch("getViewingProfile", newId)
     }
 )
-
 </script>
 
 <style scoped>
 .page {
     padding-top: 9rem;
-}
-.post{
-    outline: medium solid red;
-}
-.post-link {
-    font-size: 3.375rem
 }
 </style>

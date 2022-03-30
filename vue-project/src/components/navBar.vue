@@ -159,7 +159,7 @@ a {
 .top-item {
   margin-bottom: 2rem;
   background-color: #e08b8b43;
-  background-image: url('/assets/search.svg');
+  background-image: url('../assets/search.svg');
   background-repeat: no-repeat;
   background-position: left center;
   background-position-x: 5%;
