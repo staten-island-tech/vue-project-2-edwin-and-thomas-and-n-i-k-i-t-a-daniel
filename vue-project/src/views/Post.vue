@@ -126,5 +126,7 @@ watch(
 .post h4 {
     cursor: pointer;
 }
-
+input {
+    font-size: 2rem;
+}
 </style>
