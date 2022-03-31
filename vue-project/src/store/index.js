@@ -178,7 +178,30 @@ const store = createStore({
     },                                           
     async searchPosts(context, search) {
       context.commit("clearPosts");
+      const querySnapshot = await getDocs(collection(db, "posts"));
+      querySnapshot.forEach((doc) => {
+        context.commit("addPost", doc.data());
+      });
+      const searchedPosts = this.state.posts.filter((post) => {
+        return (
+          post.title.toLowerCase().includes(search.search.toLowerCase()) ||
+          post.description.toLowerCase().includes(search.search.toLowerCase()) ||
+          post.content.toLowerCase().includes(search.search.toLowerCase())
+        );
+      });
+      context.commit("clearPosts");
+      console.log(this.state.posts);
+      searchedPosts.forEach((post) => {
+        context.commit("addPost", post);
+        console.log(post);
+      });
+      console.log(searchedPosts);
+      console.log(this.state.posts);
+    }, // So as far as I can tell, this is the best way to search using query(collection blah blah blah). Other than this ig i can figure out a system using getPosts or something: 
+  /*   async searchPosts(context, search) {
+      context.commit("clearPosts");
       const titleSearch = await getDocs(query(collection(db, "posts"), where(`title`, ">=", `${search.search}`)))//https://cloud.google.com/firestore/docs/query-data/queries#query_operators desperatly needs .toLowerCase and .includes type things
+      const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, ">=", `<p>${search.search}</p>`))) // content value in database has paragraph tags so i need them in the search
       const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, ">=", `<p>${search.search}</p>`))) // content value in database has paragraph tags so i need them in the search. the special indent and bold stuff is not possible with the way query works (did not test that i will do later).
       const descriptionSearch = await getDocs (query(collection(db, "posts"), where(`description`, ">=", `${search.search}`)))
       if (descriptionSearch === titleSearch || contentSearch === titleSearch) {
@@ -196,7 +219,7 @@ const store = createStore({
           context.commit("addPost", doc.data());
         });
       }
-    }, // So as far as I can tell, this is the best way to search using query(collection blah blah blah). Other than this ig i can figure out a system using getPosts or something
+    }, */
     async getComments(context) {
       context.commit("clearComments");
       const commentIds = this.state.posts[0].comments;

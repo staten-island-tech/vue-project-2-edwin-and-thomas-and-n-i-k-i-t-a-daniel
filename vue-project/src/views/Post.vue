@@ -15,7 +15,7 @@
         <div v-if="radio === 'comments'">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment">
-                <p>{{ comment.content }}</p>
+                <p>{{ comment.content }}</p> <h4 @click="userClick(comment.author.uid)" class="clickable">by {{ comment.author.dname }}</h4>
             </div>
             <input type="text" v-model="comment">
             <BasicButton @click="handleComment">Post</BasicButton>
@@ -110,8 +110,18 @@ watch(
 #content {
     font-size: 2rem;
 }
-.comment {
-    outline: medium solid red;
+.comment{
+  background-color: #724949;
+  width: 83%;
+  height: 25%;
+  margin: 3rem;
+  color: white;
+}
+.comment h2,h4,p{
+  margin: .5rem
+}
+.comment p{
+  font-size: 2rem;
 }
 .post {
     display: flex;
