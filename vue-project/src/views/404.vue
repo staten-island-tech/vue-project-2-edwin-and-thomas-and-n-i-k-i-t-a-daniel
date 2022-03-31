@@ -5,16 +5,6 @@
     </main>
 </template>
 
-<script>
-export default {
-    setup () {
-        
-
-        return {}
-    }
-}
-</script>
-
 <style scoped>
 main {
     margin-top: 10rem

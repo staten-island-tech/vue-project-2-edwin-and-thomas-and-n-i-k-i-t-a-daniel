@@ -8,8 +8,8 @@
 
         <div v-if="radio === 'post'" class="post">
             <h2>{{ post.title }}</h2>
-            <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
-            <div id="content" v-html="post.content"></div>
+            <h4>by <span class="clickable-blk" @click="userClick(post.author.uid)">{{ post.author.dname }}</span></h4>
+            <div id="content" v-html="post.content" />
         </div>
 
         <div v-if="radio === 'comments'" class="comments">
@@ -88,7 +88,6 @@ watch(
 </script>
 
 <style scoped>
-
 .main {  
     display: flex;
     flex-flow: column nowrap;
@@ -142,13 +141,10 @@ watch(
     flex-flow: column nowrap;
     width: 80vw;
 }
-
 .post h2, h4, div {
     align-self: center;
 }
-
 .post h4 {
     cursor: pointer;
 }
-
 </style>
