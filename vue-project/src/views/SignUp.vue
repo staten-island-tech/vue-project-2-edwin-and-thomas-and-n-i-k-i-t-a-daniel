@@ -1,4 +1,5 @@
 <template>
+<transition-group>
     <form @submit.prevent="handleSubmit">
         <h3>Sign up</h3>
 
@@ -23,6 +24,7 @@
 
         <h5 v-if="error">{{ error }}</h5>
     </form>
+    </transition-group>
 </template>
 
 <script setup>
@@ -86,6 +88,13 @@ label {
     font-size: 1.6rem;
 }
 
-
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
+}
 
 </style>

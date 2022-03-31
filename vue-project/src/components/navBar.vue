@@ -32,10 +32,10 @@
       <transition name="moveRight">
       <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave" :key="keyvalue">
       </transition>
+      <!-- <img src="../assets/BackmostVector2.svg" id="midWave" class="wave" alt="backgroundDetailWave" :key="keyvalue"> -->
       <transition name="moveLeft">
       <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave" :key="keyvalue">
       </transition>
-
     </div>
 </template>
 
@@ -98,7 +98,7 @@ nav {
   align-items: center;
   justify-content: flex-end;
   box-shadow: 0px 17.7238px 12.6977px rgba(0, 0, 0, 0.131624), 0px 10.7582px 7.7074px rgba(0, 0, 0, 0.113389);
-  z-index: 3;
+  z-index: 5;
 }
 a {
   color: white;
@@ -121,40 +121,44 @@ a {
   transition: transform 1s ease-in-out;
 }
 .wave{
-  z-index: -1;
+  z-index: 0;
   width: 200%;
+    /* animation: hueShift 15s infinite; */
 }
 #frontWave{
-    position: fixed;
+  position: fixed;
   bottom: 0;
   left: 0;
+
 }
 #backWave{
-    position: fixed;
+  position: fixed;
   bottom: 0;
   right: 0;
+
 }
 .dropdown {
   position: fixed;
   background-color: #975F5F;
-  z-index: 2;
+  z-index: 4;
   height: 100%;
   width: 30rem;
   color: white;
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  border-bottom-right-radius: 2rem;
+  /* border-bottom-right-radius: 2rem; */
 }
 
 #overlay {
-  background-color: rgba(0,0,0,0.2);
+   background-color: rgba(0,0,0,0.2);
+  
   position:fixed;
   left:0;
   top: 0;
   width:100%;
   height:100%;
-  z-index: 1;}
+  z-index: 3;}
 
 .top-item {
   margin-bottom: 2rem;
@@ -203,13 +207,17 @@ a {
 }
 @keyframes moveRight {
   0% {transform: translateX(0%);}
-  50% {transform: translateX(25%);}
+  50% {transform: translateX(15%);}
   100% {transform: translateX(0%);}
 }
 @keyframes moveLeft {
   0% {transform: translateX(0%);}
-  50% {transform: translateX(-25%);}
+  50% {transform: translateX(-15%);}
   100% {transform: translateX(0%);}
+}
+@keyframes hueShift {
+  0% {filter: hue-rotate(0deg);}
+  100% {filter: hue-rotate(360deg);}
 }
 .rotate-enter-active {
     animation:  rotate 1s;
@@ -218,9 +226,11 @@ a {
   display: none;
 }
 .moveRight-enter-active{
-  animation: moveRight 5s ease-in-out;
+  animation: moveRight 2.5s ease-in-out;
 }
 .moveLeft-enter-active{
-  animation: moveLeft 5s ease-in-out;
+  animation: moveLeft 2.5s ease-in-out;
+
 }
+
 </style>

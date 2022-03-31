@@ -73,10 +73,12 @@ const subtextEnter = (el) => {
 <style scoped>
 .post{
   background-color: #724949;
-  width: 83%;
-  height: 25%;
+  width: 83vw;
+  height: 25vh;
   margin: 3rem;
   color: white;
+  border-radius: 1rem;
+  padding: 3rem;
 }
 .post h2,h4,p{
   margin: .5rem
