@@ -11,6 +11,10 @@
                 <label for="title">Description:</label>
                 <input type="description" name="description" v-model="description" required>
             </div>
+            <div class="form-input">
+                <label for="title">Image Link:</label>
+                <input type="imageLink" name="imageLink" v-model="imageLink" required>
+            </div>
 
             <div class="editor" required>
                 <editor 
@@ -53,13 +57,15 @@ const router = useRouter()
 const title = ref('')
 const description = ref('')
 const content = ref('')
+const imageLink = ref('')
 
 const handleSubmit = async () => {
     try {
         await store.dispatch('createPost', {
             title: title.value,
             description: description.value,
-            content: content.value
+            content: content.value,
+            image: imageLink.value
         })
         router.push('/')
     } catch (err) {
@@ -77,7 +83,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    padding-top: 25rem;
+    padding-top: 30rem;
 }
 label {
     font-size: 1.6rem;

@@ -7,6 +7,15 @@
       > 
         <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
       </transition>
+      <img src="" alt="postImage" id="image">
+      <!-- <img src="../assets/logo.svg" alt="postImage" v-else>     -->
+      <transition-group
+        appear
+        @before-enter="beforeEnter"
+        @enter="bodyEnter"
+      > 
+        <p>{{ description }}</p>
+      </transition-group>
       <transition
         appear
         @before-enter="beforeEnter"
@@ -14,13 +23,7 @@
       > 
         <h4 @click="userClick(author.uid)" class="clickable">by {{ author.dname }}</h4>
       </transition>
-      <transition
-        appear
-        @before-enter="beforeEnter"
-        @enter="bodyEnter"
-      > 
-        <p>{{ description }}</p>
-      </transition>
+
     </div>
 </template>
 
@@ -38,7 +41,8 @@ const props = defineProps({
     title: String,
     author: Object,
     description: String,
-    id: String
+    id: String,
+    imageLink: String,
 })
 
 const postClick = (postID) => {
@@ -68,10 +72,15 @@ const subtextEnter = (el) => {
     opacity:1,
   })
 }
+window.onload = function(){
+  document.getElementById('image').src = imageLink;
+}
 </script>
 
 <style scoped>
 .post{
+  display: grid;
+  grid-template-columns: 3fr 1fr;
   background-color: #724949;
   width: 83vw;
   height: 25vh;
