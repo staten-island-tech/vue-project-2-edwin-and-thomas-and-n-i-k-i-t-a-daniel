@@ -20,7 +20,7 @@ watch(
     () => route.params.uid,
     async (newId) => {
         store.dispatch("getViewingProfile", newId)
-    }
+    },
 )
 </script>
 

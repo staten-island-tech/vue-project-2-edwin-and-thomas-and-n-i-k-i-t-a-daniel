@@ -14,7 +14,7 @@
           </div>
         </transition> -->
         <router-link class="router" id="Home" to="/">HOME</router-link>
-
+        
         <router-link class="router right clickable" to="/signup" @click="keyChange()" v-if="!user">SIGN UP</router-link>
         <router-link class="router right clickable" to="/login" @click="keyChange()" v-if="!user">LOGIN</router-link>
         <router-link class="router right clickable" :to="`/user/${user.uid}`" @click="keyChange()" v-if="user">PROFILE</router-link>
@@ -23,7 +23,7 @@
       </nav>
       <transition-group> 
         <div v-if="showDropdown" class="dropdown">
-          <input type="search" name="search" v-model="search" class="top-item" />
+          <input type="search" name="search" v-model="search" class="top-item" @keypress.enter="searchBar(), close()"/>
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
           <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
@@ -81,9 +81,11 @@ export default {
       store.dispatch('logout')
       router.push("/")
     }
-
-    return { search, router, route, store, handleClick, user, authIsReady}
-  }
+    const searchBar = () => {
+      store.dispatch('searchPosts', {search: search.value}) // Works but doesnt re-add all the posts
+    }
+    return { search, router, route, store, handleClick, user, authIsReady, searchBar}
+  },
 }
 </script>
 
@@ -96,6 +98,7 @@ nav {
   width: 100vw;
   display: flex;
   flex-flow: row nowrap;
+  flex-direction: row;
   align-items: center;
   justify-content: flex-end;
   box-shadow: 0px 17.7238px 12.6977px rgba(0, 0, 0, 0.131624), 0px 10.7582px 7.7074px rgba(0, 0, 0, 0.113389);

@@ -20,7 +20,6 @@
                     <h5 @click="userClick(comment.author.uid)">-{{ comment.author.dname }}</h5>
                     <BasicButton v-if="comment.author.uid === store.state.user.uid">DELETE</BasicButton>
                 </div>
-                
             </div>
             <input type="text" v-model="comment">
             <BasicButton @on-click="handleComment">Post</BasicButton>
@@ -128,7 +127,7 @@ watch(
     text-align: center;
 }
 .comment {
-    outline: medium solid red;
+    background-color: #724949;
     display: flex;
     flex-flow: column nowrap;
 }
@@ -151,5 +150,8 @@ watch(
 }
 .post h4 {
     cursor: pointer;
+}
+input {
+    font-size: 2rem;
 }
 </style>
