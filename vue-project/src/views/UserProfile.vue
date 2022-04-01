@@ -26,6 +26,6 @@ watch(
 
 <style scoped>
 .page {
-    margin-top: 9rem;
+    padding-top: 9rem;
 }
 </style>

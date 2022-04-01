@@ -1,10 +1,12 @@
 <template>
   <main>
+    <transition-group>
     <!-- lint says error but it's fine dw -->
     <PostPreview v-if="user" v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />  
     <div v-if="!user">
-      <h2>Please sign in to view posts</h2>
+      <h2 class="message">Please sign in to view posts</h2>
     </div>
+    </transition-group>
   </main>
 </template>
 
@@ -21,10 +23,14 @@ const user = computed(() => store.state.user)
 
 <style scoped>
 main {
+  padding-top: 10rem;
   display: flex;
   justify-content: center;
   flex-flow: wrap;
-  margin-top: 8rem;
+}
+
+.message{
+  padding-top: 15rem;
 }
 #overlay {
   background-color: rgba(0,0,0,0.5);
@@ -34,5 +40,13 @@ main {
   width:100%;
   height:100%;
   z-index: 1;
+}
+.v-enter-active,
+.v-leave-active {
+  transition: opacity 0.5s ease;
+}
+.v-enter-from,
+.v-leave-to {
+  opacity: 0;
 }
 </style>

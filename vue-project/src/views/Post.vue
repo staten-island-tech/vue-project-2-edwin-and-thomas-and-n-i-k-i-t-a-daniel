@@ -116,6 +116,11 @@ watch(
 #content {
     font-size: 2rem;
 }
+.commentBox{
+    font-size: 5rem;
+}
+.commentButton{
+    font-size: 5rem;
 .comments {
     width: 40vw;
 }
