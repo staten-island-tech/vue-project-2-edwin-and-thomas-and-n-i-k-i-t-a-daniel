@@ -18,6 +18,8 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
+  deleteDoc,
+  arrayRemove,
 } from "firebase/firestore";
 
 const store = createStore({
@@ -148,6 +150,10 @@ const store = createStore({
       context.dispatch("getComments");
     },
     async postComment(context, { content, id }) {
+      content = content.trim();
+      if (content === "") {
+        throw new Error("Comments cannot be empty");
+      }
       const docData = {
         author: {
           uid: this.state.user.uid,
@@ -157,6 +163,7 @@ const store = createStore({
         post: id,
       };
       const docRef = await addDoc(collection(db, "comments"), docData);
+      console.log("comment action firebase");
       await setDoc(
         doc(db, "comments", docRef.id),
         { id: docRef.id },
@@ -179,6 +186,19 @@ const store = createStore({
         const docSnap = await getDoc(docRef);
         context.commit("addComment", docSnap.data());
       });
+    },
+    async deletePost(context, postID) {
+      if (this.state.user.uid != this.state.posts[0].author.uid) {
+        throw new Error("This is not your post to delete");
+      } else if (this.state.posts[0].id != postID) {
+        throw new Error("Trying to delete a post that you do not have open");
+      } else {
+        await deleteDoc(doc(db, "posts", postID)); // make it also delete the id references
+        const userRef = doc(db, "users", this.state.user.uid);
+        await updateDoc(userRef, {
+          posts: arrayRemove(postID),
+        });
+      }
     },
   },
 });

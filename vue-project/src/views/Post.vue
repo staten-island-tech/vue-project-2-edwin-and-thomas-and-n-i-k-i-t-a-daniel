@@ -3,27 +3,48 @@
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Post</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
+            <h3 class="radio-item" @click="radio = 'edit'" v-if="user.uid === post.author.uid">Edit</h3>
         </div>
 
-        <div v-if="radio === 'post'">
+        <div v-if="radio === 'post'" class="post">
             <h2>{{ post.title }}</h2>
-            <h4>by {{ post.author.dname }}</h4>
-            <div id="content" v-html="post.content"></div>
+            <h4>by <span class="clickable-blk" @click="userClick(post.author.uid)">{{ post.author.dname }}</span></h4>
+            <div id="content" v-html="post.content" />
         </div>
 
-        <div v-if="radio === 'comments'">
+        <div v-if="radio === 'comments'" class="comments">
             <h2>Comments</h2>
+            <div v-for="comment in comments" :key="comment.id" class="comment">
+                <p>{{ comment.content }}</p>
+                <div>
+                    <h5 @click="userClick(comment.author.uid)">-{{ comment.author.dname }}</h5>
+                    <BasicButton v-if="comment.author.uid === store.state.user.uid">DELETE</BasicButton>
+                </div>
+                
+            </div>
             <input type="text" v-model="comment">
-            <button @click="handleComment">Post</button>
+            <BasicButton @on-click="handleComment">Post</BasicButton>
+            <h5 v-if="error">{{ error }}</h5>
+        </div>
+
+        <div v-if="radio === 'edit'">
+            <h2>Edit</h2>
+
+            <BasicButton @on-click="handleDelete">Delete</BasicButton>
+
+            <h5 v-if="error">{{ error }}</h5>
         </div>
     </div>
 </template>
 
 <script setup>
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { computed, watch, ref } from 'vue';
+import BasicButton from '../components/BasicButton.vue'
+
 const route = useRoute()
+const router = useRouter()
 const store = useStore()
 const user = computed(() => store.state.user)
 const post = computed(() => store.state.posts[0])
@@ -32,17 +53,29 @@ store.dispatch("getSinglePost", route.params.id)
 
 const radio = ref('post')
 const comment = ref('')
+const error = ref(null)
 
-
-const handleComment = () => {
+const userClick = (uid) => {
+    router.push(`/user/${uid}`)
+}
+const handleComment = async () => {
     try {
-        store.dispatch("postComment", {
+        await store.dispatch("postComment", {
             content: comment.value,
             id: route.params.id
         })
+        console.log("comment action on post")
         comment.value = ''
     } catch (err) {
-        console.log(err)
+        error.value = err
+    }
+}
+const handleDelete = async () => {
+    try {
+        await store.dispatch("deletePost", route.params.id)
+        router.push('/')
+    } catch (err) {
+        error.value = err
     }
 }
 
@@ -55,7 +88,6 @@ watch(
 </script>
 
 <style scoped>
-
 .main {  
     display: flex;
     flex-flow: column nowrap;
@@ -84,5 +116,35 @@ watch(
 #content {
     font-size: 2rem;
 }
-
+.comments {
+    width: 40vw;
+}
+.comments h2 {
+    text-align: center;
+}
+.comment {
+    outline: medium solid red;
+    display: flex;
+    flex-flow: column nowrap;
+}
+.comment div {
+    align-self: flex-end;
+    cursor: pointer;
+    display: flex;
+    flex-flow: column-reverse nowrap;
+}
+.comment div h5 {
+    text-align: right;
+}
+.post {
+    display: flex;
+    flex-flow: column nowrap;
+    width: 80vw;
+}
+.post h2, h4, div {
+    align-self: center;
+}
+.post h4 {
+    cursor: pointer;
+}
 </style>

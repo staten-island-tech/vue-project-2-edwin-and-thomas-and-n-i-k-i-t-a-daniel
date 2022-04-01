@@ -12,7 +12,7 @@
             <input type="password" name="password" v-model="password" required>     
         </div>
 
-        <button>Login</button>
+        <BasicButton>Login</BasicButton>
 
         <h4><router-link to="/signup">Don't have an account?</router-link></h4>
 
@@ -24,6 +24,7 @@
 import { computed, ref } from 'vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import BasicButton from '../components/BasicButton.vue'
 
 const email = ref('')
 const password = ref('')
@@ -61,20 +62,6 @@ form {
     justify-content: center;
     flex-direction: column;
     margin-bottom: 2rem;
-}
-
-button {
-    color: white;
-    background-color: #724646;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 1.2rem 3.2rem;
-    display: inline-block;
-    margin: 1.6rem;
-    font-size: 1.6rem;
-    border: none;
-    border-radius: 0;
-    transition: all 0.2s;
 }
 
 input {

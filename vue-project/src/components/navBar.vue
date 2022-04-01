@@ -1,24 +1,20 @@
 <template>
     <div class="navBar">
       <nav v-if="authIsReady">
-        <!-- <transition 
-        @click="rotate">
-        <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
-        </transition> -->
         <transition name="rotate" appear>
           <div v-if="showDropdown">
-            <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
+            <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
           </div>
           <div v-else>
-            <img src="logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" >
+            <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" >
           </div>
         </transition>
-        <router-link class="router" id="Home" to="/">HOME</router-link>
+        <router-link class="router clickable" id="Home" to="/">HOME</router-link>
 
-        <router-link class="router right" to="/signup" v-if="!user">SIGN UP</router-link>
-        <router-link class="router right" to="/login" v-if="!user">LOGIN</router-link>
-        <router-link class="router right" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
-        <router-link v-if="user" class="router right" @click="handleClick" to="/">SIGN OUT</router-link>
+        <router-link class="router right clickable" to="/signup" v-if="!user">SIGN UP</router-link>
+        <router-link class="router right clickable" to="/login" v-if="!user">LOGIN</router-link>
+        <router-link class="router right clickable" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
+        <router-link v-if="user" class="router right clickable" @click="handleClick" to="/">SIGN OUT</router-link>
       </nav>
       <transition-group> 
         <div v-if="showDropdown" class="dropdown">
@@ -29,8 +25,8 @@
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
       </transition-group>
-      <img src="BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
-      <img src="FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
+      <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
+      <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
     </div>
 </template>
 
@@ -131,7 +127,7 @@ a {
 }
 input {
   background-color: #e08b8b43;
-  background-image: url('search.svg');
+  background-image: url('../assets/search.svg');
   background-repeat: no-repeat;
   background-position: left center;
   background-position-x: 5%;
