@@ -153,6 +153,10 @@ const store = createStore({
       context.dispatch("getComments");
     },
     async postComment(context, { content, id }) {
+      content = content.trim();
+      if (content === "") {
+        throw new Error("Comments cannot be empty");
+      }
       const docData = {
         author: {
           uid: this.state.user.uid,
@@ -162,6 +166,7 @@ const store = createStore({
         post: id,
       };
       const docRef = await addDoc(collection(db, "comments"), docData);
+      console.log("comment action firebase");
       await setDoc(
         doc(db, "comments", docRef.id),
         { id: docRef.id },

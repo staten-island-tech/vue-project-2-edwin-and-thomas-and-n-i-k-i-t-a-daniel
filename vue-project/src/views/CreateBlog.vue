@@ -8,7 +8,7 @@
             </div>
 
             <div class="form-input">
-                <label for="title">Description:</label>
+                <label for="description">Description:</label>
                 <input type="description" name="description" v-model="description" required>
             </div>
 
@@ -33,16 +33,14 @@
                     name="content" />
             </div>
 
-
-
-            <button>Upload Post</button>
+            <BasicButton>Upload Post</BasicButton>
         </form>
-        
     </div>
 </template>
 
 <script setup>
 import Editor from '@tinymce/tinymce-vue'
+import BasicButton from '../components/BasicButton.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
@@ -67,7 +65,6 @@ const handleSubmit = async () => {
         console.log(err)
     }
 }
-
 </script>
 
 <style scoped>
@@ -78,7 +75,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    margin-top: 10rem;
+    padding-top: 25rem;
 }
 label {
     font-size: 1.6rem;
@@ -100,18 +97,6 @@ input {
 }
 .editor {
     width: 30vw;
-}
-button {
-    color: white;
-    background-color: #724646;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 1.2rem 3.2rem;
-    display: inline-block;
-    margin: 1.6rem;
-    font-size: 1.6rem;
-    border: none;
-    border-radius: 0;
-    transition: all 0.2s;
+    z-index: 0;
 }
 </style>
