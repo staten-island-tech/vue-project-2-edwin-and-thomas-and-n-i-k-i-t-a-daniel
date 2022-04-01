@@ -8,23 +8,29 @@
 
         <div v-if="radio === 'post'" class="post">
             <h2>{{ post.title }}</h2>
-            <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
-            <div id="content" v-html="post.content"></div>
+            <h4>by <span class="clickable-blk" @click="userClick(post.author.uid)">{{ post.author.dname }}</span></h4>
+            <div id="content" v-html="post.content" />
         </div>
 
-        <div v-if="radio === 'comments'">
+        <div v-if="radio === 'comments'" class="comments">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment">
                 <p>{{ comment.content }}</p>
+                <div>
+                    <h5 @click="userClick(comment.author.uid)">-{{ comment.author.dname }}</h5>
+                    <BasicButton v-if="comment.author.uid === store.state.user.uid">DELETE</BasicButton>
+                </div>
+                
             </div>
             <input type="text" v-model="comment">
-            <BasicButton @click="handleComment">Post</BasicButton>
+            <BasicButton @on-click="handleComment">Post</BasicButton>
+            <h5 v-if="error">{{ error }}</h5>
         </div>
 
         <div v-if="radio === 'edit'">
             <h2>Edit</h2>
 
-            <BasicButton @click="handleDelete">Delete</BasicButton>
+            <BasicButton @on-click="handleDelete">Delete</BasicButton>
 
             <h5 v-if="error">{{ error }}</h5>
         </div>
@@ -52,15 +58,16 @@ const error = ref(null)
 const userClick = (uid) => {
     router.push(`/user/${uid}`)
 }
-const handleComment = () => {
+const handleComment = async () => {
     try {
-        store.dispatch("postComment", {
+        await store.dispatch("postComment", {
             content: comment.value,
             id: route.params.id
         })
+        console.log("comment action on post")
         comment.value = ''
     } catch (err) {
-        console.log(err)
+        error.value = err
     }
 }
 const handleDelete = async () => {
@@ -81,7 +88,6 @@ watch(
 </script>
 
 <style scoped>
-
 .main {  
     display: flex;
     flex-flow: column nowrap;
@@ -115,22 +121,35 @@ watch(
 }
 .commentButton{
     font-size: 5rem;
+.comments {
+    width: 40vw;
+}
+.comments h2 {
+    text-align: center;
 }
 .comment {
     outline: medium solid red;
+    display: flex;
+    flex-flow: column nowrap;
+}
+.comment div {
+    align-self: flex-end;
+    cursor: pointer;
+    display: flex;
+    flex-flow: column-reverse nowrap;
+}
+.comment div h5 {
+    text-align: right;
 }
 .post {
     display: flex;
     flex-flow: column nowrap;
     width: 80vw;
 }
-
 .post h2, h4, div {
     align-self: center;
 }
-
 .post h4 {
     cursor: pointer;
 }
-
 </style>

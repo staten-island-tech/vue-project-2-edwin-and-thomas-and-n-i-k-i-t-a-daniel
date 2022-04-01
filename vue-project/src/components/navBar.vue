@@ -15,10 +15,11 @@
         </transition> -->
         <router-link class="router" id="Home" to="/">HOME</router-link>
 
-        <router-link class="router right" to="/signup" @click="keyChange()" v-if="!user">SIGN UP</router-link>
-        <router-link class="router right" to="/login" @click="keyChange()" v-if="!user">LOGIN</router-link>
-        <router-link class="router right" :to="`/user/${user.uid}`" @click="keyChange()" v-if="user">PROFILE</router-link>
+        <router-link class="router right clickable" to="/signup" @click="keyChange()" v-if="!user">SIGN UP</router-link>
+        <router-link class="router right clickable" to="/login" @click="keyChange()" v-if="!user">LOGIN</router-link>
+        <router-link class="router right clickable" :to="`/user/${user.uid}`" @click="keyChange()" v-if="user">PROFILE</router-link>
         <router-link v-if="user" class="router right" @click="handleClick(); keyChange()" to="/">SIGN OUT</router-link>
+
       </nav>
       <transition-group> 
         <div v-if="showDropdown" class="dropdown">

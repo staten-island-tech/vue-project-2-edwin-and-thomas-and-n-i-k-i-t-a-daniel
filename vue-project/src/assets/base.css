@@ -109,6 +109,8 @@ h5 {
 
 p,
 li,
+em,
+span,
 .profile-link {
   font-size: var(--h4);
 }
@@ -120,4 +122,18 @@ label {
 button {
   padding: 0 1rem;
   margin: 0 10px;
+}
+
+/* This is just for white text */
+.clickable:hover {
+  color: rgba(255, 255, 255, 0.467);
+  opacity: 0.467;
+}
+.clickable-blk:hover {
+  color: rgba(0, 0, 0, 0.467);
+}
+
+.clickable,
+.clickable-blk {
+  transition: all 0.2s;
 }

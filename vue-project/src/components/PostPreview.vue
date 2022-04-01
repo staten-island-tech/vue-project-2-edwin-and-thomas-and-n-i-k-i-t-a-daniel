@@ -12,7 +12,7 @@
         @before-enter="beforeEnter"
         @enter="subtextEnter"
       > 
-        <h4 @click="userClick(author.uid)" class="clickable">by {{ author.dname }}</h4>
+        <h4 >by <span @click="userClick(author.uid)" class="clickable">{{ author.dname }}</span></h4>
       </transition>
       <transition
         appear
