@@ -76,6 +76,7 @@ form {
     align-items: center;
     flex-flow: column nowrap;
     padding-top: 25rem;
+    margin-top: 9rem;
 }
 label {
     font-size: 1.6rem;
