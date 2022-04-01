@@ -91,6 +91,7 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    margin-top: 9rem;
 }
 .radio {
     display: flex;
