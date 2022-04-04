@@ -1,5 +1,5 @@
 <template>
-<transition-group>
+<transition-group class="main">
     <form @submit.prevent="handleSubmit">
         <h3>Sign up</h3>
 

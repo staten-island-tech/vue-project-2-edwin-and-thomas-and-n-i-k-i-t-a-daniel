@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <main>
         <form @submit.prevent="handleSubmit">
 
             <div class="form-input">
@@ -35,7 +35,7 @@
 
             <BasicButton>Upload Post</BasicButton>
         </form>
-    </div>
+    </main>
 </template>
 
 <script setup>

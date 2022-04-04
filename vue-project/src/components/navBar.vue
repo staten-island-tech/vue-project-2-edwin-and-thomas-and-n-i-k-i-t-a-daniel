@@ -170,7 +170,7 @@ a {
   padding: .6rem 1.6rem;
   font-size: 2rem;
   text-align: left;
-  margin-top: 12rem;
+  margin-top: 3rem;
   color: white;
   text-indent: 3rem
 }
