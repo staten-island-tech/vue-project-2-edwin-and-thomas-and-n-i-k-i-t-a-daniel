@@ -13,7 +13,7 @@
             </div>
             <div class="form-input">
                 <label for="title">Image Link:</label>
-                <input type="imageLink" name="imageLink" v-model="imageLink" required>
+                <input type="text" name="imageLink" v-model="imageLink" required>
             </div>
 
             <div class="editor" required>
@@ -65,7 +65,7 @@ const handleSubmit = async () => {
             title: title.value,
             description: description.value,
             content: content.value,
-            image: imageLink.value
+            imageLink: imageLink.value
         })
         router.push('/')
     } catch (err) {

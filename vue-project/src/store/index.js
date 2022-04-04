@@ -109,7 +109,7 @@ const store = createStore({
       context.commit("setViewing", docSnap.data());
       context.dispatch("getProfilePosts");
     },
-    async createPost(context, { title, description, content }) {
+    async createPost(context, { title, description, content, imageLink }) {
       console.log("create post action");
       const docData = {
         author: {
@@ -119,6 +119,7 @@ const store = createStore({
         content: content,
         description: description,
         title: title,
+        imageLink: imageLink,
         comments: [],
       };
       const docRef = await addDoc(collection(db, "posts"), docData);

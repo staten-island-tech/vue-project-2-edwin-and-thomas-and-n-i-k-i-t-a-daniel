@@ -7,7 +7,7 @@
       > 
         <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
       </transition>
-      <img src="" alt="postImage" id="image">
+      <img :ref="imageLink" src="imageLink" alt="postImage" id="image">
       <!-- <img src="../assets/logo.svg" alt="postImage" v-else>     -->
       <transition-group
         appear
@@ -45,6 +45,8 @@ const props = defineProps({
     imageLink: String,
 })
 
+
+
 const postClick = (postID) => {
   router.push(`/post/${postID}`)
 }
@@ -72,9 +74,7 @@ const subtextEnter = (el) => {
     opacity:1,
   })
 }
-window.onload = function(){
-  document.getElementById('image').src = imageLink;
-}
+// document.getElementById('image').src = imageLink
 </script>
 
 <style scoped>
