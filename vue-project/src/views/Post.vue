@@ -120,6 +120,7 @@ watch(
 }
 .commentButton{
     font-size: 5rem;
+}
 .comments {
     width: 40vw;
 }
@@ -130,6 +131,7 @@ watch(
     background-color: #724949;
     display: flex;
     flex-flow: column nowrap;
+    color:white
 }
 .comment div {
     align-self: flex-end;
