@@ -111,7 +111,7 @@ const store = createStore({
       context.commit("setViewing", docSnap.data());
       context.dispatch("getProfilePosts");
     },
-    async createPost(context, { title, description, content }) {
+    async createPost(context, { title, description, content, tags }) {
       console.log("create post action");
       const docData = {
         author: {
@@ -122,6 +122,7 @@ const store = createStore({
         description: description,
         title: title,
         comments: [],
+        tags: tags,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
       await setDoc(
@@ -180,7 +181,7 @@ const store = createStore({
       await updateDoc(userRef, {
         comments: arrayUnion(docRef.id),
       });
-    },                                           
+    },
     async searchPosts(context, search) {
       context.commit("clearPosts");
       const querySnapshot = await getDocs(collection(db, "posts"));
@@ -190,7 +191,9 @@ const store = createStore({
       const searchedPosts = this.state.posts.filter((post) => {
         return (
           post.title.toLowerCase().includes(search.search.toLowerCase()) ||
-          post.description.toLowerCase().includes(search.search.toLowerCase()) ||
+          post.description
+            .toLowerCase()
+            .includes(search.search.toLowerCase()) ||
           post.content.toLowerCase().includes(search.search.toLowerCase())
         );
       });
@@ -202,8 +205,8 @@ const store = createStore({
       });
       console.log(searchedPosts);
       console.log(this.state.posts);
-    }, // So as far as I can tell, this is the best way to search using query(collection blah blah blah). Other than this ig i can figure out a system using getPosts or something: 
-  /*   async searchPosts(context, search) {
+    }, // So as far as I can tell, this is the best way to search using query(collection blah blah blah). Other than this ig i can figure out a system using getPosts or something:
+    /*   async searchPosts(context, search) {
       context.commit("clearPosts");
       const titleSearch = await getDocs(query(collection(db, "posts"), where(`title`, ">=", `${search.search}`)))//https://cloud.google.com/firestore/docs/query-data/queries#query_operators desperatly needs .toLowerCase and .includes type things
       const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, ">=", `<p>${search.search}</p>`))) // content value in database has paragraph tags so i need them in the search

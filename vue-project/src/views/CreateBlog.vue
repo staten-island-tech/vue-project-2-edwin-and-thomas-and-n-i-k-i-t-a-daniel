@@ -12,6 +12,16 @@
                 <input type="description" name="description" v-model="description" required>
             </div>
 
+            <div class="form-input">
+                <label for="tags">Tags: (Optional)</label>
+                
+                <input type="tags" name="tags" v-model="newTag">
+                <p @click="addTag()" class="clickable-blk">+</p>
+                <ul v-if="tags">
+                    <li v-for="tag in tags" :key="tag">{{ tag }}</li>
+                </ul>
+            </div>
+
             <div class="editor" required>
                 <editor 
                     api-key="ffugz7x38mw73x297de4hhgulrnsse6ldbn7cumiyo99w54f" 
@@ -33,7 +43,7 @@
                     name="content" />
             </div>
 
-            <BasicButton>Upload Post</BasicButton>
+            <BasicButton type="submit">Upload Post</BasicButton>
         </form>
     </main>
 </template>
@@ -51,19 +61,30 @@ const router = useRouter()
 const title = ref('')
 const description = ref('')
 const content = ref('')
+const newTag = ref('')
+const tags = ref([])
 
 const handleSubmit = async () => {
     try {
         await store.dispatch('createPost', {
             title: title.value,
             description: description.value,
-            content: content.value
+            content: content.value,
+            tags: tags.value
         })
         console.log(content)
         router.push('/')
     } catch (err) {
         console.log(err)
     }
+}
+const addTag = () => {
+    const arr = tags.value
+    if(newTag.value.trim() != ''){
+        arr.push(newTag.value.trim())
+        newTag.value = ''
+    }
+    
 }
 </script>
 
@@ -98,5 +119,9 @@ input {
 .editor {
     width: 30vw;
     z-index: 0;
+}
+.form-input p {
+    width: fit-content;
+    cursor: pointer;
 }
 </style>
