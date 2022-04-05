@@ -98,5 +98,6 @@ const subtextEnter = (el) => {
 }
 .image{
   max-height: 20vh;
+  border-radius: 1rem;
 }
 </style>

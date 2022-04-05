@@ -6,10 +6,12 @@
             <h3 class="radio-item" @click="radio = 'edit'" v-if="user.uid === post.author.uid">Edit</h3>
         </div>
 
-        <div v-if="radio === 'post'" class="post">
+        <div v-if="radio === 'post'" class="post" >
             <h2>{{ post.title }}</h2>
             <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
             <div id="content" v-html="post.content"></div>
+            <img v-bind:src="post.imageLink" alt="postImage" class="image">
+
         </div>
 
         <div v-if="radio === 'comments'">
@@ -132,5 +134,9 @@ watch(
 .post h4 {
     cursor: pointer;
 }
-
+.image{
+   border-radius: 1rem;
+   width: 50%;
+   margin: auto;
+}
 </style>
