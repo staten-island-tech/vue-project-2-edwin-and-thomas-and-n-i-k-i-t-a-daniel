@@ -18,8 +18,6 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
-  query,
-  where,
   deleteDoc,
   arrayRemove,
 } from "firebase/firestore";
@@ -202,29 +200,7 @@ const store = createStore({
       });
       console.log(searchedPosts);
       console.log(this.state.posts);
-    }, // So as far as I can tell, this is the best way to search using query(collection blah blah blah). Other than this ig i can figure out a system using getPosts or something: 
-  /*   async searchPosts(context, search) {
-      context.commit("clearPosts");
-      const titleSearch = await getDocs(query(collection(db, "posts"), where(`title`, ">=", `${search.search}`)))//https://cloud.google.com/firestore/docs/query-data/queries#query_operators desperatly needs .toLowerCase and .includes type things
-      const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, ">=", `<p>${search.search}</p>`))) // content value in database has paragraph tags so i need them in the search
-      const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, ">=", `<p>${search.search}</p>`))) // content value in database has paragraph tags so i need them in the search. the special indent and bold stuff is not possible with the way query works (did not test that i will do later).
-      const descriptionSearch = await getDocs (query(collection(db, "posts"), where(`description`, ">=", `${search.search}`)))
-      if (descriptionSearch === titleSearch || contentSearch === titleSearch) {
-        titleSearch.forEach((doc) => {
-          context.commit("addPost", doc.data());
-        }); 
-      }
-      else if (descriptionSearch === contentSearch) {
-        descriptionSearch.forEach((doc) => {
-          context.commit("addPost", doc.data());
-        });
-      }
-      else {
-        contentSearch.forEach((doc) => {
-          context.commit("addPost", doc.data());
-        });
-      }
-    }, */
+    },
     async getComments(context) {
       context.commit("clearComments");
       const commentIds = this.state.posts[0].comments;
@@ -247,8 +223,16 @@ const store = createStore({
         });
       }
     },
+    async deleteComment(context, commentID) {
+        await deleteDoc(doc(db, "comments", commentID)); // make it also delete the id references
+        const userRef = doc(db, "users", this.state.user.uid);
+        await updateDoc(userRef, {
+          posts: arrayRemove(commentID),
+        });
+      }
+    },
   },
-});
+);
 // wait until auth is ready
 const unsub = onAuthStateChanged(auth, (user) => {
   store.commit("setAuthIsReady", true);
