@@ -7,8 +7,8 @@
       > 
         <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
       </transition>
-      <img :ref="imageLink" src="imageLink" alt="postImage" id="image">
-      <!-- <img src="../assets/logo.svg" alt="postImage" v-else>     -->
+      <img v-bind:src="imageLink" alt="postImage" class="image" v-if="imageLink != null">
+      <img v-else src="../assets/imageNotFound.svg" class="image" alt="postImageNotFound">
       <transition-group
         appear
         @before-enter="beforeEnter"
@@ -45,8 +45,6 @@ const props = defineProps({
     imageLink: String,
 })
 
-
-
 const postClick = (postID) => {
   router.push(`/post/${postID}`)
 }
@@ -74,7 +72,6 @@ const subtextEnter = (el) => {
     opacity:1,
   })
 }
-// document.getElementById('image').src = imageLink
 </script>
 
 <style scoped>
@@ -82,8 +79,8 @@ const subtextEnter = (el) => {
   display: grid;
   grid-template-columns: 3fr 1fr;
   background-color: #724949;
-  width: 83vw;
-  height: 25vh;
+  width: 73vw;
+  max-height: 45vh;
   margin: 3rem;
   color: white;
   border-radius: 1rem;
@@ -98,5 +95,8 @@ const subtextEnter = (el) => {
 .clickable {
   cursor: pointer;
   width: fit-content
+}
+.image{
+  max-height: 20vh;
 }
 </style>
