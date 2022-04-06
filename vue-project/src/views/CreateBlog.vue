@@ -18,7 +18,7 @@
                 <input type="tags" name="tags" v-model="newTag">
                 <p @click="addTag()" class="clickable-blk">+</p>
                 <ul v-if="tags">
-                    <li v-for="tag in tags" :key="tag">{{ tag }}</li>
+                    <li v-for="(tag, index) in tags" :key="tag" @click="removeTag(index)" class="clickable-blk">{{ tag }}</li>
                 </ul>
             </div>
 
@@ -86,17 +86,22 @@ const addTag = () => {
     }
     
 }
+const removeTag = (index) => {
+    const arr = tags.value
+    arr.splice(index, 1)
+    console.log(`1 deleted at ${index} index`)
+}
 </script>
 
 <style scoped>
 form {
     width: 100%;
-    height: 75vh;
+    /* height: 75vh; */
     display: flex;
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    padding-top: 25rem;
+    padding-top: 5rem;
 }
 label {
     font-size: 1.6rem;
