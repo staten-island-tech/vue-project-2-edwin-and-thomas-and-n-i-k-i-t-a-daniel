@@ -18,11 +18,11 @@
                 <input type="tags" name="tags" v-model="newTag">
                 <p @click="addTag()" class="clickable-blk">+</p>
                 <ul v-if="tags">
-                    <li v-for="(tag, index) in tags" :key="tag" @click="removeTag(index)" class="clickable-blk">{{ tag }}</li>
+                    <li v-for="(tag, index) in tags" :key="tag" @click="removeTag(index)" class="clickable-blk tag">{{ tag }}</li>
                 </ul>
             </div>
 
-            <div class="editor" required>
+            <div class="editor">
                 <editor 
                     api-key="ffugz7x38mw73x297de4hhgulrnsse6ldbn7cumiyo99w54f" 
                     :init="{
@@ -84,7 +84,6 @@ const addTag = () => {
         arr.push(newTag.value.trim())
         newTag.value = ''
     }
-    
 }
 const removeTag = (index) => {
     const arr = tags.value
@@ -128,5 +127,9 @@ input {
 .form-input p {
     width: fit-content;
     cursor: pointer;
+}
+.tag {
+    cursor: pointer;
+    font-size: 2rem
 }
 </style>
