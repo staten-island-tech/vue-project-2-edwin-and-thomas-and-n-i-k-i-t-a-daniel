@@ -18,7 +18,7 @@
                 <p>{{ comment.content }}</p>
                 <div>
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
-                    <BasicButton v-if="comment.author.uid === store.state.user.uid">DELETE</BasicButton>
+                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id)">DELETE</BasicButton>
                 </div>
             </div>
             <input type="text" v-model="comment">
@@ -69,10 +69,22 @@ const handleComment = async () => {
         error.value = err
     }
 }
+
+const deleteComment = async (id) => {
+    try {
+        await store.dispatch("deleteComment", { 
+        commentID: id,
+        id: route.params.id
+        })
+    } catch (err) {
+        error.value = err
+    }
+}
+
 const handleDelete = async () => {
     try {
         await store.dispatch("deletePost", route.params.id)
-        router.push('/')
+        router.push(`/`)
     } catch (err) {
         error.value = err
     }

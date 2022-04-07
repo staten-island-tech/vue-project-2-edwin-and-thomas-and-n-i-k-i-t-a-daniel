@@ -243,11 +243,16 @@ const store = createStore({
         });
       }
     },
-    async deleteComment(context, commentID) {
-        await deleteDoc(doc(db, "comments", commentID)); // make it also delete the id references
+    async deleteComment(context, commentID, id) {
+        console.log(commentID)
+        await deleteDoc(doc(db, "comments", commentID));
+        const postRef = doc(db, "posts", id);
+        await updateDoc(postRef, {
+          comments: arrayUnion(docRef.id),
+        });
         const userRef = doc(db, "users", this.state.user.uid);
         await updateDoc(userRef, {
-          posts: arrayRemove(commentID),
+          comments: arrayUnion(docRef.id),
         });
       }
     },
