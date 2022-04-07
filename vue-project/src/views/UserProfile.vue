@@ -1,5 +1,5 @@
 <template>
-    <div class="page">
+    <div class="main">
         <h2>User {{ store.state.viewingProfile.dname }}</h2>
         <h3 v-if="user.uid === route.params.uid"><router-link to="/create">Create a Post</router-link></h3>
         <div class="radio">
@@ -46,7 +46,5 @@ watch(
 </script>
 
 <style scoped>
-.page {
-    padding-top: 9rem;
-}
+
 </style>

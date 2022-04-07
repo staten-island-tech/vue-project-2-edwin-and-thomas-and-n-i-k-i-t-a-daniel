@@ -109,7 +109,7 @@ const store = createStore({
       context.commit("setViewing", docSnap.data());
       context.dispatch("getProfilePosts");
     },
-    async createPost(context, { title, description, content }) {
+    async createPost(context, { title, description, content, tags }) {
       console.log("create post action");
       const docData = {
         author: {
@@ -120,6 +120,7 @@ const store = createStore({
         description: description,
         title: title,
         comments: [],
+        tags: tags,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
       await setDoc(
@@ -178,7 +179,7 @@ const store = createStore({
       await updateDoc(userRef, {
         comments: arrayUnion(docRef.id),
       });
-    },                                           
+    },
     async searchPosts(context, search) {
       context.commit("clearPosts");
       const querySnapshot = await getDocs(collection(db, "posts"));
@@ -188,15 +189,34 @@ const store = createStore({
       const searchedPosts = this.state.posts.filter((post) => {
         return (
           post.title.toLowerCase().includes(search.search.toLowerCase()) ||
-          post.description.toLowerCase().includes(search.search.toLowerCase()) ||
+          post.description
+            .toLowerCase()
+            .includes(search.search.toLowerCase()) ||
           post.content.toLowerCase().includes(search.search.toLowerCase())
         );
       });
+      const postsWithTags = this.state.posts.filter(
+        (post) => post.tags && post.tags.length > 0
+      );
+      
       context.commit("clearPosts");
       console.log(this.state.posts);
       searchedPosts.forEach((post) => {
         context.commit("addPost", post);
         console.log(post);
+      });
+      postsWithTags.forEach((post) => {
+        post.tags.forEach((tag) => {
+          if (
+            tag.toLowerCase().includes(search.search.toLowerCase()) &&
+            !this.state.posts.includes(post)
+          ) {
+            context.commit("addPost", post);
+            console.log("this post passes the filter:", post);
+          } else {
+            console.log("this post does not pass the filter", post);
+          }
+        });
       });
       console.log(searchedPosts);
       console.log(this.state.posts);

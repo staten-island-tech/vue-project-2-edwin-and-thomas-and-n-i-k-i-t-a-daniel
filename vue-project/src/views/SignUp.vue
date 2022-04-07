@@ -1,5 +1,5 @@
 <template>
-<transition-group>
+<transition-group class="main">
     <form @submit.prevent="handleSubmit">
         <h3>Sign up</h3>
 
@@ -64,7 +64,6 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    margin-top: 9rem;
 }
 
 .form-input {

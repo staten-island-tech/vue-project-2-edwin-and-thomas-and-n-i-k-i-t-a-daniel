@@ -17,8 +17,8 @@
             <div v-for="comment in comments" :key="comment.id" class="comment">
                 <p>{{ comment.content }}</p>
                 <div>
-                    <h5 @click="userClick(comment.author.uid)">-{{ comment.author.dname }}</h5>
-                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="commentDelete">DELETE</BasicButton>
+                    <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
+                    <BasicButton v-if="comment.author.uid === store.state.user.uid">DELETE</BasicButton>
                 </div>
             </div>
             <input type="text" v-model="comment">
@@ -77,16 +77,6 @@ const handleDelete = async () => {
         error.value = err
     }
 }
-
-const commentDelete = async () => {
-    try {
-        await store.dispatch("deleteComment", route.params.id)
-        router.push('/')
-    } catch (err) {
-        error.value = err
-    }
-}
-
 watch(
     () => route.params.id,
     async (newId) => {
@@ -100,7 +90,6 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    margin-top: 9rem;
 }
 .radio {
     display: flex;
@@ -140,7 +129,15 @@ watch(
     background-color: #724949;
     display: flex;
     flex-flow: column nowrap;
-    color:white
+    margin-bottom: 1rem;
+    color: white;
+    border-radius: 0.5rem;
+}
+.comment p {
+    margin-left: 0.5rem;
+}
+.comment h5 {
+    margin-right: 0.5rem;
 }
 .comment div {
     align-self: flex-end;

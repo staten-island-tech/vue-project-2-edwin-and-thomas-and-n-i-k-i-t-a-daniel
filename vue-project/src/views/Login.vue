@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit" class="main">
         <h3>Login</h3>
 
         <div class="form-input">
@@ -54,7 +54,6 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    margin-top: 9rem;
 }
 
 .form-input {

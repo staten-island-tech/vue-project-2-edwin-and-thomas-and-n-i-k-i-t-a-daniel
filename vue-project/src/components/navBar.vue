@@ -5,20 +5,12 @@
         name="rotate">
         <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" :key="showDropdown">
         </transition>
-        <!-- <transition name="rotate" appear>
-          <div v-if="showDropdown">
-            <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()">
-          </div>
-          <div v-else>
-            <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" >
-          </div>
-        </transition> -->
-        <router-link class="router" id="Home" to="/">HOME</router-link>
+        <router-link class="router clickable" id="Home" to="/" @click="store.dispatch('getPosts')">HOME</router-link>
         
         <router-link class="router right clickable" to="/signup" @click="keyChange()" v-if="!user">SIGN UP</router-link>
         <router-link class="router right clickable" to="/login" @click="keyChange()" v-if="!user">LOGIN</router-link>
         <router-link class="router right clickable" :to="`/user/${user.uid}`" @click="keyChange()" v-if="user">PROFILE</router-link>
-        <router-link v-if="user" class="router right" @click="handleClick(); keyChange()" to="/">SIGN OUT</router-link>
+        <router-link v-if="user" class="router right clickable" @click="handleClick(); keyChange()" to="/">SIGN OUT</router-link>
 
       </nav>
       <transition-group> 
@@ -83,6 +75,7 @@ export default {
     }
     const searchBar = () => {
       store.dispatch('searchPosts', {search: search.value}) // Works but doesnt re-add all the posts
+      search.value = ''
     }
     return { search, router, route, store, handleClick, user, authIsReady, searchBar}
   },
@@ -178,7 +171,7 @@ a {
   padding: .6rem 1.6rem;
   font-size: 2rem;
   text-align: left;
-  margin-top: 12rem;
+  margin-top: 3rem;
   color: white;
   text-indent: 3rem
 }
