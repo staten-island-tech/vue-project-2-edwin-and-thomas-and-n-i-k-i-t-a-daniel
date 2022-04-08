@@ -13,7 +13,7 @@
             </div>
             <div class="form-input">
                 <label for="title">Image Link:</label>
-                <input type="text" name="imageLink" v-model="imageLink" required>
+                <input type="url" name="imageLink" v-model="imageLink">
             </div>
 
             <div class="editor" required>
@@ -72,8 +72,18 @@ const handleSubmit = async () => {
         console.log(err)
     }
 }
-
+    // const change = function(){
+    //   const url = imageLink.value
+    //   isURLValid(url);
+    // }
+    // const isURLValid = function(inputUrl) {
+    //   isValid=   regex.test(inputUrl)
+    // }
+    // const isValid = false
+    // const regex = [-a-zA-Z0-9@:%_+.~#?&//=]{2,256}(.[a-z]{2,4})?\b(/[-a-zA-Z0-9@:%_+.~#?&//=]*)
 </script>
+
+
 
 <style scoped>
 form {

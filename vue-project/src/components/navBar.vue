@@ -57,9 +57,9 @@ export default {
       this.showDropdown = !this.showDropdown
       this.keyvalue = !this.keyvalue
     },
-    keyChange(){
-      this.keyvalue = !this.keyvalue
-    },
+    // keyChange(){
+    //   this.keyvalue = !this.keyvalue
+    // },
     close() {
       this.showDropdown = false
     }
@@ -129,13 +129,13 @@ a {
   position: fixed;
   bottom: 0;
   left: 0;
-
+  animation: moveLeft 30s infinite ease-in-out;
 }
 #backWave{
   position: fixed;
   bottom: 0;
   right: 0;
-
+  animation: moveRight 30s infinite ease-in-out;
 }
 .dropdown {
   position: fixed;
@@ -207,12 +207,12 @@ a {
 }
 @keyframes moveRight {
   0% {transform: translateX(0%);}
-  50% {transform: translateX(15%);}
+  50% {transform: translateX(25%);}
   100% {transform: translateX(0%);}
 }
 @keyframes moveLeft {
   0% {transform: translateX(0%);}
-  50% {transform: translateX(-15%);}
+  50% {transform: translateX(-25%);}
   100% {transform: translateX(0%);}
 }
 @keyframes hueShift {
@@ -225,12 +225,12 @@ a {
 .rotate-leave-active{
   display: none;
 }
-.moveRight-enter-active{
+/* .moveRight-enter-active{
   animation: moveRight 2.5s ease-in-out;
 }
 .moveLeft-enter-active{
   animation: moveLeft 2.5s ease-in-out;
 
-}
+} */
 
 </style>

@@ -1,8 +1,8 @@
 <template>
     <div class="page">
-        <h2>User {{ store.state.viewingProfile.dname }}</h2>
-        <h3 v-if="user.uid === route.params.uid" class="button"><router-link to="/create">Create a Post</router-link></h3>
-        <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />
+        <h2 class="userName">User {{ store.state.viewingProfile.dname }}</h2>
+        <!-- <h3 v-if="user.uid === route.params.uid" class="button"><router-link to="/create">Create a Post</router-link></h3> -->
+        <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>
     </div>
 </template>
 
@@ -30,5 +30,10 @@ watch(
     display: flex;
     justify-content: center;
     flex-flow: wrap;
+}
+.userName{
+    width: 50vw;
+    text-align: center;
+    margin: 1rem;
 }
 </style>
