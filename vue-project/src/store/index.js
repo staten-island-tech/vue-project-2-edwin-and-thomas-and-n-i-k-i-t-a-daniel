@@ -108,6 +108,7 @@ const store = createStore({
       const docSnap = await getDoc(docRef);
       context.commit("setViewing", docSnap.data());
       context.dispatch("getProfilePosts");
+      context.dispatch("getProfileComments");
     },
     async createPost(context, { title, description, content, tags }) {
       console.log("create post action");
@@ -221,9 +222,9 @@ const store = createStore({
       console.log(searchedPosts);
       console.log(this.state.posts);
     },
-    async getComments(context) {
+    async getProfileComments(context) {
       context.commit("clearComments");
-      const commentIds = this.state.posts[0].comments;
+      const commentIds = this.state.viewingProfile.comments;
       commentIds.forEach(async (commentId) => {
         const docRef = doc(db, "comments", commentId);
         const docSnap = await getDoc(docRef);
@@ -243,16 +244,15 @@ const store = createStore({
         });
       }
     },
-    async deleteComment(context, commentID, id) {
-        console.log(commentID)
+    async deleteComment(context, {commentID, postID}) {
         await deleteDoc(doc(db, "comments", commentID));
-        const postRef = doc(db, "posts", id);
+        const postRef = doc(db, "posts", postID);
         await updateDoc(postRef, {
-          comments: arrayUnion(docRef.id),
+          comments: arrayRemove(commentID),
         });
         const userRef = doc(db, "users", this.state.user.uid);
         await updateDoc(userRef, {
-          comments: arrayUnion(docRef.id),
+          comments: arrayRemove(commentID),
         });
       }
     },

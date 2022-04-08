@@ -14,7 +14,7 @@
                 <p>{{ comment.content }}</p>
                 <div>
                     <h5 @click="userClick(comment.author.uid)">-{{ comment.author.dname }}</h5>
-                    <BasicButton v-if="comment.author.uid === store.state.user.uid">DELETE</BasicButton>
+                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @click="deleteComment(comment.id, comment.post)">DELETE</BasicButton>
                 </div>
             </div> 
         </div>
@@ -36,6 +36,17 @@ const comments = computed(() => store.state.comments)
 const userClick = (uid) => {
     router.push(`/user/${uid}`)
 }
+const deleteComment = async (id, post) => {
+    try {
+        await store.dispatch("deleteComment", { 
+        commentID: id,
+        postID: post
+        })
+    } catch (err) {
+        error.value = err
+    }
+}
+
 store.dispatch("getViewingProfile", route.params.uid)
 watch(
     () => route.params.uid,
