@@ -8,6 +8,7 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   setDoc,
@@ -249,7 +250,15 @@ const store = createStore({
         });
       }
     },
-    async passwordReset
+    async passwordReset(context, email) {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          console.log("email sent to:", email);
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
+    },
   },
 });
 // wait until auth is ready
