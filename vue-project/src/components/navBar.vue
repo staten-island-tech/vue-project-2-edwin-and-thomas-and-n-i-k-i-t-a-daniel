@@ -75,9 +75,10 @@ export default {
     }
     const searchBar = () => {
       store.dispatch('searchPosts', {search: search.value}) // Works but doesnt re-add all the posts
+      router.push(`/search/${search.value}`)
       search.value = ''
     }
-    return { search, router, route, store, handleClick, user, authIsReady, searchBar}
+    return { search, router, route, store, handleClick, user, authIsReady, searchBar }
   },
 }
 </script>

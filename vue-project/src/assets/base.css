@@ -141,3 +141,7 @@ main,
 .clickable-blk {
   transition: all 0.2s;
 }
+
+.error {
+  color: red;
+}

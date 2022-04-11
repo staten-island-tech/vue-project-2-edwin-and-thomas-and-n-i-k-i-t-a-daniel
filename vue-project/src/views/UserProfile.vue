@@ -7,6 +7,7 @@
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
         </div>
         <div v-if="radio === 'post'" class="post">
+        <h3 v-if="user.uid === route.params.uid"><router-link to="/passwordreset">Reset Password</router-link></h3>
         <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />
         </div>
         <div v-if="radio === 'comments'" class="comments">

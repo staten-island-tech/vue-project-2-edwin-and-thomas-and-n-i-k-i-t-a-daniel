@@ -8,6 +8,7 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   setDoc,
@@ -56,8 +57,11 @@ const store = createStore({
     },
   },
   actions: {
-    async signup(context, { email, password, dname }) {
+    async signup(context, { email, password, confirm, dname }) {
       console.log("signup action");
+      if (confirm != password) {
+        throw new Error("Passwords do not match");
+      }
       const querySnapshot = await getDocs(collection(db, "users"));
       querySnapshot.forEach((doc) => {
         const user = doc.data();
@@ -221,10 +225,20 @@ const store = createStore({
       });
       console.log(searchedPosts);
       console.log(this.state.posts);
+      console.log(postsWithTags);
     },
     async getProfileComments(context) {
       context.commit("clearComments");
       const commentIds = this.state.viewingProfile.comments;
+      commentIds.forEach(async (commentId) => {
+        const docRef = doc(db, "comments", commentId);
+        const docSnap = await getDoc(docRef);
+        context.commit("addComment", docSnap.data());
+      });
+    },
+    async getComments(context) {
+      context.commit("clearComments");
+      const commentIds = this.state.posts[0].comments;
       commentIds.forEach(async (commentId) => {
         const docRef = doc(db, "comments", commentId);
         const docSnap = await getDoc(docRef);
@@ -254,7 +268,15 @@ const store = createStore({
         await updateDoc(userRef, {
           comments: arrayRemove(commentID),
         });
-      }
+      },
+    async passwordReset(context, email) {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          console.log("email sent to:", email);
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
     },
   },
 );
