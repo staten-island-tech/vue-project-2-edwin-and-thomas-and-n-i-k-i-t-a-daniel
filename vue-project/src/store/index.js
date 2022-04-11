@@ -8,6 +8,7 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   setDoc,
@@ -58,8 +59,11 @@ const store = createStore({
     },
   },
   actions: {
-    async signup(context, { email, password, dname }) {
+    async signup(context, { email, password, confirm, dname }) {
       console.log("signup action");
+      if (confirm != password) {
+        throw new Error("Passwords do not match");
+      }
       const querySnapshot = await getDocs(collection(db, "users"));
       querySnapshot.forEach((doc) => {
         const user = doc.data();
@@ -111,7 +115,7 @@ const store = createStore({
       context.commit("setViewing", docSnap.data());
       context.dispatch("getProfilePosts");
     },
-    async createPost(context, { title, description, content }) {
+    async createPost(context, { title, description, content, tags }) {
       console.log("create post action");
       const docData = {
         author: {
@@ -122,6 +126,7 @@ const store = createStore({
         description: description,
         title: title,
         comments: [],
+        tags: tags,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
       await setDoc(
@@ -180,7 +185,7 @@ const store = createStore({
       await updateDoc(userRef, {
         comments: arrayUnion(docRef.id),
       });
-    },                                           
+    },
     async searchPosts(context, search) {
       context.commit("clearPosts");
       const querySnapshot = await getDocs(collection(db, "posts"));
@@ -190,41 +195,39 @@ const store = createStore({
       const searchedPosts = this.state.posts.filter((post) => {
         return (
           post.title.toLowerCase().includes(search.search.toLowerCase()) ||
-          post.description.toLowerCase().includes(search.search.toLowerCase()) ||
+          post.description
+            .toLowerCase()
+            .includes(search.search.toLowerCase()) ||
           post.content.toLowerCase().includes(search.search.toLowerCase())
         );
       });
+      const postsWithTags = this.state.posts.filter(
+        (post) => post.tags && post.tags.length > 0
+      );
+
       context.commit("clearPosts");
       console.log(this.state.posts);
       searchedPosts.forEach((post) => {
         context.commit("addPost", post);
         console.log(post);
       });
+      postsWithTags.forEach((post) => {
+        post.tags.forEach((tag) => {
+          if (
+            tag.toLowerCase().includes(search.search.toLowerCase()) &&
+            !this.state.posts.includes(post)
+          ) {
+            context.commit("addPost", post);
+            console.log("this post passes the filter:", post);
+          } else {
+            console.log("this post does not pass the filter", post);
+          }
+        });
+      });
       console.log(searchedPosts);
       console.log(this.state.posts);
-    }, // So as far as I can tell, this is the best way to search using query(collection blah blah blah). Other than this ig i can figure out a system using getPosts or something: 
-  /*   async searchPosts(context, search) {
-      context.commit("clearPosts");
-      const titleSearch = await getDocs(query(collection(db, "posts"), where(`title`, ">=", `${search.search}`)))//https://cloud.google.com/firestore/docs/query-data/queries#query_operators desperatly needs .toLowerCase and .includes type things
-      const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, ">=", `<p>${search.search}</p>`))) // content value in database has paragraph tags so i need them in the search
-      const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, ">=", `<p>${search.search}</p>`))) // content value in database has paragraph tags so i need them in the search. the special indent and bold stuff is not possible with the way query works (did not test that i will do later).
-      const descriptionSearch = await getDocs (query(collection(db, "posts"), where(`description`, ">=", `${search.search}`)))
-      if (descriptionSearch === titleSearch || contentSearch === titleSearch) {
-        titleSearch.forEach((doc) => {
-          context.commit("addPost", doc.data());
-        }); 
-      }
-      else if (descriptionSearch === contentSearch) {
-        descriptionSearch.forEach((doc) => {
-          context.commit("addPost", doc.data());
-        });
-      }
-      else {
-        contentSearch.forEach((doc) => {
-          context.commit("addPost", doc.data());
-        });
-      }
-    }, */
+      console.log(postsWithTags);
+    },
     async getComments(context) {
       context.commit("clearComments");
       const commentIds = this.state.posts[0].comments;
@@ -246,6 +249,15 @@ const store = createStore({
           posts: arrayRemove(postID),
         });
       }
+    },
+    async passwordReset(context, email) {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          console.log("email sent to:", email);
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
     },
   },
 });

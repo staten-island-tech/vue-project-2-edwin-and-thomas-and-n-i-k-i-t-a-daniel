@@ -123,6 +123,11 @@ button {
   margin: 0 10px;
 }
 
+main,
+.main {
+  margin-top: 9rem;
+}
+
 /* This is just for white text */
 .clickable:hover {
   color: rgba(255, 255, 255, 0.467);
@@ -135,4 +140,8 @@ button {
 .clickable,
 .clickable-blk {
   transition: all 0.2s;
+}
+
+.error {
+  color: red;
 }

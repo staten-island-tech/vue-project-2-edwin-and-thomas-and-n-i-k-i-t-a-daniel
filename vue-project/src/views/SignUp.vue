@@ -1,5 +1,5 @@
 <template>
-<transition-group>
+<transition-group class="main">
     <form @submit.prevent="handleSubmit">
         <h3>Sign up</h3>
 
@@ -14,15 +14,20 @@
         </div>
 
         <div class="form-input">
-            <label for="email">Password:</label>
+            <label for="password">Password:</label>
             <input type="password" name="password" v-model="password" required>
+        </div>
+
+        <div class="form-input">
+            <label for="confirm">Confirm Password:</label>
+            <input type="password" name="confirm" v-model="confirm" required>
         </div>
         
         <BasicButton>Sign Up</BasicButton>
 
         <h4><router-link to="/login">Already have an account?</router-link></h4>
 
-        <h5 v-if="error">{{ error }}</h5>
+        <h5 class="error" v-if="error">{{ error }}</h5>
     </form>
     </transition-group>
 </template>
@@ -35,6 +40,7 @@ import BasicButton from '../components/BasicButton.vue'
 
 const email = ref('')
 const password = ref('')
+const confirm = ref('')
 const dname = ref('')
 const error = ref(null)
 
@@ -46,7 +52,9 @@ const handleSubmit = async () => {
         await store.dispatch('signup', {
             email: email.value,
             password: password.value,
-            dname: dname.value
+            confirm: confirm.value,
+            dname: dname.value,
+
         })
         router.push('/')
     } catch (err) {
@@ -64,6 +72,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
+    padding-top: 15rem
 }
 
 .form-input {

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <main>
         <form @submit.prevent="handleSubmit">
 
             <div class="form-input">
@@ -12,7 +12,17 @@
                 <input type="description" name="description" v-model="description" required>
             </div>
 
-            <div class="editor" required>
+            <div class="form-input">
+                <label for="tags">Tags: (Optional)</label>
+                
+                <input type="tags" name="tags" v-model="newTag">
+                <p @click="addTag()" class="clickable-blk">+</p>
+                <ul v-if="tags">
+                    <li v-for="(tag, index) in tags" :key="tag" @click="removeTag(index)" class="clickable-blk tag">{{ tag }}</li>
+                </ul>
+            </div>
+
+            <div class="editor">
                 <editor 
                     api-key="ffugz7x38mw73x297de4hhgulrnsse6ldbn7cumiyo99w54f" 
                     :init="{
@@ -33,9 +43,9 @@
                     name="content" />
             </div>
 
-            <BasicButton>Upload Post</BasicButton>
+            <BasicButton type="submit">Upload Post</BasicButton>
         </form>
-    </div>
+    </main>
 </template>
 
 <script setup>
@@ -51,13 +61,16 @@ const router = useRouter()
 const title = ref('')
 const description = ref('')
 const content = ref('')
+const newTag = ref('')
+const tags = ref([])
 
 const handleSubmit = async () => {
     try {
         await store.dispatch('createPost', {
             title: title.value,
             description: description.value,
-            content: content.value
+            content: content.value,
+            tags: tags.value
         })
         console.log(content)
         router.push('/')
@@ -65,17 +78,29 @@ const handleSubmit = async () => {
         console.log(err)
     }
 }
+const addTag = () => {
+    const arr = tags.value
+    if(newTag.value.trim() != ''){
+        arr.push(newTag.value.trim())
+        newTag.value = ''
+    }
+}
+const removeTag = (index) => {
+    const arr = tags.value
+    arr.splice(index, 1)
+    console.log(`1 deleted at ${index} index`)
+}
 </script>
 
 <style scoped>
 form {
     width: 100%;
-    height: 75vh;
+    /* height: 75vh; */
     display: flex;
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    padding-top: 25rem;
+    padding-top: 5rem;
 }
 label {
     font-size: 1.6rem;
@@ -98,5 +123,13 @@ input {
 .editor {
     width: 30vw;
     z-index: 0;
+}
+.form-input p {
+    width: fit-content;
+    cursor: pointer;
+}
+.tag {
+    cursor: pointer;
+    font-size: 2rem
 }
 </style>

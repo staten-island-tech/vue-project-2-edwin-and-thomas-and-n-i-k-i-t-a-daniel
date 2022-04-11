@@ -6,6 +6,8 @@ import ViewProfile from "../views/UserProfile.vue";
 import CreateBlog from "../views/CreateBlog.vue";
 import Post from "../views/Post.vue";
 import Err from "../views/404.vue";
+import Reset from "../views/PasswordReset.vue";
+import Search from "../views/Search.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,6 +46,16 @@ const router = createRouter({
       path: "/:pathmatch(.*)*/",
       name: "Err",
       component: Err,
+    },
+    {
+      path: "/passwordreset",
+      name: "Reset",
+      component: Reset,
+    },
+    {
+      path: "/search/:query",
+      name: "Search",
+      component: Search,
     },
   ],
 });

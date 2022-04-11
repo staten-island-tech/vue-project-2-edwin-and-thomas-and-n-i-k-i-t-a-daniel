@@ -23,7 +23,6 @@ const user = computed(() => store.state.user)
 
 <style scoped>
 main {
-  padding-top: 10rem;
   display: flex;
   justify-content: center;
   flex-flow: wrap;

@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit" class="main">
         <h3>Login</h3>
 
         <div class="form-input">
@@ -14,9 +14,10 @@
 
         <BasicButton>Login</BasicButton>
 
+        <h4><router-link to="/passwordreset">Forgot your password?</router-link></h4>
         <h4><router-link to="/signup">Don't have an account?</router-link></h4>
 
-        <h5 v-if="error">{{ error }}</h5>
+        <h5 class="error" v-if="error">{{ error }}</h5>
     </form>
 </template>
 
