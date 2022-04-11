@@ -279,7 +279,7 @@ const store = createStore({
         });
     },
   },
-);
+});
 // wait until auth is ready
 const unsub = onAuthStateChanged(auth, (user) => {
   store.commit("setAuthIsReady", true);
