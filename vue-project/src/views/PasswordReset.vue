@@ -20,13 +20,7 @@ const error = ref(null)
 
 const store = useStore()
 
-const handleSubmit = () => {
-    try {
-        store.dispatch('passwordReset', email.value)
-    } catch (err) {
-        error.value = err
-    }
-}
+const handleSubmit = () => store.dispatch('passwordReset', email.value)
 </script>
 
 <style scoped>
