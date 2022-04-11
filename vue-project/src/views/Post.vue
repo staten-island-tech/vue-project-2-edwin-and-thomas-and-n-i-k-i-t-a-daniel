@@ -10,17 +10,20 @@
             <h2>{{ post.title }}</h2>
             <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
             <div id="content" v-html="post.content"></div>
-            <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.src='https://www.transparenttextures.com/patterns/asfalt-light.png';">
+            <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.id='error';">
 
         </div>
-
+    <div class="commentHolder">
         <div v-if="radio === 'comments'">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment">
+                <h5 class="commentAuthor">{{comment.author.dname}}:</h5>
                 <p>{{ comment.content }}</p>
             </div>
-            <input type="text" v-model="comment">
+            <div class="commentSubmit">
+            <input type="text" v-model="comment" class="commentBox">
             <BasicButton @click="handleComment">Post</BasicButton>
+            </div>
         </div>
 
         <div v-if="radio === 'edit'">
@@ -30,6 +33,7 @@
 
             <h5 v-if="error">{{ error }}</h5>
         </div>
+    </div>
     </div>
 </template>
 
@@ -112,14 +116,27 @@ watch(
 #content {
     font-size: 2rem;
 }
+.commentHolder{
+    background-color:rgb(114, 73, 73, 0.2);
+    padding: 3rem;
+    border-radius: 3rem;
+}
+.commentSubmit{
+    display: flex;
+    align-content: center;
+}
 .commentBox{
-    font-size: 5rem;
+    margin: auto;
+    font-size: 3rem;
+    height: 4rem;
+    width: 50rem;
 }
 .commentButton{
     font-size: 5rem;
+    margin: auto;
 }
 .comment {
-    outline: medium solid red;
+    margin: 1rem;
 }
 .post {
     display: flex;
@@ -138,5 +155,8 @@ watch(
    border-radius: 1rem;
    width: 50%;
    margin: auto;
+}
+#error{
+    display: none;
 }
 </style>

@@ -15,10 +15,10 @@
         </transition> -->
         <router-link class="router" id="Home" to="/">HOME</router-link>
 
-        <router-link class="router right" to="/signup" @click="keyChange()" v-if="!user">SIGN UP</router-link>
-        <router-link class="router right" to="/login" @click="keyChange()" v-if="!user">LOGIN</router-link>
-        <router-link class="router right" :to="`/user/${user.uid}`" @click="keyChange()" v-if="user">PROFILE</router-link>
-        <router-link v-if="user" class="router right" @click="handleClick(); keyChange()" to="/">SIGN OUT</router-link>
+        <router-link class="router right" to="/signup"  v-if="!user">SIGN UP</router-link>
+        <router-link class="router right" to="/login" v-if="!user">LOGIN</router-link>
+        <router-link class="router right" :to="`/user/${user.uid}`"  v-if="user">PROFILE</router-link>
+        <router-link v-if="user" class="router right" @click="handleClick()" to="/">SIGN OUT</router-link>
       </nav>
       <transition-group> 
         <div v-if="showDropdown" class="dropdown">
@@ -30,11 +30,11 @@
         <div id="overlay" v-if="showDropdown" @click="close"></div>
       </transition-group>
       <transition name="moveRight">
-      <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave" :key="keyvalue">
+      <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
       </transition>
       <!-- <img src="../assets/BackmostVector2.svg" id="midWave" class="wave" alt="backgroundDetailWave" :key="keyvalue"> -->
       <transition name="moveLeft">
-      <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave" :key="keyvalue">
+      <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
       </transition>
     </div>
 </template>
@@ -48,7 +48,6 @@ import { useStore } from 'vuex'
 export default {
   data() {
     return {
-      keyvalue: true,
       showDropdown: false,
     }
   },
