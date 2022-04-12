@@ -7,6 +7,8 @@
     "preview": "vite preview --port 5050"
   },
   "dependencies": {
+    "@dicebear/avatars": "^4.10.2",
+    "@dicebear/personas": "^4.10.2",
     "@tinymce/tinymce-vue": "^4.0.6",
     "firebase": "^9.6.7",
     "gsap": "^3.9.1",
