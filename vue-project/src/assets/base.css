@@ -145,3 +145,12 @@ main,
 .error {
   color: red;
 }
+
+/* Phones */
+@media (max-width: 400px) {
+  html,
+  body,
+  * {
+    font-size: 50%;
+  }
+}
