@@ -1,6 +1,4 @@
 import { createStore } from "vuex";
-import { createAvatar } from '@dicebear/avatars';
-import * as style from '@dicebear/personas';
 
 // firebase imports
 import { auth, db } from "../firebase/config";
@@ -74,19 +72,13 @@ const store = createStore({
       const res = await createUserWithEmailAndPassword(auth, email, password);
       if (res) {
         updateProfile(res.user, { displayName: dname });
-        let svg = createAvatar(style, {
-          seed: '',
-          // ... and other options
-        });
         context.commit("setUser", res.user);
         // creates an entry in firestore under users/{user's uid} // later use setDoc with merge to add other stuff
         await setDoc(doc(db, "users", res.user.uid), {
           dname: dname,
           posts: [],
           comments: [],
-          svgSource: svg
         });
-                
       } else {
         throw new Error("could not complete signup");
       }
