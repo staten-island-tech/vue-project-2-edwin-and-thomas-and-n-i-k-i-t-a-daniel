@@ -16,6 +16,7 @@
                 <div>
                     <h5 @click="userClick(comment.author.uid)">-{{ comment.author.dname }}</h5>
                     <BasicButton v-if="comment.author.uid === store.state.user.uid" @click="deleteComment(comment.id, comment.post)">DELETE</BasicButton>
+                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @click="postClick(comment.post)">Go to Post</BasicButton>
                 </div>
             </div> 
         </div>
@@ -26,9 +27,11 @@
 import PostPreview from '../components/PostPreview.vue'
 import BasicButton from '../components/BasicButton.vue'
 import { useStore } from 'vuex'
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { computed, watch, ref } from 'vue';
+import gsap from 'gsap'
 const route = useRoute()
+const router = useRouter()
 const store = useStore()
 const user = computed(() => store.state.user)
 const posts = computed(() => store.state.posts)
@@ -47,7 +50,9 @@ const deleteComment = async (id, post) => {
         error.value = err
     }
 }
-
+const postClick = (postID) => {
+  router.push(`/post/${postID}`)
+}
 store.dispatch("getViewingProfile", route.params.uid)
 watch(
     () => route.params.uid,
@@ -58,5 +63,39 @@ watch(
 </script>
 
 <style scoped>
-
+.commentBox{
+    font-size: 5rem;
+}
+.commentButton{
+    font-size: 5rem;
+}
+.comments {
+    width: 40vw;
+}
+.comments h2 {
+    text-align: center;
+}
+.comment {
+    background-color: #724949;
+    display: flex;
+    flex-flow: column nowrap;
+    margin-bottom: 1rem;
+    color: white;
+    border-radius: 0.5rem;
+}
+.comment p {
+    margin-left: 0.5rem;
+}
+.comment h5 {
+    margin-right: 0.5rem;
+}
+.comment div {
+    align-self: flex-end;
+    cursor: pointer;
+    display: flex;
+    flex-flow: column-reverse nowrap;
+}
+.comment div h5 {
+    text-align: right;
+}
 </style>

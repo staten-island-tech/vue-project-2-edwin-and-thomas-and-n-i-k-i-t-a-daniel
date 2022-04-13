@@ -16,7 +16,7 @@
       <transition-group> 
         <div v-if="showDropdown" class="dropdown">
           <input type="search" name="search" v-model="search" class="top-item" @keypress.enter="searchBar(), close()"/>
-          <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
+          <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Profile (maybe get rid of this)</router-link>
           <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
         </div>
