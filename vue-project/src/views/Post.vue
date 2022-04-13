@@ -15,8 +15,8 @@
         </div>
         <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
-            <div v-for="comment in comments" :key="comment.id" class="comment">
-                <h5 class="commentAuthor">{{comment.author.dname}}:</h5>
+            <div v-for="comment in comments" :key="comment.id" class="comment"  >
+                <h5 class="commentAuthor" v-if="comment.content != ''">{{comment.author.dname}}:</h5>
                 <p>{{ comment.content }}</p>
             </div>
             <div class="commentSubmit">
