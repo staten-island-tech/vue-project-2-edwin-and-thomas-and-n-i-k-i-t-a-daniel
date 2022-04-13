@@ -45,8 +45,13 @@ input {
     font-size: 3.2rem;
     text-align: center;
 }
-
 label {
     font-size: 1.6rem;
+}
+
+@media (max-width: 400px) {
+    input {
+        width: 90vw
+    }
 }
 </style>

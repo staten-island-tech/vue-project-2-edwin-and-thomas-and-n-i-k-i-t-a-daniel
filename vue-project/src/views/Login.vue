@@ -79,5 +79,10 @@ label {
 }
 
 
+@media (max-width: 400px) {
+    input {
+        width: 90vw
+    }
+}
 
 </style>

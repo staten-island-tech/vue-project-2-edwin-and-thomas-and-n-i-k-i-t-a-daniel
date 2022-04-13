@@ -237,6 +237,9 @@ a {
   .router:not(#Home) {
     display: none;
   }
+  .wave {
+    width: 600%;
+  }
 }
 
 </style>

@@ -1,6 +1,5 @@
 <template>
-<transition-group class="main">
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit" class="main">
         <h3>Sign up</h3>
 
         <div class="form-input">
@@ -29,7 +28,6 @@
 
         <h5 class="error" v-if="error">{{ error }}</h5>
     </form>
-    </transition-group>
 </template>
 
 <script setup>
@@ -72,7 +70,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    padding-top: 15rem
+    padding-top: 15rem;
 }
 
 .form-input {
@@ -96,13 +94,10 @@ label {
     font-size: 1.6rem;
 }
 
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
-}
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
+@media (max-width: 400px) {
+    input {
+        width: 90vw
+    }
 }
 
 </style>
