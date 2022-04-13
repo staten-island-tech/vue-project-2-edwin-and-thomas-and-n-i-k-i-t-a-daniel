@@ -17,6 +17,7 @@
                 
                 <input type="tags" name="tags" v-model="newTag">
                 <p @click="addTag()" class="clickable-blk">+</p>
+                <p v-if="tags.length > 0">Click to remove tag</p>
                 <ul v-if="tags">
                     <li v-for="(tag, index) in tags" :key="tag" @click="removeTag(index)" class="clickable-blk tag">{{ tag }}</li>
                 </ul>
@@ -132,4 +133,12 @@ input {
     cursor: pointer;
     font-size: 2rem
 }
+
+@media (max-width: 400px) {
+    .editor, input {
+        width: 90vw
+    }
+}
+
+
 </style>

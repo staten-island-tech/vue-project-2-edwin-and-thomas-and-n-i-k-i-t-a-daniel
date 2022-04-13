@@ -90,4 +90,17 @@ const subtextEnter = (el) => {
   cursor: pointer;
   width: fit-content
 }
+
+/* Phones */
+@media (max-width: 400px) {
+  h2 {
+    font-size: 3rem;
+  }
+  p {
+    display: none;
+  }
+  .post {
+    height: fit-content;
+  }
+}
 </style>

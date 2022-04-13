@@ -5,7 +5,7 @@
         name="rotate">
         <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" :key="showDropdown">
         </transition>
-        <router-link class="router clickable" id="Home" to="/" @click="store.dispatch('getPosts')">HOME</router-link>
+        <router-link class="router clickable" id="Home" to="/" @click="store.dispatch('getPosts'), close()">HOME</router-link>
         
         <router-link class="router right clickable" to="/signup" @click="keyChange()" v-if="!user">SIGN UP</router-link>
         <router-link class="router right clickable" to="/login" @click="keyChange()" v-if="!user">LOGIN</router-link>
@@ -19,6 +19,7 @@
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
           <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
+          <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick(); keyChange()">Sign Out</router-link>
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
       </transition-group>
@@ -48,7 +49,7 @@ export default {
   methods: {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
-      this.keyvalue = !this.keyvalue
+      this.keyChange()
     },
     keyChange(){
       this.keyvalue = !this.keyvalue
@@ -229,6 +230,16 @@ a {
 .moveLeft-enter-active{
   animation: moveLeft 2.5s ease-in-out;
 
+}
+
+/* Phones */
+@media (max-width: 400px) {
+  .router:not(#Home) {
+    display: none;
+  }
+  .wave {
+    width: 600%;
+  }
 }
 
 </style>
