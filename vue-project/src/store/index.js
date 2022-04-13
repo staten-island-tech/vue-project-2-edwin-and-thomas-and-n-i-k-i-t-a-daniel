@@ -78,6 +78,7 @@ const store = createStore({
           dname: dname,
           posts: [],
           comments: [],
+          picture: `https://avatars.dicebear.com/api/personas/:${res.user.uid}.svg`
         });
       } else {
         throw new Error("could not complete signup");
