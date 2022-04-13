@@ -13,8 +13,7 @@
             <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.id='error';">
 
         </div>
-    <div class="commentHolder">
-        <div v-if="radio === 'comments'">
+        <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment">
                 <h5 class="commentAuthor">{{comment.author.dname}}:</h5>
@@ -24,7 +23,6 @@
             <input type="text" v-model="comment" class="commentBox">
             <BasicButton @click="handleComment">Post</BasicButton>
             </div>
-        </div>
 
         <div v-if="radio === 'edit'">
             <h2>Edit</h2>
@@ -92,7 +90,7 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    margin-top: 9rem;
+    padding-top: 9rem;
 }
 .radio {
     display: flex;
@@ -118,8 +116,9 @@ watch(
 }
 .commentHolder{
     background-color:rgb(114, 73, 73, 0.2);
-    padding: 3rem;
+    padding: 1rem;
     border-radius: 3rem;
+    margin-top: 3rem;
 }
 .commentSubmit{
     display: flex;
