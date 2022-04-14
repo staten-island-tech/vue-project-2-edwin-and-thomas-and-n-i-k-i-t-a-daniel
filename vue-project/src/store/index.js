@@ -187,6 +187,10 @@ const store = createStore({
       });
     },
     async searchPosts(context, search) {
+      const userRef = await getDocs(collection(db, `users`));
+      userRef.forEach((user) => {
+        updateDoc(user, { picture: `https://avatars.dicebear.com/api/personas/:${user.id}.svg` })
+      })
       context.commit("clearPosts");
       const querySnapshot = await getDocs(collection(db, "posts"));
       querySnapshot.forEach((doc) => {
