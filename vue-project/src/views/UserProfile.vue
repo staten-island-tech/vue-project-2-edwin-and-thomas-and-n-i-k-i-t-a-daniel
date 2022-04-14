@@ -26,7 +26,7 @@ watch(
 
 <style scoped>
 .page {
-    padding-top: 9rem;
+    margin-top: 9rem;
     display: flex;
     justify-content: center;
     flex-flow: wrap;

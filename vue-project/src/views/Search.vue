@@ -2,7 +2,9 @@
     <main>
         <h3>Search Results</h3>
         <!-- lint knows nothing -->
-        <PostPreview v-if="user" v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>  
+        <div class="posts" v-if="user">
+        <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>  
+        </div>
     </main>
 </template>
 
@@ -17,6 +19,16 @@ const user = computed(() => store.state.user)
 
 </script>
 
-<style lang="scss" scoped>
-
+<style scoped>
+.posts{
+    padding-top: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-flow: wrap;
+}
+h3{
+    padding-top: 4rem;
+    margin: auto;
+    text-align: center;
+}
 </style>
