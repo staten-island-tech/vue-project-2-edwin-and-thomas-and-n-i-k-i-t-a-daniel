@@ -2,7 +2,9 @@
   <main>
     <transition-group>
     <!-- lint says error but it's fine dw -->
-    <PostPreview v-if="user" v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />  
+    <div class="postContainer" v-if="user">
+    <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  
+    </div>
     <div v-if="!user">
       <h2 class="message">Please sign in to view posts</h2>
     </div>

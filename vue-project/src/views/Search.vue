@@ -2,7 +2,7 @@
     <main>
         <h3>Search Results</h3>
         <!-- lint knows nothing -->
-        <PostPreview v-if="user" v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />  
+        <PostPreview v-if="user" v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>  
     </main>
 </template>
 

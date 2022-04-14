@@ -7,20 +7,22 @@
       > 
         <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
       </transition>
-      <transition
-        appear
-        @before-enter="beforeEnter"
-        @enter="subtextEnter"
-      > 
-        <h4 >by <span @click="userClick(author.uid)" class="clickable">{{ author.dname }}</span></h4>
-      </transition>
-      <transition
+      <img v-bind:src="imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
+      <transition-group
         appear
         @before-enter="beforeEnter"
         @enter="bodyEnter"
       > 
         <p>{{ description }}</p>
+      </transition-group>
+      <transition
+        appear
+        @before-enter="beforeEnter"
+        @enter="subtextEnter"
+      > 
+        <h4 @click="userClick(author.uid)" class="clickable">by {{ author.dname }}</h4>
       </transition>
+
     </div>
 </template>
 
@@ -38,7 +40,8 @@ const props = defineProps({
     title: String,
     author: Object,
     description: String,
-    id: String
+    id: String,
+    imageLink: String,
 })
 
 const postClick = (postID) => {
@@ -72,9 +75,11 @@ const subtextEnter = (el) => {
 
 <style scoped>
 .post{
+  display: grid;
+  grid-template-columns: 3fr 1fr;
   background-color: #724949;
-  width: 83vw;
-  height: 25vh;
+  width: 73vw;
+  max-height: 45vh;
   margin: 3rem;
   color: white;
   border-radius: 1rem;
@@ -102,5 +107,10 @@ const subtextEnter = (el) => {
   .post {
     height: fit-content;
   }
+
+}
+.image{
+  max-height: 20vh;
+  border-radius: 1rem;
 }
 </style>

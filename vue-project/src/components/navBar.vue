@@ -24,11 +24,11 @@
         <div id="overlay" v-if="showDropdown" @click="close"></div>
       </transition-group>
       <transition name="moveRight">
-      <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave" :key="keyvalue">
+      <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
       </transition>
       <!-- <img src="../assets/BackmostVector2.svg" id="midWave" class="wave" alt="backgroundDetailWave" :key="keyvalue"> -->
       <transition name="moveLeft">
-      <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave" :key="keyvalue">
+      <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
       </transition>
     </div>
 </template>
@@ -42,7 +42,6 @@ import { useStore } from 'vuex'
 export default {
   data() {
     return {
-      keyvalue: true,
       showDropdown: false,
     }
   },
@@ -51,9 +50,9 @@ export default {
       this.showDropdown = !this.showDropdown
       this.keyChange()
     },
-    keyChange(){
-      this.keyvalue = !this.keyvalue
-    },
+    // keyChange(){
+    //   this.keyvalue = !this.keyvalue
+    // },
     close() {
       this.showDropdown = false
     }
@@ -128,13 +127,13 @@ a {
   position: fixed;
   bottom: 0;
   left: 0;
-
+  animation: moveLeft 30s infinite ease-in-out;
 }
 #backWave{
   position: fixed;
   bottom: 0;
   right: 0;
-
+  animation: moveRight 30s infinite ease-in-out;
 }
 .dropdown {
   position: fixed;
@@ -206,12 +205,12 @@ a {
 }
 @keyframes moveRight {
   0% {transform: translateX(0%);}
-  50% {transform: translateX(15%);}
+  50% {transform: translateX(25%);}
   100% {transform: translateX(0%);}
 }
 @keyframes moveLeft {
   0% {transform: translateX(0%);}
-  50% {transform: translateX(-15%);}
+  50% {transform: translateX(-25%);}
   100% {transform: translateX(0%);}
 }
 @keyframes hueShift {
@@ -224,13 +223,13 @@ a {
 .rotate-leave-active{
   display: none;
 }
-.moveRight-enter-active{
+/* .moveRight-enter-active{
   animation: moveRight 2.5s ease-in-out;
 }
 .moveLeft-enter-active{
   animation: moveLeft 2.5s ease-in-out;
 
-}
+} */
 
 /* Phones */
 @media (max-width: 400px) {

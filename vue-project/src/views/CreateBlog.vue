@@ -11,6 +11,10 @@
                 <label for="description">Description:</label>
                 <input type="description" name="description" v-model="description" required>
             </div>
+            <div class="form-input">
+                <label for="title">Image Link:</label>
+                <input type="url" name="imageLink" v-model="imageLink">
+            </div>
 
             <div class="form-input">
                 <label for="tags">Tags: (Optional)</label>
@@ -64,6 +68,7 @@ const description = ref('')
 const content = ref('')
 const newTag = ref('')
 const tags = ref([])
+const imageLink = ref('')
 
 const handleSubmit = async () => {
     try {
@@ -71,7 +76,8 @@ const handleSubmit = async () => {
             title: title.value,
             description: description.value,
             content: content.value,
-            tags: tags.value
+            tags: tags.value,
+            imageLink: imageLink.value
         })
         console.log(content)
         router.push('/')
@@ -93,6 +99,8 @@ const removeTag = (index) => {
 }
 </script>
 
+
+
 <style scoped>
 form {
     width: 100%;
@@ -101,7 +109,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    padding-top: 5rem;
+    padding-top: 30rem;
 }
 label {
     font-size: 1.6rem;

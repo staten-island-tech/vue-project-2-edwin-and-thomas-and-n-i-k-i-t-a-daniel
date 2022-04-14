@@ -6,25 +6,27 @@
             <h3 class="radio-item" @click="radio = 'edit'" v-if="user.uid === post.author.uid">Edit</h3>
         </div>
 
-        <div v-if="radio === 'post'" class="post">
+        <div v-if="radio === 'post'" class="post" >
             <h2>{{ post.title }}</h2>
-            <h4>by <span class="clickable-blk" @click="userClick(post.author.uid)">{{ post.author.dname }}</span></h4>
-            <div id="content" v-html="post.content" />
-        </div>
+            <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
+            <div id="content" v-html="post.content"></div>
+            <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.id='error';">
 
-        <div v-if="radio === 'comments'" class="comments">
+        </div>
+        <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
-            <div v-for="comment in comments" :key="comment.id" class="comment">
+            <div v-for="comment in comments" :key="comment.id" class="comment"  >
+                <h5 class="commentAuthor" v-if="comment.content != ''">{{comment.author.dname}}:</h5>
                 <p>{{ comment.content }}</p>
                 <div>
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
                     <BasicButton v-if="comment.author.uid === store.state.user.uid">DELETE</BasicButton>
                 </div>
             </div>
-            <input type="text" v-model="comment">
-            <BasicButton @on-click="handleComment">Post</BasicButton>
-            <h5 v-if="error">{{ error }}</h5>
-        </div>
+            <div class="commentSubmit">
+            <input type="text" v-model="comment" class="commentBox">
+            <BasicButton @click="handleComment">Post</BasicButton>
+            </div>
 
         <div v-if="radio === 'edit'">
             <h2>Edit</h2>
@@ -33,6 +35,7 @@
 
             <h5 v-if="error" class="error">{{ error }}</h5>
         </div>
+    </div>
     </div>
 </template>
 
@@ -91,6 +94,7 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    padding-top: 9rem;
 }
 .radio {
     display: flex;
@@ -114,11 +118,25 @@ watch(
 #content {
     font-size: 2rem;
 }
+.commentHolder{
+    background-color:rgb(114, 73, 73, 0.2);
+    padding: 1rem;
+    border-radius: 3rem;
+    margin-top: 3rem;
+}
+.commentSubmit{
+    display: flex;
+    align-content: center;
+}
 .commentBox{
-    font-size: 5rem;
+    margin: auto;
+    font-size: 3rem;
+    height: 4rem;
+    width: 50rem;
 }
 .commentButton{
     font-size: 5rem;
+    margin: auto;
 }
 .comments {
     width: 40vw;
@@ -127,27 +145,7 @@ watch(
     text-align: center;
 }
 .comment {
-    background-color: #724949;
-    display: flex;
-    flex-flow: column nowrap;
-    margin-bottom: 1rem;
-    color: white;
-    border-radius: 0.5rem;
-}
-.comment p {
-    margin-left: 0.5rem;
-}
-.comment h5 {
-    margin-right: 0.5rem;
-}
-.comment div {
-    align-self: flex-end;
-    cursor: pointer;
-    display: flex;
-    flex-flow: column-reverse nowrap;
-}
-.comment div h5 {
-    text-align: right;
+    margin: 1rem;
 }
 .post {
     display: flex;
@@ -160,7 +158,12 @@ watch(
 .post h4 {
     cursor: pointer;
 }
-input {
-    font-size: 2rem;
+.image{
+   border-radius: 1rem;
+   width: 50%;
+   margin: auto;
+}
+#error{
+    display: none;
 }
 </style>
