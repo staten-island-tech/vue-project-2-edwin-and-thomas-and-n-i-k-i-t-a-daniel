@@ -31,7 +31,7 @@
 
             <BasicButton @on-click="handleDelete">Delete</BasicButton>
 
-            <h5 v-if="error">{{ error }}</h5>
+            <h5 v-if="error" class="error">{{ error }}</h5>
         </div>
     </div>
 </template>
