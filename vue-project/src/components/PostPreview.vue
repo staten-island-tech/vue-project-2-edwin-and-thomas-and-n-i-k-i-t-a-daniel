@@ -92,8 +92,10 @@ const subtextEnter = (el) => {
   font-size: 2rem;
 }
 .clickable {
-  cursor: pointer;
   width: fit-content
+}
+h2 {
+  height: fit-content
 }
 
 /* Phones */

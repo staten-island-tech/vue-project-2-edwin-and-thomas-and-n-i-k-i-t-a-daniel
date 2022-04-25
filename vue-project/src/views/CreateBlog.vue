@@ -109,7 +109,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    padding-top: 30rem;
+    padding-top: 3rem;
 }
 label {
     font-size: 1.6rem;
