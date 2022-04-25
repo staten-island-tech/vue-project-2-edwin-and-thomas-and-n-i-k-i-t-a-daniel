@@ -19,8 +19,6 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
-  query,
-  where,
   deleteDoc,
   arrayRemove,
 } from "firebase/firestore";
@@ -32,6 +30,7 @@ const store = createStore({
     posts: [],
     comments: [],
     viewingProfile: null,
+    
   },
   mutations: {
     setUser(state, payload) {
@@ -80,6 +79,7 @@ const store = createStore({
           dname: dname,
           posts: [],
           comments: [],
+          picture: `https://avatars.dicebear.com/api/personas/:${res.user.uid}.svg`
         });
       } else {
         throw new Error("could not complete signup");
@@ -114,6 +114,7 @@ const store = createStore({
       const docSnap = await getDoc(docRef);
       context.commit("setViewing", docSnap.data());
       context.dispatch("getProfilePosts");
+      context.dispatch("getProfileComments");
     },
     async createPost(context, { title, description, content, imageLink }) {
       console.log("create post action");
@@ -205,7 +206,7 @@ const store = createStore({
       const postsWithTags = this.state.posts.filter(
         (post) => post.tags && post.tags.length > 0
       );
-
+      
       context.commit("clearPosts");
       console.log(this.state.posts);
       searchedPosts.forEach((post) => {
@@ -229,6 +230,15 @@ const store = createStore({
       console.log(this.state.posts);
       console.log(postsWithTags);
     },
+    async getProfileComments(context) {
+      context.commit("clearComments");
+      const commentIds = this.state.viewingProfile.comments;
+      commentIds.forEach(async (commentId) => {
+        const docRef = doc(db, "comments", commentId);
+        const docSnap = await getDoc(docRef);
+        context.commit("addComment", docSnap.data());
+      });
+    },
     async getComments(context) {
       context.commit("clearComments");
       const commentIds = this.state.posts[0].comments;
@@ -251,6 +261,17 @@ const store = createStore({
         });
       }
     },
+    async deleteComment(context, {commentID, postID}) {
+        await deleteDoc(doc(db, "comments", commentID));
+        const postRef = doc(db, "posts", postID);
+        await updateDoc(postRef, {
+          comments: arrayRemove(commentID),
+        });
+        const userRef = doc(db, "users", this.state.user.uid);
+        await updateDoc(userRef, {
+          comments: arrayRemove(commentID),
+        });
+      },
     async passwordReset(context, email) {
       sendPasswordResetEmail(auth, email)
         .then(() => {
