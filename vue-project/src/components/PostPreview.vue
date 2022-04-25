@@ -1,29 +1,18 @@
 <template>
-    <div class="post">
-      <transition
-        appear
-        @before-enter="beforeEnter"
-        @enter="headerEnter"
-      > 
-        <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
-      </transition>
-      <img v-bind:src="imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
+    <div class="post"> 
       <transition-group
         appear
         @before-enter="beforeEnter"
         @enter="bodyEnter"
-      > 
+      >
+  
+        <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
+      <img v-bind:src="imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
         <p>{{ description }}</p>
-      </transition-group>
-      <transition
-        appear
-        @before-enter="beforeEnter"
-        @enter="subtextEnter"
-      > 
         <h4 @click="userClick(author.uid)" class="clickable">by {{ author.dname }}</h4>
-      </transition>
-
-    </div>
+   
+</transition-group> 
+</div> 
 </template>
 
 <script setup>
@@ -53,24 +42,13 @@ const userClick = (userID) => {
 const beforeEnter = (el) => {
   el.style.opacity = 0
 }
-const headerEnter = (el) => {
-  gsap.to(el,{
-    duration:1.5,
-    opacity:1,
-  })
-}
 const bodyEnter = (el) => {
  gsap.to(el,{
     duration:1.75,
     opacity:1,
   })
 }  
-const subtextEnter = (el) => {
- gsap.to(el,{
-    duration:2,
-    opacity:1,
-  })
-}
+
 </script>
 
 <style scoped>

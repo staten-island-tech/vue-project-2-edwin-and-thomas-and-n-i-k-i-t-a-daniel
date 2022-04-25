@@ -19,6 +19,7 @@
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
           <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
+          <router-link v-if="user" to="/theme" class="dropdown-item">Theme</router-link>
           <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick(); keyChange()">Sign Out</router-link>
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
