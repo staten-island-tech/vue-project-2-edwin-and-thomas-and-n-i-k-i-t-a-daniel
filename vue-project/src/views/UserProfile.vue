@@ -1,6 +1,7 @@
 <template>
     <div class="main">
-        <h2>User {{ store.state.viewingProfile.dname }}</h2>
+        <img class=pfp :src=store.state.viewingProfile.picture>
+        <h2>{{ store.state.viewingProfile.dname }}</h2>
         <h3 v-if="user.uid === route.params.uid"><router-link to="/create">Create a Post</router-link></h3>
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Posts</h3>
@@ -97,5 +98,9 @@ watch(
 }
 .comment div h5 {
     text-align: right;
+}
+.pfp {
+    width: 30rem;
+
 }
 </style>

@@ -5,7 +5,7 @@
         name="rotate">
         <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" :key="showDropdown">
         </transition>
-        <router-link class="router clickable" id="Home" to="/" @click="store.dispatch('getPosts'), close()">HOME</router-link>
+        <router-link class="router clickable" id="Home" to="/" @click="close()">HOME</router-link>
         
         <router-link class="router right clickable" to="/signup" @click="keyChange()" v-if="!user">SIGN UP</router-link>
         <router-link class="router right clickable" to="/login" @click="keyChange()" v-if="!user">LOGIN</router-link>
