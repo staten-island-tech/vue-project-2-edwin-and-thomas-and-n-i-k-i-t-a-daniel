@@ -16,18 +16,17 @@
         <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment"  >
-                <h5 class="commentAuthor" v-if="comment.content != ''">{{comment.author.dname}}:</h5>
-                <p>{{ comment.content }}</p>
-                <div>
+                <em>{{ comment.content }}</em>
+                <div v-if="comment.content.trim() != ''">
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
-                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)">DELETE</BasicButton>
+                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)" class="delete">DELETE</BasicButton>
                 </div>
             </div>
             <div class="commentSubmit">
             <input type="text" v-model="comment" class="commentBox">
             <BasicButton @click="handleComment">Post</BasicButton>
             </div>
-
+        </div>
         <div v-if="radio === 'edit'">
             <h2>Edit</h2>
 
@@ -35,7 +34,6 @@
 
             <h5 v-if="error" class="error">{{ error }}</h5>
         </div>
-    </div>
     </div>
 </template>
 
@@ -127,6 +125,15 @@ watch(
 }
 #content {
     font-size: 2rem;
+}
+.comment div {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+.delete {
+    transform: scale(0.5);
+    margin: 0
 }
 .commentHolder{
     background-color:rgb(114, 73, 73, 0.2);
