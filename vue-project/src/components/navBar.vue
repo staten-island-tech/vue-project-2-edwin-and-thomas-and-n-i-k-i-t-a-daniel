@@ -70,7 +70,7 @@ export default {
       router.push("/")
     }
     const searchBar = () => {
-      store.dispatch('searchPosts', {search: search.value}) // Works but doesnt re-add all the posts
+      store.dispatch('searchPosts', {search: search.value})
       router.push(`/search/${search.value}`)
       search.value = ''
     }

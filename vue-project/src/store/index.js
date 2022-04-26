@@ -281,6 +281,12 @@ const store = createStore({
           throw new Error(err);
         });
     },
+    async changePicture(context, pictureLink) {
+        const userRef = doc(db, "users", this.state.user.uid);
+        await updateDoc(userRef, {
+          picture: pictureLink,
+        });
+    }
   },
 });
 // wait until auth is ready

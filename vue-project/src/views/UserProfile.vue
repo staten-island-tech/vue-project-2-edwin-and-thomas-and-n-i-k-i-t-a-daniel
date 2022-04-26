@@ -2,6 +2,7 @@
     <div class="page">
         <img class=pfp :src=store.state.viewingProfile.picture>
         <h2>{{ store.state.viewingProfile.dname }}</h2>
+        <input v-if="store.state.viewingProfile.uid === store.state.user.uid" type="url" name="changePicture" v-model="pictureLink" @keypress.enter="changePicture()"/>
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Posts</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
@@ -36,6 +37,7 @@ const user = computed(() => store.state.user)
 const posts = computed(() => store.state.posts)
 const radio = ref('post')
 const comments = computed(() => store.state.comments)
+const pictureLink = ref('')
 const userClick = (uid) => {
     router.push(`/user/${uid}`)
 }
@@ -59,6 +61,11 @@ watch(
         store.dispatch("getViewingProfile", newId)
     },
 )
+const changePicture = () => {
+    store.dispatch('searchPosts', {search: search.value})
+    router.push(`/search/${search.value}`)
+    search.value = ''
+}
 </script>
 
 <style scoped>
@@ -111,5 +118,6 @@ watch(
 }
 .pfp {
     width: 30rem;
+    height: 30rem;
 }
 </style>
