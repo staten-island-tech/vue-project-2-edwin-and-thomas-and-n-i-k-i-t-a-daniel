@@ -30,7 +30,6 @@ const store = createStore({
     posts: [],
     comments: [],
     viewingProfile: null,
-    
   },
   mutations: {
     setUser(state, payload) {

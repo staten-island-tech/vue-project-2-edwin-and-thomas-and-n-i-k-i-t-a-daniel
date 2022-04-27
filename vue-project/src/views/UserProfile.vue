@@ -2,7 +2,7 @@
     <div class="page">
         <img class=pfp :src=store.state.viewingProfile.picture>
         <h2>{{ store.state.viewingProfile.dname }}</h2>
-        <input v-if="store.state.viewingProfile.uid === store.state.user.uid" type="url" name="changePicture" v-model="pictureLink" @keypress.enter="changePicture()"/>
+        <input v-if="store.state.viewingProfile.dname === user.displayName" type="url" name="changePicture" v-model="pictureLink" @keypress.enter="changePicture()"/>
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Posts</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
@@ -16,7 +16,7 @@
                 <div>
                     <h5 @click="userClick(comment.author.uid)">-{{ comment.author.dname }}</h5>
                     <BasicButton v-if="comment.author.uid === store.state.user.uid" @click="deleteComment(comment.id, comment.post)">DELETE</BasicButton>
-                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @click="postClick(comment.post)">Go to Post</BasicButton>
+                    <BasicButton @click="postClick(comment.post)">Go to Post</BasicButton>
                 </div>
             </div> 
         </div>
@@ -62,9 +62,8 @@ watch(
     },
 )
 const changePicture = () => {
-    store.dispatch('searchPosts', {search: search.value})
-    router.push(`/search/${search.value}`)
-    search.value = ''
+    store.dispatch('searchPosts', {picture: pictureLink.value})
+    pictureLink.value = ''
 }
 </script>
 
