@@ -80,6 +80,8 @@ const store = createStore({
           comments: [],
           picture: `https://avatars.dicebear.com/api/personas/:${res.user.uid}.svg`,
           karma: 0,
+          upvotes: [],
+          downvotes: [],
         });
       } else {
         throw new Error("could not complete signup");
@@ -282,6 +284,87 @@ const store = createStore({
         .catch((err) => {
           throw new Error(err);
         });
+    },
+    async vote(context, { targetID, type, value }) {
+      const docRef = doc(db, type, targetID);
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(docRef, {
+        // increments post/comment's score
+        score: increment(value),
+      });
+      const docSnap = await getDoc(docRef);
+      const docData = docSnap.data();
+      const authorRef = doc(db, "users", docData.author.uid);
+
+      await updateDoc(authorRef, {
+        // increments author's karma
+        karma: increment(value),
+      });
+
+      if (value === 1) {
+        await updateDoc(userRef, {
+          // adds post to user's list of upvotes
+          upvotes: arrayUnion(targetID),
+        });
+      } else if (value === -1) {
+        // adds post to user's list of downvotes
+        await updateDoc(userRef, {
+          downvotes: arrayUnion(targetID),
+        });
+      }
+    },
+    async unvote(context, { targetID, type, value }) {
+      const docRef = doc(db, type, targetID);
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(docRef, {
+        // increments post/comment's score
+        score: increment(-value),
+      });
+      const docSnap = await getDoc(docRef);
+      const docData = docSnap.data();
+      const authorRef = doc(db, "users", docData.author.uid);
+
+      await updateDoc(authorRef, {
+        // increments author's karma
+        karma: increment(-value),
+      });
+
+      if (value === 1) {
+        await updateDoc(userRef, {
+          // removes post from user's list of upvotes
+          upvotes: arrayRemove(targetID),
+        });
+      } else if (value === -1) {
+        // removes post from user's list of downvotes
+        await updateDoc(userRef, {
+          downvotes: arrayRemove(targetID),
+        });
+      }
+    },
+    // TEMPORARY FUNCTIONS BECAUSE FIREBASE CONSOLE IS BAD:::
+    async implementVoting(context) {
+      const userSnapshot = await getDocs(collection(db, "users"));
+      const postSnapshot = await getDocs(collection(db, "posts"));
+      const commentSnapshot = await getDocs(collection(db, "comments"));
+      userSnapshot.forEach((doc) => {
+        const user = doc.data();
+        const userRef = doc(db, "users", user.uid);
+        setDoc(
+          userRef,
+          { karma: 0, upvotes: [], downvotes: [] },
+          { merge: true }
+        );
+      });
+      postSnapshot.forEach((doc) => {
+        const post = doc.data();
+        const postRef = doc(db, "posts", post.id);
+        setDoc(postRef, { score: 0 }, { merge: true });
+      });
+      commentSnapshot.forEach((doc) => {
+        const comment = doc.data();
+        const commentRef = doc(db, "comments", comment.id);
+        setDoc(commentRef, { score: 0 }, { merge: true });
+      });
     },
   },
 });
