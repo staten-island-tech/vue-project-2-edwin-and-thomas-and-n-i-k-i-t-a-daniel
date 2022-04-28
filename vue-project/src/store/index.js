@@ -341,31 +341,6 @@ const store = createStore({
         });
       }
     },
-    // TEMPORARY FUNCTIONS BECAUSE FIREBASE CONSOLE IS BAD:::
-    async implementVoting(context) {
-      const userSnapshot = await getDocs(collection(db, "users"));
-      const postSnapshot = await getDocs(collection(db, "posts"));
-      const commentSnapshot = await getDocs(collection(db, "comments"));
-      userSnapshot.forEach((doc) => {
-        const user = doc.data();
-        const userRef = doc(db, "users", user.uid);
-        setDoc(
-          userRef,
-          { karma: 0, upvotes: [], downvotes: [] },
-          { merge: true }
-        );
-      });
-      postSnapshot.forEach((doc) => {
-        const post = doc.data();
-        const postRef = doc(db, "posts", post.id);
-        setDoc(postRef, { score: 0 }, { merge: true });
-      });
-      commentSnapshot.forEach((doc) => {
-        const comment = doc.data();
-        const commentRef = doc(db, "comments", comment.id);
-        setDoc(commentRef, { score: 0 }, { merge: true });
-      });
-    },
   },
 });
 // wait until auth is ready
