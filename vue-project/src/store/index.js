@@ -282,8 +282,9 @@ const store = createStore({
     },
     async changePicture(context, pictureLink) {
         const userRef = doc(db, "users", this.state.user.uid);
+        console.log(pictureLink)
         await updateDoc(userRef, {
-          picture: pictureLink,
+          picture: `${pictureLink.picture}`
         });
     }
   },

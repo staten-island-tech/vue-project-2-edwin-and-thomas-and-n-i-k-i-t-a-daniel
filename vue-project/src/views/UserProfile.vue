@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-        <img class=pfp :src=store.state.viewingProfile.picture>
+        <img class=pfp :src=store.state.viewingProfile.picture >
         <h2>{{ store.state.viewingProfile.dname }}</h2>
         <input v-if="store.state.viewingProfile.dname === user.displayName" type="url" name="changePicture" v-model="pictureLink" @keypress.enter="changePicture()"/>
         <div class="radio">
@@ -62,7 +62,7 @@ watch(
     },
 )
 const changePicture = () => {
-    store.dispatch('searchPosts', {picture: pictureLink.value})
+    store.dispatch('changePicture', {picture: pictureLink.value})
     pictureLink.value = ''
 }
 </script>
