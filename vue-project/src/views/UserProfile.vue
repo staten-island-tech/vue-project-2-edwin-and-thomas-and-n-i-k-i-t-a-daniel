@@ -1,14 +1,14 @@
 <template>
     <div class="page">
         <img class=pfp :src=store.state.viewingProfile.picture >
-        <h2>{{ store.state.viewingProfile.dname }}</h2>
+        <h2 class=userName>{{ store.state.viewingProfile.dname }}</h2>
         <input v-if="store.state.viewingProfile.dname === user.displayName" type="url" name="changePicture" v-model="pictureLink" @keypress.enter="changePicture()"/>
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Posts</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
         </div>
         <div v-if="radio === 'post'" class="post">
-        <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />
+        <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>
         </div>
         <div v-if="radio === 'comments'" class="comments">
             <div v-for="comment in comments" :key="comment.id" class="comment">
@@ -80,12 +80,6 @@ const changePicture = () => {
     text-align: center;
     margin: 1rem;
 }
-.commentBox{
-    font-size: 5rem;
-}
-.commentButton{
-    font-size: 5rem;
-}
 .comments {
     width: 40vw;
 }
@@ -99,6 +93,7 @@ const changePicture = () => {
     margin-bottom: 1rem;
     color: white;
     border-radius: 0.5rem;
+    font-size: 5rem;
 }
 .comment p {
     margin-left: 0.5rem;
