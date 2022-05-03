@@ -77,7 +77,7 @@ const subtextEnter = (el) => {
 .post{
   display: grid;
   grid-template-columns: 3fr 1fr;
-  background-color: #724949;
+  background-color: #764a4a;
   width: 73vw;
   max-height: 45vh;
   margin: 3rem;

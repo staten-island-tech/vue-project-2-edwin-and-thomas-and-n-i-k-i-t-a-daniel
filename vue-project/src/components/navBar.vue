@@ -83,7 +83,7 @@ export default {
 nav {
   position: fixed;
   top:0;
-  background-color:#724949;
+  background-color:#764a4a;
   height: 9rem;
   width: 100vw;
   display: flex;
@@ -133,7 +133,7 @@ a {
 }
 .dropdown {
   position: fixed;
-  background-color: #975F5F;
+  background-color: #9d6060;
   z-index: 4;
   height: 100%;
   width: 30rem;
@@ -164,7 +164,7 @@ a {
   margin-top: 3rem;
 }
 .dropdown-item {
-  background-color: #e08b8b43;
+  background-color: #b6706f;
   border: none;
   border-radius: 2rem;
   width: 85%;

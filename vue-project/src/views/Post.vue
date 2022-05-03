@@ -112,7 +112,7 @@ watch(
 }
 .radio-item {
     cursor: pointer;
-    background-color: #794d4d51;
+    background-color: #e5dbdb;
     color: #724949;
     border: none;
     border-radius: 2rem;
@@ -161,6 +161,7 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     width: 80vw;
+    color: #764a4a;
 }
 .post h2, h4, div {
     align-self: center;
