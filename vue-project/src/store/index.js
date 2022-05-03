@@ -21,6 +21,7 @@ import {
   arrayUnion,
   deleteDoc,
   arrayRemove,
+  increment,
 } from "firebase/firestore";
 
 const store = createStore({
@@ -301,15 +302,15 @@ const store = createStore({
         karma: increment(value),
       });
 
-      if (value === 1) {
+      if (value == 1) {
         await updateDoc(userRef, {
           // adds post to user's list of upvotes
-          upvotes: arrayUnion(targetID),
+          upvotes: arrayUnion(docRef.id),
         });
-      } else if (value === -1) {
+      } else if (value == -1) {
         // adds post to user's list of downvotes
         await updateDoc(userRef, {
-          downvotes: arrayUnion(targetID),
+          downvotes: arrayUnion(docRef.id),
         });
       }
     },
