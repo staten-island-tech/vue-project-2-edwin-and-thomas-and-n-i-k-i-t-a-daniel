@@ -78,7 +78,10 @@ const store = createStore({
           dname: dname,
           posts: [],
           comments: [],
-          picture: `https://avatars.dicebear.com/api/personas/:${res.user.uid}.svg`
+          picture: `https://avatars.dicebear.com/api/personas/:${res.user.uid}.svg`,
+          karma: 0,
+          upvotes: [],
+          downvotes: [],
         });
       } else {
         throw new Error("could not complete signup");
@@ -128,6 +131,7 @@ const store = createStore({
         imageLink: imageLink,
         comments: [],
         tags: tags,
+        score: 0,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
       await setDoc(
@@ -170,6 +174,7 @@ const store = createStore({
         },
         content: content,
         post: id,
+        score: 0,
       };
       const docRef = await addDoc(collection(db, "comments"), docData);
       console.log("comment action firebase");
@@ -205,7 +210,7 @@ const store = createStore({
       const postsWithTags = this.state.posts.filter(
         (post) => post.tags && post.tags.length > 0
       );
-      
+
       context.commit("clearPosts");
       console.log(this.state.posts);
       searchedPosts.forEach((post) => {
@@ -260,17 +265,17 @@ const store = createStore({
         });
       }
     },
-    async deleteComment(context, {commentID, postID}) {
-        await deleteDoc(doc(db, "comments", commentID));
-        const postRef = doc(db, "posts", postID);
-        await updateDoc(postRef, {
-          comments: arrayRemove(commentID),
-        });
-        const userRef = doc(db, "users", this.state.user.uid);
-        await updateDoc(userRef, {
-          comments: arrayRemove(commentID),
-        });
-      },
+    async deleteComment(context, { commentID, postID }) {
+      await deleteDoc(doc(db, "comments", commentID));
+      const postRef = doc(db, "posts", postID);
+      await updateDoc(postRef, {
+        comments: arrayRemove(commentID),
+      });
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(userRef, {
+        comments: arrayRemove(commentID),
+      });
+    },
     async passwordReset(context, email) {
       sendPasswordResetEmail(auth, email)
         .then(() => {
@@ -286,7 +291,63 @@ const store = createStore({
         await updateDoc(userRef, {
           picture: `${pictureLink.picture}`
         });
-    }
+    },
+    async vote(context, { targetID, type, value }) {
+      const docRef = doc(db, type, targetID);
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(docRef, {
+        // increments post/comment's score
+        score: increment(value),
+      });
+      const docSnap = await getDoc(docRef);
+      const docData = docSnap.data();
+      const authorRef = doc(db, "users", docData.author.uid);
+
+      await updateDoc(authorRef, {
+        // increments author's karma
+        karma: increment(value),
+      });
+
+      if (value === 1) {
+        await updateDoc(userRef, {
+          // adds post to user's list of upvotes
+          upvotes: arrayUnion(targetID),
+        });
+      } else if (value === -1) {
+        // adds post to user's list of downvotes
+        await updateDoc(userRef, {
+          downvotes: arrayUnion(targetID),
+        });
+      }
+    },
+    async unvote(context, { targetID, type, value }) {
+      const docRef = doc(db, type, targetID);
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(docRef, {
+        // increments post/comment's score
+        score: increment(-value),
+      });
+      const docSnap = await getDoc(docRef);
+      const docData = docSnap.data();
+      const authorRef = doc(db, "users", docData.author.uid);
+
+      await updateDoc(authorRef, {
+        // increments author's karma
+        karma: increment(-value),
+      });
+
+      if (value === 1) {
+        await updateDoc(userRef, {
+          // removes post from user's list of upvotes
+          upvotes: arrayRemove(targetID),
+        });
+      } else if (value === -1) {
+        // removes post from user's list of downvotes
+        await updateDoc(userRef, {
+          downvotes: arrayRemove(targetID),
+        });
+      }
+    },
   },
 });
 // wait until auth is ready
