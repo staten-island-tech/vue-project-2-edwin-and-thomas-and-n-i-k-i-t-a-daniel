@@ -13,13 +13,7 @@
         @before-enter="beforeEnter"
         @enter="bodyEnter"
       > 
-        <div>
-          <svg width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" ref="upvoteimg">
-            <path d="M5 19V8H1L8 1L15 8H11V19H5Z" stroke="#E08B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-
-          <img src="../assets/downvote.svg" alt="" ref="downvoteimg">
-        </div>
+        <p>{{ description }}</p>
       </transition-group>
       <transition
         appear
@@ -37,7 +31,6 @@ import { computed } from '@vue/runtime-core'
 import gsap from 'gsap'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
-import { ref } from 'vue'
 
 const store = useStore()
 const router = useRouter()
@@ -78,11 +71,6 @@ const subtextEnter = (el) => {
     opacity:1,
   })
 }
-
-const upvote = (svg) => {
-  svg.style.fill = '#E08B8B'
-}
-
 </script>
 
 <style scoped>

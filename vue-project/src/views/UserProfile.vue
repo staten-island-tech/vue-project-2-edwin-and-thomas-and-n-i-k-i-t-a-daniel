@@ -72,28 +72,8 @@ const changePicture = () => {
 .page {
     margin-top: 9rem;
     display: flex;
-    /* justify-content: center; */
-    flex-flow: column nowrap;
-    align-items: center;
-}
-.radio {
-    display: flex;
-    flex-flow: row nowrap;
-}
-.radio-item {
-    cursor: pointer;
-    background-color: #794d4d51;
-    color: #724949;
-    border: none;
-    border-radius: 2rem;
-    height: 5rem;
-    padding: .6rem 1.6rem;
-    font-size: 2.4rem;
-    margin-top: 2rem;
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-    text-align: center;
-    text-decoration-line: none;
+    justify-content: center;
+    flex-flow: wrap;
 }
 .userName{
     width: 50vw;
@@ -107,22 +87,19 @@ const changePicture = () => {
     text-align: center;
 }
 .comment {
-    background-color: #72464972;
+    background-color: #724949;
     display: flex;
     flex-flow: column nowrap;
-    padding: 3rem;
-    margin: 3rem;
+    margin-bottom: 1rem;
     color: white;
     border-radius: 0.5rem;
     font-size: 5rem;
 }
 .comment p {
     margin-left: 0.5rem;
-    color: black
 }
 .comment h5 {
     margin-right: 0.5rem;
-    color: black;
 }
 .comment div {
     align-self: flex-end;
