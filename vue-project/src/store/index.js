@@ -115,7 +115,7 @@ const store = createStore({
       context.dispatch("getProfilePosts");
       context.dispatch("getProfileComments");
     },
-    async createPost(context, { title, description, content, imageLink }) {
+    async createPost(context, { title, description, content, imageLink, tags }) {
       console.log("create post action");
       const docData = {
         author: {
@@ -196,9 +196,7 @@ const store = createStore({
       const searchedPosts = this.state.posts.filter((post) => {
         return (
           post.title.toLowerCase().includes(search.search.toLowerCase()) ||
-          post.description
-            .toLowerCase()
-            .includes(search.search.toLowerCase()) ||
+          post.description.toLowerCase().includes(search.search.toLowerCase()) ||
           post.content.toLowerCase().includes(search.search.toLowerCase())
         );
       });
