@@ -21,7 +21,6 @@ import {
   arrayUnion,
   deleteDoc,
   arrayRemove,
-  increment,
 } from "firebase/firestore";
 
 const store = createStore({
@@ -287,63 +286,7 @@ const store = createStore({
         await updateDoc(userRef, {
           picture: `${pictureLink.picture}`
         });
-    },
-    async vote(context, { targetID, type, value }) {
-      const docRef = doc(db, type, targetID);
-      const userRef = doc(db, "users", this.state.user.uid);
-      await updateDoc(docRef, {
-        // increments post/comment's score
-        score: increment(value),
-      });
-      const docSnap = await getDoc(docRef);
-      const docData = docSnap.data();
-      const authorRef = doc(db, "users", docData.author.uid);
-
-      await updateDoc(authorRef, {
-        // increments author's karma
-        karma: increment(value),
-      });
-
-      if (value == 1) {
-        await updateDoc(userRef, {
-          // adds post to user's list of upvotes
-          upvotes: arrayUnion(docRef.id),
-        });
-      } else if (value == -1) {
-        // adds post to user's list of downvotes
-        await updateDoc(userRef, {
-          downvotes: arrayUnion(docRef.id),
-        });
-      }
-    },
-    async unvote(context, { targetID, type, value }) {
-      const docRef = doc(db, type, targetID);
-      const userRef = doc(db, "users", this.state.user.uid);
-      await updateDoc(docRef, {
-        // increments post/comment's score
-        score: increment(-value),
-      });
-      const docSnap = await getDoc(docRef);
-      const docData = docSnap.data();
-      const authorRef = doc(db, "users", docData.author.uid);
-
-      await updateDoc(authorRef, {
-        // increments author's karma
-        karma: increment(-value),
-      });
-
-      if (value === 1) {
-        await updateDoc(userRef, {
-          // removes post from user's list of upvotes
-          upvotes: arrayRemove(targetID),
-        });
-      } else if (value === -1) {
-        // removes post from user's list of downvotes
-        await updateDoc(userRef, {
-          downvotes: arrayRemove(targetID),
-        });
-      }
-    },
+    }
   },
 });
 // wait until auth is ready

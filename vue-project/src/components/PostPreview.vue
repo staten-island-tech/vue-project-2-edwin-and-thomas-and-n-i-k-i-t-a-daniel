@@ -14,15 +14,6 @@
         @enter="bodyEnter"
       > 
         <p>{{ description }}</p>
-        <div class="votes">
-          <svg @click="upvote" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" :class="{ selected: vote === 1 }">
-            <path d="M5 19V8H1L8 1L15 8H11V19H5Z" stroke="#E08B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-
-          <svg @click="downvote" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" :class="{ selected: vote === -1 }">
-            <path d="M5 1H11V12H15L8 19L1 12H5V1Z" stroke="#E08B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-          </svg>
-        </div>
       </transition-group>
       <transition
         appear
@@ -45,14 +36,12 @@ const store = useStore()
 const router = useRouter()
 const user = computed(() => store.state.user)
 
-const vote = ref(0)
-
 const props = defineProps({
-  title: String,
-  author: Object,
-  description: String,
-  id: String,
-  imageLink: String,
+    title: String,
+    author: Object,
+    description: String,
+    id: String,
+    imageLink: String,
 })
 
 const postClick = (postID) => {
@@ -82,31 +71,6 @@ const subtextEnter = (el) => {
     opacity:1,
   })
 }
-
-const upvote = async () => {
-  console.log("upvote")
-  if (vote.value == 0) {
-    await store.dispatch('vote', { targetID: props.id, type: "posts", value: 1 })
-    vote.value = 1
-  } else if (vote.value == 1) {
-    await store.dispatch('unvote', { targetID: props.id, type: "posts", value: 1 })
-    vote.value = 0
-  } else if (vote.value == -1) {
-    await store.dispatch('unvote', { targetID: props.id, type: "posts", value: -1 })
-    await store.dispatch('vote', { targetID: props.id, type: "posts", value: 1 })
-    vote.value = 1
-  }
-}
-
-const downvote = () => {
-  console.log("downvote")
-  if (vote.value != -1) {
-    vote.value = -1
-  } else if (vote.value == -1){
-    vote.value = 0
-  }
-}
-
 </script>
 
 <style scoped>
@@ -132,14 +96,6 @@ const downvote = () => {
 }
 h2 {
   height: fit-content
-}
-.selected {
-  fill: #E08B8B
-}
-.votes svg{
-  transform: scale(2);
-  margin-right: 2rem;
-  cursor: pointer;
 }
 
 /* Phones */
