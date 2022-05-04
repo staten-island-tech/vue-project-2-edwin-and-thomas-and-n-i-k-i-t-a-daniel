@@ -31,6 +31,8 @@ const store = createStore({
     posts: [],
     comments: [],
     viewingProfile: null,
+    upvotes: [],
+    downvotes: [],
   },
   mutations: {
     setUser(state, payload) {
@@ -55,6 +57,24 @@ const store = createStore({
     },
     addComment(state, payload) {
       state.comments.push(payload);
+    },
+    addUpvote(state, payload) {
+      state.upvotes.push(payload);
+    },
+    addDownvote(state, payload) {
+      state.downvotes.push(payload);
+    },
+    removeUpvote(state, payload) {
+      const index = state.upvotes.findIndex((element) => element === payload);
+      state.upvotes.splice(index, 1);
+    },
+    removeDownvote(state, payload) {
+      const index = state.downvotes.findIndex((element) => element === payload);
+      state.downvotes.splice(index, 1);
+    },
+    clearVotes(state) {
+      state.upvotes = [];
+      state.downvotes = [];
     },
   },
   actions: {
@@ -303,15 +323,15 @@ const store = createStore({
       });
 
       if (value == 1) {
-        await updateDoc(userRef, {
-          // adds post to user's list of upvotes
+        updateDoc(doc(db, "users", this.state.user.uid), {
           upvotes: arrayUnion(docRef.id),
         });
+        context.commit("addUpvote", docRef.id);
       } else if (value == -1) {
-        // adds post to user's list of downvotes
-        await updateDoc(userRef, {
+        updateDoc(doc(db, "users", this.state.user.uid), {
           downvotes: arrayUnion(docRef.id),
         });
+        context.commit("addDownvote", docRef.id);
       }
     },
     async unvote(context, { targetID, type, value }) {
@@ -335,12 +355,30 @@ const store = createStore({
           // removes post from user's list of upvotes
           upvotes: arrayRemove(targetID),
         });
+        context.commit("removeUpvote", targetID);
       } else if (value === -1) {
         // removes post from user's list of downvotes
         await updateDoc(userRef, {
           downvotes: arrayRemove(targetID),
         });
+        context.commit("removeDownvote", targetID);
       }
+    },
+    async getVotes(context) {
+      context.commit("clearVotes");
+
+      const userRef = doc(db, "users", this.state.user.uid);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.data();
+
+      userData.upvotes.forEach((upvote) => {
+        if (!this.state.upvotes.includes(upvote))
+          context.commit("addUpvote", upvote);
+      });
+      userData.downvotes.forEach((downvote) => {
+        if (!this.state.downvotes.includes(downvote))
+          context.commit("addDownvote", downvote);
+      });
     },
   },
 });

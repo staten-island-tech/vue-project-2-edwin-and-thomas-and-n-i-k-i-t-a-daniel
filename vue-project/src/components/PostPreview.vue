@@ -44,6 +44,8 @@ import { ref } from 'vue'
 const store = useStore()
 const router = useRouter()
 const user = computed(() => store.state.user)
+const upvotes = computed(() => store.state.upvotes)
+const downvotes = computed(() => store.state.downvotes)
 
 const vote = ref(0)
 
@@ -98,15 +100,31 @@ const upvote = async () => {
   }
 }
 
-const downvote = () => {
+const downvote = async () => {
   console.log("downvote")
-  if (vote.value != -1) {
+  if (vote.value == 0) {
+    await store.dispatch('vote', { targetID: props.id, type: "posts", value: -1 })
     vote.value = -1
-  } else if (vote.value == -1){
+  } else if (vote.value == -1) {
+    await store.dispatch('unvote', { targetID: props.id, type: "posts", value: -1 })
     vote.value = 0
+  } else if (vote.value == 1) {
+    await store.dispatch('unvote', { targetID: props.id, type: "posts", value: 1 })
+    await store.dispatch('vote', { targetID: props.id, type: "posts", value: -1 })
+    vote.value = -1
   }
 }
 
+const getVotes = async () => {
+  await store.dispatch('getVotes')
+  if (upvotes.value.includes(props.id)) {
+    vote.value = 1
+  } else if (downvotes.value.includes(props.id)) {
+    vote.value = -1
+  }
+}
+
+getVotes()
 </script>
 
 <style scoped>
