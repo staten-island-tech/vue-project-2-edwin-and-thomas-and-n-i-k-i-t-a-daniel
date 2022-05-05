@@ -2,7 +2,7 @@
     <div class="page">
         <img class=pfp :src=store.state.viewingProfile.picture>
         <h2>{{ store.state.viewingProfile.dname }}</h2>
-        <h3>{{ store.state.viewingProfile.karma }} karma</h3>
+        <h3>{{ store.state.viewingProfile.karma }} Daniel Points</h3>
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Posts</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
