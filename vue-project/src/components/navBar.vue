@@ -31,7 +31,7 @@
       <transition name="moveLeft">
       <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
       </transition>
-    </div>
+      </div>
 </template>
 
 
@@ -49,7 +49,6 @@ export default {
   methods: {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
-      this.keyChange()
     },
     // keyChange(){
     //   this.keyvalue = !this.keyvalue
@@ -190,6 +189,10 @@ a {
   text-align: center;
   text-decoration-line: none;
 }
+.background{
+  z-index: -10;
+
+}
 .v-enter-active,
 .v-leave-active {
   transition: opacity 0.5s ease;
@@ -230,6 +233,14 @@ a {
 .moveLeft-enter-active{
   animation: moveLeft 2.5s ease-in-out;
 
+} */
+/* @media (prefers-color-scheme: dark){
+  nav{
+    background-color: #001F54;
+  }
+  .background{
+    background-color: #34344A;
+  }
 } */
 
 /* Phones */

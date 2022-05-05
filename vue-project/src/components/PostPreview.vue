@@ -7,8 +7,8 @@
       >
   
         <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
-      <img v-bind:src="imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
-        <p>{{ description }}</p>
+      <img v-bind:src="imageLink" alt="postImage" class="image clickable" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';this.alt='nullImage'" @click="postClick(id)">
+        <p class="description clickable" @click="postClick(id)">{{ description }}</p>
         <h4 @click="userClick(author.uid)" class="clickable">by {{ author.dname }}</h4>
    
 </transition-group> 
@@ -71,7 +71,7 @@ const bodyEnter = (el) => {
 }
 .clickable {
   cursor: pointer;
-  width: fit-content
+  width: fit-content;
 }
 
 /* Phones */
@@ -89,6 +89,7 @@ const bodyEnter = (el) => {
 }
 .image{
   max-height: 20vh;
+  max-width: 015vw;
   border-radius: 1rem;
 }
 </style>

@@ -10,7 +10,7 @@
             <h2>{{ post.title }}</h2>
             <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
             <div id="content" v-html="post.content"></div>
-            <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.id='error';">
+            <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.id='error';">
 
         </div>
         <div v-if="radio === 'comments'" class="commentHolder">
