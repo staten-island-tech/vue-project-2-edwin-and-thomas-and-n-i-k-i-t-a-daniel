@@ -21,6 +21,7 @@
           <svg @click="downvote" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" :class="{ selected: vote === -1 }">
             <path d="M5 1H11V12H15L8 19L1 12H5V1Z" stroke="#E08B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
+          <h4>{{ score }}</h4>
         </div>
       </transition-group>
       <transition
@@ -35,11 +36,13 @@
 </template>
 
 <script setup>
-import { computed } from '@vue/runtime-core'
+import { computed, onMounted, onUpdated } from '@vue/runtime-core'
 import gsap from 'gsap'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
 import { ref } from 'vue'
+import { db } from '../firebase/config'
+import { doc, getDoc } from 'firebase/firestore'
 
 const store = useStore()
 const router = useRouter()
@@ -48,6 +51,7 @@ const upvotes = computed(() => store.state.upvotes)
 const downvotes = computed(() => store.state.downvotes)
 
 const vote = ref(0)
+const score = ref()
 
 const props = defineProps({
   title: String,
@@ -98,6 +102,7 @@ const upvote = async () => {
     await store.dispatch('vote', { targetID: props.id, type: "posts", value: 1 })
     vote.value = 1
   }
+  await getScore()
 }
 
 const downvote = async () => {
@@ -113,6 +118,7 @@ const downvote = async () => {
     await store.dispatch('vote', { targetID: props.id, type: "posts", value: -1 })
     vote.value = -1
   }
+  await getScore()
 }
 
 const getVotes = async () => {
@@ -124,7 +130,15 @@ const getVotes = async () => {
   }
 }
 
+const getScore = async () => {
+  const userRef = doc(db, "posts", props.id);
+  const userSnap = await getDoc(userRef);
+  const userData = userSnap.data();
+  score.value = userData.score
+}
+
 getVotes()
+getScore()
 </script>
 
 <style scoped>
@@ -153,6 +167,11 @@ h2 {
 }
 .selected {
   fill: #E08B8B
+}
+.votes {
+  display: flex;
+  flex-flow: row nowrap;
+  align-items: center;
 }
 .votes svg{
   transform: scale(2);
