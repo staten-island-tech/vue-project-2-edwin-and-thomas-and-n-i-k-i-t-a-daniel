@@ -139,7 +139,7 @@ const store = createStore({
       context.dispatch("getProfilePosts");
       context.dispatch("getProfileComments");
     },
-    async createPost(context, { title, content, imageLink }) {
+    async createPost(context, { title, content, imageLink, tags }) {
       console.log("create post action");
       const docData = {
         author: {
