@@ -3,11 +3,11 @@
         <h3>Password Reset</h3>
         <form @submit.prevent="handleSubmit">
             <label for="email">Email:</label>
-            <input type="email" name="email" v-model="email">
+            <input id=email type="email" name="email" v-model="email">
 
             <BasicButton>Send Password Reset</BasicButton>
         </form>
-        <h5 class="error">{{ error }}</h5>
+        <h5 v-if="error" class="error">{{ error }}</h5>
     </main>
 </template>
 

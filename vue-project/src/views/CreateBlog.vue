@@ -4,22 +4,22 @@
 
             <div class="form-input">
                 <label for="title">Title:</label>
-                <input type="title" name="title" v-model="title" required>
+                <input id=title type="title" name="title" v-model="title" required>
             </div>
 
             <div class="form-input">
                 <label for="description">Description:</label>
-                <input type="description" name="description" v-model="description" required>
+                <input id=description type="description" name="description" v-model="description" required>
             </div>
             <div class="form-input">
-                <label for="title">Image Link:</label>
-                <input type="url" name="imageLink" v-model="imageLink">
+                <label for="imageLink">Image Link:</label>
+                <input id=imageLink type="url" name="imageLink" v-model="imageLink">
             </div>
 
             <div class="form-input">
                 <label for="tags">Tags: (Optional)</label>
                 
-                <input type="tags" name="tags" v-model="newTag">
+                <input id=tags type="tags" name="tags" v-model="newTag">
                 <p @click="addTag()" class="clickable-blk">+</p>
                 <p v-if="tags.length > 0">Click to remove tag</p>
                 <ul v-if="tags">
@@ -28,6 +28,7 @@
             </div>
 
             <div class="editor">
+                <label for="content">Content:</label>
                 <editor 
                     api-key="ffugz7x38mw73x297de4hhgulrnsse6ldbn7cumiyo99w54f" 
                     :init="{
@@ -45,7 +46,7 @@
                         bullist numlist outdent indent | removeformat',
                     }"
                     v-model="content" 
-                    name="content" />
+                    name="content" id=content />
             </div>
 
             <BasicButton type="submit">Upload Post</BasicButton>

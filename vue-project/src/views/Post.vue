@@ -24,7 +24,8 @@
                 </div>
             </div>
             <div class="commentSubmit">
-            <input type="text" v-model="comment" class="commentBox">
+            <label for=commentSubmit>Comment:</label>
+            <input id=commentSubmit type="text" v-model="comment" class="commentBox">
             <BasicButton @click="handleComment">Post</BasicButton>
             </div>
 
@@ -176,5 +177,8 @@ watch(
 }
 #error{
     display: none;
+}
+label {
+    font-size: 1.6rem;
 }
 </style>

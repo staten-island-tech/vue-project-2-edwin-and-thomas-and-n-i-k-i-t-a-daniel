@@ -1,8 +1,14 @@
 <template>
     <div class="page">
+        <div v-if="store.state.viewingProfile.dname ===! `daniel wrrius`"><h3>Personal PFP:</h3>
         <img class=pfp :src=store.state.viewingProfile.picture >
+        <img class=pfp src=danielnoMouth alt=danielNoMouth>
+        </div>
         <h2 class=userName>{{ store.state.viewingProfile.dname }}</h2>
-        <input v-if="store.state.viewingProfile.dname === user.displayName" type="url" name="changePicture" v-model="pictureLink" @keypress.enter="changePicture()"/>
+        
+        <img v-if="store.state.viewingProfile.dname === `daniel wrrius`" class=pfp src=danielPog alt=danielWithMouth>
+        <div v-if="store.state.viewingProfile.dname === user.displayName"><label for="changePicture">Change your personal PFP (must be a link)</label>
+        <input  type="url" name="changePicture" id=changePicture v-model="pictureLink" @keypress.enter="changePicture()"/></div>
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Posts</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
@@ -113,5 +119,8 @@ const changePicture = () => {
 .pfp {
     width: 30rem;
     height: 30rem;
+}
+label {
+    font-size: 1.6rem;
 }
 </style>
