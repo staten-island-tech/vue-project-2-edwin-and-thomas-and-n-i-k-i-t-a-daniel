@@ -1,5 +1,5 @@
 <template>
-    <div :class="{ post: type === 'posts', comment: type === 'commentss'}">
+    <div :class="{ votepost: type === 'posts', votecomment: type === 'comments'}" class="votes">
             <svg @click="upvote" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" :class="{ selected: vote === 1 }">
                 <path d="M5 19V8H1L8 1L15 8H11V19H5Z" stroke="#E08B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -72,10 +72,19 @@ const getVotes = async () => {
 }
 
 const getScore = async () => {
-  const userRef = doc(db, "posts", props.id);
-  const userSnap = await getDoc(userRef);
-  const userData = userSnap.data();
-  score.value = userData.score
+  if(props.type === 'posts') {
+    const userRef = doc(db, 'posts', props.id);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
+    score.value = userData.score
+  } else if (props.type === 'comments') {
+    const userRef = doc(db, 'comments', props.id);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.data();
+    score.value = userData.score
+  } else {
+    console.log('no type given')
+  }
 }
 
 getVotes()
@@ -87,15 +96,16 @@ getScore()
   display: flex;
   flex-flow: row nowrap;
   align-items: center;
+  cursor: pointer;
 }
-.votes svg{
+.votepost svg{
   margin-right: 2rem;
   cursor: pointer;
 }
 .selected {
   fill: #E08B8B
 }
-.post svg{
+.votepost svg{
   transform: scale(2);
 }
 </style>

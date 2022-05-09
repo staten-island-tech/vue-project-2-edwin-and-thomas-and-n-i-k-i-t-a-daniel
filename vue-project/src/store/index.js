@@ -376,6 +376,18 @@ const store = createStore({
           context.commit("addDownvote", downvote);
       });
     },
+    async sortPosts(context) {
+      let posts = this.state.posts;
+      posts.sort((a, b) => {
+        a.score - b.score;
+      });
+      console.log(posts);
+      context.commit("clearPosts");
+      posts.forEach((post) => {
+        context.commit("addPost", post);
+      });
+      console.log(this.state.posts);
+    },
   },
 });
 // wait until auth is ready

@@ -8,7 +8,7 @@
 
         <div v-if="radio === 'post'" class="post" >
             <h2>{{ post.title }}</h2>
-            <Votes :id="route.params.id" :type="posts"/>
+            <Votes :key="route.params.id" :id="route.params.id" :type="'posts'"/>
             <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
             <div id="content" v-html="post.content"></div>
             <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.id='error';">
@@ -21,7 +21,7 @@
                 <div v-if="comment.content.trim() != ''">
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
                     <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)" class="delete">DELETE</BasicButton>
-                    <Votes :id="comment.id" :type="posts"/>
+                    <Votes :key="comment.id" :id="comment.id" :type="'comments'"/>
                 </div>
             </div>
             <div class="commentSubmit">

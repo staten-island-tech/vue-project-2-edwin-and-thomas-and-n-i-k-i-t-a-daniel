@@ -16,6 +16,7 @@
       <transition-group> 
         <div v-if="showDropdown" class="dropdown">
           <input v-if="user" type="search" name="search" v-model="search" class="dropdown-item top-item search" @keypress.enter="searchBar(), close()"/>
+          <button v-if="user" class="dropdown-item" @click="store.dispatch('sortPosts')">Most Upvoted</button>
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
           <router-link v-if="!user" to="/login" class="dropdown-item" :class="{ 'top-item': !user }">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
@@ -175,6 +176,7 @@ a {
   color: white;
   text-align: center;
   text-decoration-line: none;
+  cursor: pointer;
 }
 .v-enter-active,
 .v-leave-active {

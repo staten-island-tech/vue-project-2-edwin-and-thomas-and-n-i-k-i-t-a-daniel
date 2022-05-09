@@ -13,7 +13,7 @@
         @before-enter="beforeEnter"
         @enter="bodyEnter"
       > 
-        <Votes :id="id" :type="posts"/>
+        <Votes :key="id" :id="id" :type="'posts'"/>
       </transition-group>
       <transition
         appear
