@@ -2,11 +2,11 @@
     <div class="page">
         <div v-if="store.state.viewingProfile.dname ===! `daniel wrrius`"><h3>Personal PFP:</h3>
         <img class=pfp :src=store.state.viewingProfile.picture >
-        <img class=pfp src=https://media.discordapp.net/attachments/749708252920676365/973232653224525854/unknown.png alt=danielNoMouth>
+        <img class=pfp src="https://media.discordapp.net/attachments/749708252920676365/973232653224525854/unknown.png" alt=danielNoMouth>
         </div>
         <h2 class=userName>{{ store.state.viewingProfile.dname }}</h2>
         
-        <img v-if="store.state.viewingProfile.dname === `daniel wrrius`" class=pfp src=https://media.discordapp.net/attachments/749708252920676365/973229925026918460/unknown.png alt=danielWithMouth>
+        <img v-if="store.state.viewingProfile.dname === `daniel wrrius`" class=pfp src="https://media.discordapp.net/attachments/749708252920676365/973229925026918460/unknown.png" alt=danielWithMouth>
         <div v-if="store.state.viewingProfile.dname === user.displayName"><label for="changePicture">Change your personal PFP (must be a link)</label>
         <input  type="url" name="changePicture" id=changePicture v-model="pictureLink" @keypress.enter="changePicture()"/></div>
         <div class="radio">
