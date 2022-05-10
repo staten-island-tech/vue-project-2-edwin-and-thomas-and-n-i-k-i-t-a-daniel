@@ -8,6 +8,7 @@
 
         <div v-if="radio === 'post'" class="post" >
             <h2>{{ post.title }}</h2>
+            <Votes :key="route.params.id" :id="route.params.id" :type="'posts'"/>
             <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
             <div id="content" v-html="post.content"></div>
             <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.id='error';">
@@ -16,18 +17,18 @@
         <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment"  >
-                <h5 class="commentAuthor" v-if="comment.content != ''">{{comment.author.dname}}:</h5>
-                <p>{{ comment.content }}</p>
-                <div>
+                <em>{{ comment.content }}</em>
+                <div v-if="comment.content.trim() != ''">
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
-                    <BasicButton v-if="comment.author.uid === store.state.user.uid">DELETE</BasicButton>
+                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)" class="delete">DELETE</BasicButton>
+                    <Votes :key="comment.id" :id="comment.id" :type="'comments'"/>
                 </div>
             </div>
             <div class="commentSubmit">
             <input type="text" v-model="comment" class="commentBox">
             <BasicButton @click="handleComment">Post</BasicButton>
             </div>
-
+        </div>
         <div v-if="radio === 'edit'">
             <h2>Edit</h2>
 
@@ -36,7 +37,6 @@
             <h5 v-if="error" class="error">{{ error }}</h5>
         </div>
     </div>
-    </div>
 </template>
 
 <script setup>
@@ -44,6 +44,7 @@ import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router';
 import { computed, watch, ref } from 'vue';
 import BasicButton from '../components/BasicButton.vue'
+import Votes from '../components/Votes.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -72,15 +73,26 @@ const handleComment = async () => {
         error.value = err
     }
 }
-const handleDelete = async () => {
+
+const deleteComment = async (id, post) => {
     try {
-        await store.dispatch("deletePost", route.params.id)
-        router.push('/')
+        await store.dispatch("deleteComment", { 
+        commentID: id,
+        postID: post
+        })
     } catch (err) {
         error.value = err
     }
 }
 
+const handleDelete = async () => {
+    try {
+        await store.dispatch("deletePost", route.params.id)
+        router.push(`/`)
+    } catch (err) {
+        error.value = err
+    }
+}
 watch(
     () => route.params.id,
     async (newId) => {
@@ -94,7 +106,6 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    padding-top: 9rem;
 }
 .radio {
     display: flex;
@@ -117,6 +128,15 @@ watch(
 }
 #content {
     font-size: 2rem;
+}
+.comment div {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+.delete {
+    transform: scale(0.5);
+    margin: 0
 }
 .commentHolder{
     background-color:rgb(114, 73, 73, 0.2);

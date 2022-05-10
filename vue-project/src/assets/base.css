@@ -131,7 +131,6 @@ main,
 /* This is just for white text */
 .clickable:hover {
   color: rgba(255, 255, 255, 0.467);
-  opacity: 0.467;
 }
 .clickable-blk:hover {
   color: rgba(0, 0, 0, 0.467);
@@ -140,6 +139,7 @@ main,
 .clickable,
 .clickable-blk {
   transition: all 0.2s;
+  cursor: pointer;
 }
 
 .error {

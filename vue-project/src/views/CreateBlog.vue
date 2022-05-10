@@ -6,11 +6,6 @@
                 <label for="title">Title:</label>
                 <input type="title" name="title" v-model="title" required>
             </div>
-
-            <div class="form-input">
-                <label for="description">Description:</label>
-                <input type="description" name="description" v-model="description" required>
-            </div>
             <div class="form-input">
                 <label for="title">Image Link:</label>
                 <input type="url" name="imageLink" v-model="imageLink">
@@ -74,7 +69,6 @@ const handleSubmit = async () => {
     try {
         await store.dispatch('createPost', {
             title: title.value,
-            description: description.value,
             content: content.value,
             tags: tags.value,
             imageLink: imageLink.value
@@ -109,7 +103,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    padding-top: 30rem;
+    padding-top: 3rem;
 }
 label {
     font-size: 1.6rem;

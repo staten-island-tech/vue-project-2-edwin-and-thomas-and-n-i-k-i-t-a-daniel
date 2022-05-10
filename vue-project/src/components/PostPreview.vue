@@ -13,7 +13,7 @@
         @before-enter="beforeEnter"
         @enter="bodyEnter"
       > 
-        <p>{{ description }}</p>
+        <Votes :key="id" :id="id" :type="'posts'"/>
       </transition-group>
       <transition
         appear
@@ -31,17 +31,18 @@ import { computed } from '@vue/runtime-core'
 import gsap from 'gsap'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import Votes from '../components/Votes.vue'
 
 const store = useStore()
 const router = useRouter()
 const user = computed(() => store.state.user)
 
 const props = defineProps({
-    title: String,
-    author: Object,
-    description: String,
-    id: String,
-    imageLink: String,
+  title: String,
+  author: Object,
+  description: String,
+  id: String,
+  imageLink: String,
 })
 
 const postClick = (postID) => {
@@ -92,10 +93,11 @@ const subtextEnter = (el) => {
   font-size: 2rem;
 }
 .clickable {
-  cursor: pointer;
   width: fit-content
 }
-
+h2 {
+  height: fit-content
+}
 /* Phones */
 @media (max-width: 400px) {
   h2 {
@@ -106,6 +108,9 @@ const subtextEnter = (el) => {
   }
   .post {
     height: fit-content;
+  }
+  .image {
+    display: none
   }
 
 }

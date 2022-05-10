@@ -19,10 +19,9 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
-  query,
-  where,
   deleteDoc,
   arrayRemove,
+  increment,
 } from "firebase/firestore";
 
 const store = createStore({
@@ -32,6 +31,8 @@ const store = createStore({
     posts: [],
     comments: [],
     viewingProfile: null,
+    upvotes: [],
+    downvotes: [],
   },
   mutations: {
     setUser(state, payload) {
@@ -57,6 +58,24 @@ const store = createStore({
     addComment(state, payload) {
       state.comments.push(payload);
     },
+    addUpvote(state, payload) {
+      state.upvotes.push(payload);
+    },
+    addDownvote(state, payload) {
+      state.downvotes.push(payload);
+    },
+    removeUpvote(state, payload) {
+      const index = state.upvotes.findIndex((element) => element === payload);
+      state.upvotes.splice(index, 1);
+    },
+    removeDownvote(state, payload) {
+      const index = state.downvotes.findIndex((element) => element === payload);
+      state.downvotes.splice(index, 1);
+    },
+    clearVotes(state) {
+      state.upvotes = [];
+      state.downvotes = [];
+    },
   },
   actions: {
     async signup(context, { email, password, confirm, dname }) {
@@ -80,6 +99,10 @@ const store = createStore({
           dname: dname,
           posts: [],
           comments: [],
+          picture: `https://avatars.dicebear.com/api/personas/:${res.user.uid}.svg`,
+          karma: 0,
+          upvotes: [],
+          downvotes: [],
         });
       } else {
         throw new Error("could not complete signup");
@@ -114,8 +137,9 @@ const store = createStore({
       const docSnap = await getDoc(docRef);
       context.commit("setViewing", docSnap.data());
       context.dispatch("getProfilePosts");
+      context.dispatch("getProfileComments");
     },
-    async createPost(context, { title, description, content, imageLink }) {
+    async createPost(context, { title, content, imageLink, tags }) {
       console.log("create post action");
       const docData = {
         author: {
@@ -123,11 +147,11 @@ const store = createStore({
           dname: this.state.user.displayName,
         },
         content: content,
-        description: description,
         title: title,
         imageLink: imageLink,
         comments: [],
         tags: tags,
+        score: 0,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
       await setDoc(
@@ -170,6 +194,7 @@ const store = createStore({
         },
         content: content,
         post: id,
+        score: 0,
       };
       const docRef = await addDoc(collection(db, "comments"), docData);
       console.log("comment action firebase");
@@ -196,9 +221,6 @@ const store = createStore({
       const searchedPosts = this.state.posts.filter((post) => {
         return (
           post.title.toLowerCase().includes(search.search.toLowerCase()) ||
-          post.description
-            .toLowerCase()
-            .includes(search.search.toLowerCase()) ||
           post.content.toLowerCase().includes(search.search.toLowerCase())
         );
       });
@@ -229,6 +251,15 @@ const store = createStore({
       console.log(this.state.posts);
       console.log(postsWithTags);
     },
+    async getProfileComments(context) {
+      context.commit("clearComments");
+      const commentIds = this.state.viewingProfile.comments;
+      commentIds.forEach(async (commentId) => {
+        const docRef = doc(db, "comments", commentId);
+        const docSnap = await getDoc(docRef);
+        context.commit("addComment", docSnap.data());
+      });
+    },
     async getComments(context) {
       context.commit("clearComments");
       const commentIds = this.state.posts[0].comments;
@@ -251,6 +282,17 @@ const store = createStore({
         });
       }
     },
+    async deleteComment(context, { commentID, postID }) {
+      await deleteDoc(doc(db, "comments", commentID));
+      const postRef = doc(db, "posts", postID);
+      await updateDoc(postRef, {
+        comments: arrayRemove(commentID),
+      });
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(userRef, {
+        comments: arrayRemove(commentID),
+      });
+    },
     async passwordReset(context, email) {
       sendPasswordResetEmail(auth, email)
         .then(() => {
@@ -259,6 +301,97 @@ const store = createStore({
         .catch((err) => {
           throw new Error(err);
         });
+    },
+    async vote(context, { targetID, type, value }) {
+      const docRef = doc(db, type, targetID);
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(docRef, {
+        // increments post/comment's score
+        score: increment(value),
+      });
+      const docSnap = await getDoc(docRef);
+      const docData = docSnap.data();
+      const authorRef = doc(db, "users", docData.author.uid);
+
+      await updateDoc(authorRef, {
+        // increments author's karma
+        karma: increment(value),
+      });
+
+      if (value == 1) {
+        updateDoc(doc(db, "users", this.state.user.uid), {
+          upvotes: arrayUnion(docRef.id),
+        });
+        context.commit("addUpvote", docRef.id);
+      } else if (value == -1) {
+        updateDoc(doc(db, "users", this.state.user.uid), {
+          downvotes: arrayUnion(docRef.id),
+        });
+        context.commit("addDownvote", docRef.id);
+      }
+    },
+    async unvote(context, { targetID, type, value }) {
+      const docRef = doc(db, type, targetID);
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(docRef, {
+        // increments post/comment's score
+        score: increment(-value),
+      });
+      const docSnap = await getDoc(docRef);
+      const docData = docSnap.data();
+      const authorRef = doc(db, "users", docData.author.uid);
+
+      await updateDoc(authorRef, {
+        // increments author's karma
+        karma: increment(-value),
+      });
+
+      if (value === 1) {
+        await updateDoc(userRef, {
+          // removes post from user's list of upvotes
+          upvotes: arrayRemove(targetID),
+        });
+        context.commit("removeUpvote", targetID);
+      } else if (value === -1) {
+        // removes post from user's list of downvotes
+        await updateDoc(userRef, {
+          downvotes: arrayRemove(targetID),
+        });
+        context.commit("removeDownvote", targetID);
+      }
+    },
+    async getVotes(context) {
+      context.commit("clearVotes");
+
+      const userRef = doc(db, "users", this.state.user.uid);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.data();
+
+      userData.upvotes.forEach((upvote) => {
+        if (!this.state.upvotes.includes(upvote))
+          context.commit("addUpvote", upvote);
+      });
+      userData.downvotes.forEach((downvote) => {
+        if (!this.state.downvotes.includes(downvote))
+          context.commit("addDownvote", downvote);
+      });
+    },
+    async sortPosts(context, order) {
+      let posts = this.state.posts;
+      if (order === "ascending")
+        posts.sort(function (post1, post2) {
+          return post2.score - post1.score;
+        });
+      if (order === "descending")
+        posts.sort(function (post1, post2) {
+          return post1.score - post2.score;
+        });
+      console.log(posts);
+      context.commit("clearPosts");
+      posts.forEach((post) => {
+        context.commit("addPost", post);
+      });
+      console.log(this.state.posts);
     },
   },
 });

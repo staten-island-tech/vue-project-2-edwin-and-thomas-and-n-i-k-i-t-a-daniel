@@ -5,21 +5,21 @@
         name="rotate">
         <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" :key="showDropdown">
         </transition>
-        <router-link class="router clickable" id="Home" to="/" @click="store.dispatch('getPosts'), close()">HOME</router-link>
+        <router-link class="router clickable" id="Home" to="/" @click="close()">HOME</router-link>
         
-        <router-link class="router right clickable" to="/signup" @click="keyChange()" v-if="!user">SIGN UP</router-link>
-        <router-link class="router right clickable" to="/login" @click="keyChange()" v-if="!user">LOGIN</router-link>
-        <router-link class="router right clickable" :to="`/user/${user.uid}`" @click="keyChange()" v-if="user">PROFILE</router-link>
-        <router-link v-if="user" class="router right clickable" @click="handleClick(); keyChange()" to="/">SIGN OUT</router-link>
+        <router-link class="router right clickable" to="/signup" v-if="!user">SIGN UP</router-link>
+        <router-link class="router right clickable" to="/login" v-if="!user">LOGIN</router-link>
+        <router-link class="router right clickable" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
+        <router-link v-if="user" class="router right clickable" @click="handleClick()" to="/">SIGN OUT</router-link>
 
       </nav>
       <transition-group> 
         <div v-if="showDropdown" class="dropdown">
-          <input type="search" name="search" v-model="search" class="top-item" @keypress.enter="searchBar(), close()"/>
+          <input v-if="user" type="search" name="search" v-model="search" class="dropdown-item top-item search" @keypress.enter="searchBar(), close()"/>
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
-          <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
+          <router-link v-if="!user" to="/login" class="dropdown-item" :class="{ 'top-item': !user }">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
-          <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick(); keyChange()">Sign Out</router-link>
+          <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick()">Sign Out</router-link>
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
       </transition-group>
@@ -48,11 +48,7 @@ export default {
   methods: {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
-      this.keyChange()
     },
-    // keyChange(){
-    //   this.keyvalue = !this.keyvalue
-    // },
     close() {
       this.showDropdown = false
     }
@@ -115,7 +111,7 @@ a {
 #logo {
   height: 85%;
   margin-left: 1rem;
-  cursor: help;
+  cursor: pointer;
   transition: transform 1s ease-in-out;
 }
 .wave{
@@ -145,36 +141,27 @@ a {
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  /* border-bottom-right-radius: 2rem; */
 }
 
 #overlay {
-   background-color: rgba(0,0,0,0.2);
-  
+  background-color: rgba(0,0,0,0.2);
   position:fixed;
   left:0;
   top: 0;
   width:100%;
   height:100%;
-  z-index: 3;}
-
-.top-item {
-  margin-bottom: 2rem;
-  background-color: #e08b8b43;
+  z-index: 3;
+}
+.search {
   background-image: url('../assets/search.svg');
   background-repeat: no-repeat;
   background-position: left center;
   background-position-x: 5%;
-  border: none;
-  border-radius: 2rem;
-  width: 85%;
-  height: 5rem;
-  padding: .6rem 1.6rem;
-  font-size: 2rem;
-  text-align: left;
-  margin-top: 3rem;
-  color: white;
+  text-align: left !important;
   text-indent: 3rem
+}
+.top-item {
+  margin-top: 3rem;
 }
 .dropdown-item {
   background-color: #e08b8b43;
@@ -188,6 +175,7 @@ a {
   color: white;
   text-align: center;
   text-decoration-line: none;
+  cursor: pointer;
 }
 .v-enter-active,
 .v-leave-active {
