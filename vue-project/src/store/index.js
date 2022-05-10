@@ -376,11 +376,16 @@ const store = createStore({
           context.commit("addDownvote", downvote);
       });
     },
-    async sortPosts(context) {
+    async sortPosts(context, order) {
       let posts = this.state.posts;
-      posts.sort((a, b) => {
-        a.score - b.score;
-      });
+      if (order === "ascending")
+        posts.sort(function (post1, post2) {
+          return post2.score - post1.score;
+        });
+      if (order === "descending")
+        posts.sort(function (post1, post2) {
+          return post1.score - post2.score;
+        });
       console.log(posts);
       context.commit("clearPosts");
       posts.forEach((post) => {

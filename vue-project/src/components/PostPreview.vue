@@ -109,6 +109,9 @@ h2 {
   .post {
     height: fit-content;
   }
+  .image {
+    display: none
+  }
 
 }
 .image{

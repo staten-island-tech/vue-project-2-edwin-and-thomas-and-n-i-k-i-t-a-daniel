@@ -136,4 +136,9 @@ watch(
 .pfp {
     width: 30rem;
 }
+@media (max-width: 400px) {
+    .comments {
+        width: 80vw
+    }
+}
 </style>
