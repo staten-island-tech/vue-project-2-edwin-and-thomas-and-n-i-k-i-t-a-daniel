@@ -85,6 +85,7 @@ const handleSubmit = async () => {
         console.log(err)
     }
 }
+
 const addTag = () => {
     const arr = tags.value
     if(newTag.value.trim() != ''){
@@ -97,6 +98,7 @@ const removeTag = (index) => {
     arr.splice(index, 1)
     console.log(`1 deleted at ${index} index`)
 }
+
 </script>
 
 
@@ -109,7 +111,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    padding-top: 30rem;
+    padding-top: 5rem;
 }
 label {
     font-size: 1.6rem;

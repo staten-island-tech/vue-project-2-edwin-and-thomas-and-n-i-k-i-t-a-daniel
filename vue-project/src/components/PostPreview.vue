@@ -7,7 +7,8 @@
       > 
         <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
       </transition>
-      <img v-bind:src="imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
+      <img v-bind:src="imageLink" alt="postImage" class="image" v-if="imageLink != null" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
+      <img v-else src="/src/assets/imageNotFound.svg" class="image">
       <transition-group
         appear
         @before-enter="beforeEnter"
@@ -112,5 +113,6 @@ const subtextEnter = (el) => {
 .image{
   max-height: 20vh;
   border-radius: 1rem;
+  padding: 1rem;
 }
 </style>
