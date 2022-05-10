@@ -16,11 +16,10 @@
         <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment"  >
-                <h5 class="commentAuthor" v-if="comment.content != ''">{{comment.author.dname}}:</h5>
-                <p>{{ comment.content }}</p>
+                <h5 class="commentAuthor clickable commentContent" v-if="comment.content != ''" @click="userClick(comment.author.uid)">{{comment.author.dname}}:</h5>
+                <p class="commentContent">{{ comment.content }}</p>
                 <div>
-                    <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
-                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)">DELETE</BasicButton>
+                    <BasicButton class="deleteButton" v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)">DELETE</BasicButton>
                 </div>
             </div>
             <div class="commentSubmit">
@@ -144,6 +143,7 @@ watch(
     font-size: 3rem;
     height: 4rem;
     width: 50rem;
+    
 }
 .commentButton{
     font-size: 5rem;
@@ -157,6 +157,25 @@ watch(
 }
 .comment {
     margin: 1rem;
+    background-color:#764a4a;
+    color: white;
+    border-radius: 1.5rem;
+}
+.commentContent {
+    margin-left: 0.7rem;
+}
+.deleteButton {
+    background-color: #e5dbdb;
+    color: #724949;
+    border: none;
+    border-radius: 2rem;
+    height: 5rem;
+    padding: .6rem 1.6rem;
+    font-size: 2.4rem;
+    margin-top: 2rem;
+    margin-left: 60rem;
+    text-align: center;
+    text-decoration-line: none;
 }
 .post {
     display: flex;
@@ -180,5 +199,8 @@ watch(
 }
 label {
     font-size: 1.6rem;
+    font-size: 3rem;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 </style>
