@@ -1,7 +1,8 @@
 <template>
     <div class="page">
-        <div v-if="store.state.viewingProfile.dname ===! `daniel wrrius`"><h3>Personal PFP:</h3>
+        <div v-if="store.state.viewingProfile.dname != `daniel wrrius`"><h3>Personal PFP:</h3>
         <img class=pfp :src=store.state.viewingProfile.picture >
+        <h3>Actual PFP:</h3>
         <img class=pfp src=https://media.discordapp.net/attachments/749708252920676365/973232653224525854/unknown.png alt=danielNoMouth>
         </div>
         <h2 class=userName>{{ store.state.viewingProfile.dname }}</h2>
