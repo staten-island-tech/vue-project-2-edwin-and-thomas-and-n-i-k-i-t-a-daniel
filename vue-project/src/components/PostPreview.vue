@@ -13,7 +13,7 @@
         @before-enter="beforeEnter"
         @enter="bodyEnter"
       > 
-        <p>{{ description }}</p>
+        <Votes :key="id" :id="id" :type="'posts'"/>
       </transition-group>
       <transition
         appear
@@ -31,6 +31,7 @@ import { computed } from '@vue/runtime-core'
 import gsap from 'gsap'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import Votes from '../components/Votes.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -97,7 +98,6 @@ const subtextEnter = (el) => {
 h2 {
   height: fit-content
 }
-
 /* Phones */
 @media (max-width: 400px) {
   h2 {
@@ -108,6 +108,9 @@ h2 {
   }
   .post {
     height: fit-content;
+  }
+  .image {
+    display: none
   }
 
 }

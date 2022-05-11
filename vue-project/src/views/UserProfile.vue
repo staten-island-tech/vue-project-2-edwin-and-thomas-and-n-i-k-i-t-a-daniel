@@ -9,6 +9,8 @@
         <img v-if="store.state.viewingProfile.dname === `daniel wrrius`" class=pfp src=https://media.discordapp.net/attachments/749708252920676365/973229925026918460/unknown.png alt=danielWithMouth>
         <div v-if="store.state.viewingProfile.dname === user.displayName"><label for="changePicture">Change your personal PFP (must be a link)</label>
         <input  type="url" name="changePicture" id=changePicture v-model="pictureLink" @keypress.enter="changePicture()"/></div>
+        <h2>{{ store.state.viewingProfile.dname }}</h2>
+        <h3>{{ store.state.viewingProfile.karma }} Daniel Points</h3>
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Posts</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
@@ -122,5 +124,10 @@ const changePicture = () => {
 }
 label {
     font-size: 1.6rem;
+}
+@media (max-width: 400px) {
+    .comments {
+        width: 80vw
+    }
 }
 </style>

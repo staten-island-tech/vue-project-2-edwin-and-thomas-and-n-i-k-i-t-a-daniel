@@ -176,6 +176,7 @@ a {
   color: white;
   text-align: center;
   text-decoration-line: none;
+  cursor: pointer;
 }
 .v-enter-active,
 .v-leave-active {
