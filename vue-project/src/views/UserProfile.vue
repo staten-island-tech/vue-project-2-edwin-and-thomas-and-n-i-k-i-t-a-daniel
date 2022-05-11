@@ -1,14 +1,21 @@
 <template>
     <div class="page">
-        <img class=pfp :src=store.state.viewingProfile.picture>
-        <h2>{{ store.state.viewingProfile.dname }}</h2>
+        <div v-if="store.state.viewingProfile.dname != `daniel wrrius`"><h3>Personal PFP:</h3>
+        <img class=pfp :src=store.state.viewingProfile.picture :alt=store.state.viewingProfile.dname>
+        <h3>Actual PFP:</h3>
+        <img class=pfp src=https://media.discordapp.net/attachments/749708252920676365/973232653224525854/unknown.png alt=danielNoMouth>
+        </div>
+        <h2 class=userName>{{ store.state.viewingProfile.dname }}</h2>
+        <img v-if="store.state.viewingProfile.dname === `daniel wrrius`" class=pfp src=https://media.discordapp.net/attachments/749708252920676365/973229925026918460/unknown.png alt=danielWithMouth>
+        <div v-if="store.state.viewingProfile.dname === user.displayName"><label for="changePicture">Change your personal PFP (must be a link)</label>
+        <input  type="url" name="changePicture" id=changePicture v-model="pictureLink" @keypress.enter="changePicture()"/></div>
         <h3>{{ store.state.viewingProfile.karma }} Daniel Points</h3>
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Posts</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
         </div>
         <div v-if="radio === 'post'" class="post">
-        <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />
+        <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>
         </div>
         <div v-if="radio === 'comments'" class="comments">
             <div v-for="comment in comments" :key="comment.id" class="comment">
@@ -37,6 +44,7 @@ const user = computed(() => store.state.user)
 const posts = computed(() => store.state.posts)
 const radio = ref('post')
 const comments = computed(() => store.state.comments)
+const pictureLink = ref('')
 const userClick = (uid) => {
     router.push(`/user/${uid}`)
 }
@@ -60,46 +68,26 @@ watch(
         store.dispatch("getViewingProfile", newId)
     },
 )
+const changePicture = () => {
+    store.dispatch('changePicture', {picture: pictureLink.value})
+    pictureLink.value = ''
+}
 </script>
 
 <style scoped>
-
+.radio {
+    margin-left: 1rem;
+}
 .page {
     margin-top: 9rem;
     display: flex;
-    /* justify-content: center; */
-    flex-flow: column nowrap;
-    align-items: center;
-}
-.radio {
-    display: flex;
-    flex-flow: row nowrap;
-}
-.radio-item {
-    cursor: pointer;
-    background-color: #794d4d51;
-    color: #724949;
-    border: none;
-    border-radius: 2rem;
-    height: 5rem;
-    padding: .6rem 1.6rem;
-    font-size: 2.4rem;
-    margin-top: 2rem;
-    margin-right: 0.5rem;
-    margin-left: 0.5rem;
-    text-align: center;
-    text-decoration-line: none;
+    justify-content: center;
+    flex-flow: wrap;
 }
 .userName{
     width: 50vw;
     text-align: center;
     margin: 1rem;
-}
-.commentBox{
-    font-size: 5rem;
-}
-.commentButton{
-    font-size: 5rem;
 }
 .comments {
     width: 40vw;
@@ -108,21 +96,19 @@ watch(
     text-align: center;
 }
 .comment {
-    background-color: #72464972;
+    background-color: #724949;
     display: flex;
     flex-flow: column nowrap;
-    padding: 3rem;
-    margin: 3rem;
+    margin-bottom: 1rem;
     color: white;
     border-radius: 0.5rem;
+    font-size: 5rem;
 }
 .comment p {
     margin-left: 0.5rem;
-    color: black
 }
 .comment h5 {
     margin-right: 0.5rem;
-    color: black;
 }
 .comment div {
     align-self: flex-end;
@@ -135,6 +121,10 @@ watch(
 }
 .pfp {
     width: 30rem;
+    height: 30rem;
+}
+label {
+    font-size: 1.6rem;
 }
 @media (max-width: 400px) {
     .comments {
