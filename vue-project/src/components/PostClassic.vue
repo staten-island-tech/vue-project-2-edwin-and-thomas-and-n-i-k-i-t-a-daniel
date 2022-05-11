@@ -7,15 +7,6 @@
       > 
         <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
       </transition>
-      <img v-bind:src="imageLink" alt="postImage" class="postImage" v-if="imageLink != null" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
-      <img v-else src="/src/assets/imageNotFound.svg" class="nullImage">
-      <transition-group
-        appear
-        @before-enter="beforeEnter"
-        @enter="bodyEnter"
-      > 
-        <p>{{ description }}</p>
-      </transition-group>
       <transition
         appear
         @before-enter="beforeEnter"
@@ -23,7 +14,8 @@
       > 
         <h4 @click="userClick(author.uid)" class="clickable">by {{ author.dname }}</h4>
       </transition>
-
+      <img v-bind:src="imageLink" alt="postImage" class="postImage" v-if="imageLink != null" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
+      <img v-else src="/src/assets/imageNotFound.svg" class="nullImage">
     </div>
 </template>
 
@@ -77,20 +69,21 @@ const subtextEnter = (el) => {
 <style scoped>
 .post{
   display: grid;
-  grid-template-columns: 3fr 1fr;
-  background-color: #724949;
-  width: 73vw;
-  max-height: 45vh;
-  margin: 3rem;
-  color: white;
-  border-radius: 1rem;
+  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-rows: 3fr 1fr;
+  border-style:  solid none none none;
+  border-color: #724949;
+  width: 75vw;
+  max-height: 15vh;
+  margin: 5rem;
+  color: black;
   padding: 3rem;
 }
-.post h2,h4,p{
+.post h2,h4{
   margin: .5rem
 }
-.post p{
-  font-size: 2rem;
+.post h2{
+  font-size: 3.9rem;
 }
 .clickable {
   cursor: pointer;
@@ -98,12 +91,13 @@ const subtextEnter = (el) => {
   margin: auto;
 }
 .postImage{
-  max-height: 20vh;
-  border-radius: 1.5rem;
+  max-height: 7vh;
+  border-radius: .5rem;
   margin: 1rem auto;
 }
 .nullImage{
   margin: 1rem auto;
+  max-height: 7vh;
 }
 /* Phones */
 @media (max-width: 400px) {
