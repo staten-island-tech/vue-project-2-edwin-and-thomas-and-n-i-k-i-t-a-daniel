@@ -21,6 +21,7 @@ import {
   arrayUnion,
   deleteDoc,
   arrayRemove,
+  increment,
 } from "firebase/firestore";
 
 const store = createStore({

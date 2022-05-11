@@ -17,8 +17,8 @@
         <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment"  >
-                <em>{{ comment.content }}</em>
-                <div v-if="comment.content.trim() != ''">
+                <em class=commentContent>{{ comment.content }}</em>
+                <div v-if="comment.content.trim() != ''" class=commentContent>
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
                     <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)" class="delete">DELETE</BasicButton>
                     <Votes :key="comment.id" :id="comment.id" :type="'comments'"/>
