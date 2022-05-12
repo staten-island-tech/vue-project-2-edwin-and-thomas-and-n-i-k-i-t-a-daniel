@@ -1,9 +1,16 @@
 <template>
   <main>
     <transition-group>
+    <div class="viewButtons">
+      <div v-if="viewClassic" @click="changeView" class="button">Card View</div>
+      <div v-else @click="changeView" class="button">Classic View</div>
+    </div>
     <!-- lint says error but it's fine dw -->
     <div class="postContainer" v-if="user">
-    <PostClassic  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  
+      <div class="postClassicContainer" v-if="viewClassic">
+    <PostClassic   v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  </div>
+      <div class="postCardContainer" v-else>
+    <PostPreview   v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  </div>
     </div>
     <div v-if="!user">
       <h2 class="message">Please sign in to view posts</h2>
@@ -21,6 +28,10 @@ const store = useStore();
 store.dispatch("getPosts");
 const posts = computed(() => store.state.posts)
 const user = computed(() => store.state.user)
+let viewClassic = true
+const changeView = ()=>{
+  viewClassic = !viewClassic
+} 
 </script>
 
 
@@ -32,6 +43,14 @@ main {
 }
 .message{
   padding-top: 15rem;
+}
+.viewButtons{
+  padding-top: 15rem;
+}
+.button{
+  width: 10rem;
+  height: 4rem;
+  font-size: 3rem;
 }
 #overlay {
   background-color: rgba(0,0,0,0.5);
