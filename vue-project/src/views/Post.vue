@@ -17,11 +17,11 @@
         <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment"  >
-                <em class=commentContent>{{ comment.content }}</em>
-                <div v-if="comment.content.trim() != ''" class=commentContent>
+                <em>{{ comment.content }}</em>
+                <div v-if="comment.content.trim() != ''">
+                    <Votes :key="comment.id" :id="comment.id" :type="'comments'"/>
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
                     <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)" class="delete">DELETE</BasicButton>
-                    <Votes :key="comment.id" :id="comment.id" :type="'comments'"/>
                 </div>
             </div>
             <div class="commentSubmit">
@@ -131,6 +131,11 @@ watch(
 #content {
     font-size: 2rem;
 }
+.comment div {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
 .commentHolder{
     background-color:rgb(114, 73, 73, 0.2);
     padding: 1rem;
@@ -160,9 +165,11 @@ watch(
 }
 .comment {
     margin: 1rem;
-    background-color:#764a4a;
-    color: white;
+    color: black;
     border-radius: 1.5rem;
+}
+.comment div h5 {
+    margin-left: 0.5rem
 }
 .commentContent {
     margin-left: 0.7rem;

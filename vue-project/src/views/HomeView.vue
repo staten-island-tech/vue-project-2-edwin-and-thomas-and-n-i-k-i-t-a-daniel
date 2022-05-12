@@ -1,7 +1,7 @@
 <template>
   <main>
     <transition-group>
-    <DropdownSort/>
+    <DropdownSort v-if="user" />
     <div class="postContainer" v-if="user">
       <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  
     </div>

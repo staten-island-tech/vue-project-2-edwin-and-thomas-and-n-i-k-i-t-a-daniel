@@ -1,21 +1,19 @@
 <template>
     <div class="page">
-        <div v-if="store.state.viewingProfile.dname != `daniel wrrius`"><h3>Personal PFP:</h3>
-        <img class=pfp :src=store.state.viewingProfile.picture :alt=store.state.viewingProfile.dname>
-        <h3>Actual PFP:</h3>
-        <img class=pfp src=https://media.discordapp.net/attachments/749708252920676365/973232653224525854/unknown.png alt=danielNoMouth>
-        </div>
+        <img class=pfp :src="store.state.viewingProfile.picture">
+        <form class="pfp-change" @submit="changePicture()" v-if="route.params.uid === store.state.user.uid">
+            <label for="changePicture">Change PFP (image URL)</label>
+            <input  type="url" name="changePicture" id=changePicture v-model="pictureLink"/>
+        </form>
         <h2 class=userName>{{ store.state.viewingProfile.dname }}</h2>
-        <img v-if="store.state.viewingProfile.dname === `daniel wrrius`" class=pfp src=https://media.discordapp.net/attachments/749708252920676365/973229925026918460/unknown.png alt=danielWithMouth>
-        <div v-if="store.state.viewingProfile.dname === user.displayName"><label for="changePicture">Change your personal PFP (must be a link)</label>
-        <input  type="url" name="changePicture" id=changePicture v-model="pictureLink" @keypress.enter="changePicture()"/></div>
         <h3>{{ store.state.viewingProfile.karma }} Daniel Points</h3>
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Posts</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
         </div>
+        <DropdownSort v-if="radio === 'post'"/>
         <div v-if="radio === 'post'" class="post">
-        <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>
+            <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>
         </div>
         <div v-if="radio === 'comments'" class="comments">
             <div v-for="comment in comments" :key="comment.id" class="comment">
@@ -33,6 +31,7 @@
 <script setup>
 import PostPreview from '../components/PostPreview.vue'
 import BasicButton from '../components/BasicButton.vue'
+import DropdownSort from '../components/DropdownSort.vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router';
 import { computed, watch, ref } from 'vue';
@@ -76,13 +75,29 @@ const changePicture = () => {
 
 <style scoped>
 .radio {
-    margin-left: 1rem;
+    display: flex;
+    flex-flow: row nowrap;
+}
+.radio-item {
+    cursor: pointer;
+    background-color: #794d4d51;
+    color: #724949;
+    border: none;
+    border-radius: 2rem;
+    height: 5rem;
+    padding: .6rem 1.6rem;
+    font-size: 2.4rem;
+    margin-top: 2rem;
+    margin-right: 0.5rem;
+    margin-left: 0.5rem;
+    text-align: center;
+    text-decoration-line: none;
 }
 .page {
     margin-top: 9rem;
     display: flex;
-    justify-content: center;
-    flex-flow: wrap;
+    align-items: center;
+    flex-flow: column nowrap;
 }
 .userName{
     width: 50vw;
@@ -96,19 +111,21 @@ const changePicture = () => {
     text-align: center;
 }
 .comment {
-    background-color: #724949;
+    background-color: #72464972;
     display: flex;
     flex-flow: column nowrap;
-    margin-bottom: 1rem;
+    padding: 3rem;
+    margin: 3rem;
     color: white;
     border-radius: 0.5rem;
-    font-size: 5rem;
 }
 .comment p {
     margin-left: 0.5rem;
+    color: black;
 }
 .comment h5 {
     margin-right: 0.5rem;
+    color: black;
 }
 .comment div {
     align-self: flex-end;
@@ -122,6 +139,11 @@ const changePicture = () => {
 .pfp {
     width: 30rem;
     height: 30rem;
+    margin-top: 1rem
+}
+.pfp-change {
+    display: flex;
+    flex-flow: column nowrap;
 }
 label {
     font-size: 1.6rem;
