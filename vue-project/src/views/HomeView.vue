@@ -3,7 +3,7 @@
     <transition-group>
     <!-- lint says error but it's fine dw -->
     <div class="postContainer" v-if="user">
-    <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  
+    <PostClassic  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  
     </div>
     <div v-if="!user">
       <h2 class="message">Please sign in to view posts</h2>
@@ -14,6 +14,7 @@
 
 <script setup>
 import PostPreview from '../components/PostPreview.vue'
+import PostClassic from '../components/PostClassic.vue'
 import { useStore } from 'vuex' 
 import { computed } from '@vue/runtime-core';
 const store = useStore();  
