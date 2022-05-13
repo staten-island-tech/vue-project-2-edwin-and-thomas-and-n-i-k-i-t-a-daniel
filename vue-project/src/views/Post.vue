@@ -29,7 +29,7 @@
             <input id=commentSubmit type="text" v-model="comment" class="commentBox">
             <BasicButton @click="handleComment">Post</BasicButton>
             </div>
-
+        </div>
         <div v-if="radio === 'edit'">
             <h2>Edit</h2>
 
@@ -37,7 +37,6 @@
 
             <h5 v-if="error" class="error">{{ error }}</h5>
         </div>
-    </div>
     </div>
 </template>
 
