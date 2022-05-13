@@ -4,22 +4,22 @@
 
         <div class="form-input">
             <label for="dname">Display Name:</label>
-            <input type="dname" name="dname" v-model="dname" required>
+            <input id=dname type="dname" name="dname" v-model="dname" required>
         </div>
 
         <div class="form-input">
             <label for="email">Email:</label>
-            <input type="email" name="email" v-model="email" required>
+            <input id=email type="email" name="email" v-model="email" required>
         </div>
 
         <div class="form-input">
             <label for="password">Password:</label>
-            <input type="password" name="password" v-model="password" required>
+            <input id=password type="password" name="password" v-model="password" required>
         </div>
 
         <div class="form-input">
             <label for="confirm">Confirm Password:</label>
-            <input type="password" name="confirm" v-model="confirm" required>
+            <input id=confirm type="password" name="confirm" v-model="confirm" required>
         </div>
         
         <BasicButton>Sign Up</BasicButton>

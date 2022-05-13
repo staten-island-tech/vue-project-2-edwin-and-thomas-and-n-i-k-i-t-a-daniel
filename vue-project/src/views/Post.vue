@@ -19,13 +19,14 @@
             <div v-for="comment in comments" :key="comment.id" class="comment"  >
                 <em>{{ comment.content }}</em>
                 <div v-if="comment.content.trim() != ''">
+                    <Votes :key="comment.id" :id="comment.id" :type="'comments'"/>
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
                     <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)" class="delete">DELETE</BasicButton>
-                    <Votes :key="comment.id" :id="comment.id" :type="'comments'"/>
                 </div>
             </div>
             <div class="commentSubmit">
-            <input type="text" v-model="comment" class="commentBox">
+            <label for=commentSubmit>Comment:</label>
+            <input id=commentSubmit type="text" v-model="comment" class="commentBox">
             <BasicButton @click="handleComment">Post</BasicButton>
             </div>
         </div>
@@ -113,7 +114,7 @@ watch(
 }
 .radio-item {
     cursor: pointer;
-    background-color: #794d4d51;
+    background-color: #e5dbdb;
     color: #724949;
     border: none;
     border-radius: 2rem;
@@ -134,10 +135,6 @@ watch(
     flex-flow: row nowrap;
     align-items: center;
 }
-.delete {
-    transform: scale(0.5);
-    margin: 0
-}
 .commentHolder{
     background-color:rgb(114, 73, 73, 0.2);
     padding: 1rem;
@@ -153,6 +150,7 @@ watch(
     font-size: 3rem;
     height: 4rem;
     width: 50rem;
+    
 }
 .commentButton{
     font-size: 5rem;
@@ -166,11 +164,33 @@ watch(
 }
 .comment {
     margin: 1rem;
+    color: black;
+    border-radius: 1.5rem;
+}
+.comment div h5 {
+    margin-left: 0.5rem
+}
+.commentContent {
+    margin-left: 0.7rem;
+}
+.deleteButton {
+    background-color: #e5dbdb;
+    color: #724949;
+    border: none;
+    border-radius: 2rem;
+    height: 5rem;
+    padding: .6rem 1.6rem;
+    font-size: 2.4rem;
+    margin-top: 2rem;
+    margin-left: 60rem;
+    text-align: center;
+    text-decoration-line: none;
 }
 .post {
     display: flex;
     flex-flow: column nowrap;
     width: 80vw;
+    color: #764a4a;
 }
 .post h2, h4, div {
     align-self: center;
@@ -185,5 +205,11 @@ watch(
 }
 #error{
     display: none;
+}
+label {
+    font-size: 1.6rem;
+    font-size: 3rem;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 </style>

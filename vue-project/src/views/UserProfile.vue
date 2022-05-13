@@ -1,14 +1,19 @@
 <template>
     <div class="page">
-        <img class=pfp :src=store.state.viewingProfile.picture>
-        <h2>{{ store.state.viewingProfile.dname }}</h2>
+        <img class=pfp :src="store.state.viewingProfile.picture">
+        <form class="pfp-change" @submit="changePicture()" v-if="route.params.uid === store.state.user.uid">
+            <label for="changePicture">Change PFP (image URL)</label>
+            <input  type="url" name="changePicture" id=changePicture v-model="pictureLink"/>
+        </form>
+        <h2 class=userName>{{ store.state.viewingProfile.dname }}</h2>
         <h3>{{ store.state.viewingProfile.karma }} Daniel Points</h3>
         <div class="radio">
             <h3 class="radio-item" @click="radio = 'post'">Posts</h3>
             <h3 class="radio-item" @click="radio = 'comments'">Comments</h3>
         </div>
+        <DropdownSort v-if="radio === 'post'"/>
         <div v-if="radio === 'post'" class="post">
-        <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" />
+            <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>
         </div>
         <div v-if="radio === 'comments'" class="comments">
             <div v-for="comment in comments" :key="comment.id" class="comment">
@@ -26,6 +31,7 @@
 <script setup>
 import PostPreview from '../components/PostPreview.vue'
 import BasicButton from '../components/BasicButton.vue'
+import DropdownSort from '../components/DropdownSort.vue'
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router';
 import { computed, watch, ref } from 'vue';
@@ -37,6 +43,7 @@ const user = computed(() => store.state.user)
 const posts = computed(() => store.state.posts)
 const radio = ref('post')
 const comments = computed(() => store.state.comments)
+const pictureLink = ref('')
 const userClick = (uid) => {
     router.push(`/user/${uid}`)
 }
@@ -60,17 +67,13 @@ watch(
         store.dispatch("getViewingProfile", newId)
     },
 )
+const changePicture = () => {
+    store.dispatch('changePicture', {picture: pictureLink.value})
+    pictureLink.value = ''
+}
 </script>
 
 <style scoped>
-
-.page {
-    margin-top: 9rem;
-    display: flex;
-    /* justify-content: center; */
-    flex-flow: column nowrap;
-    align-items: center;
-}
 .radio {
     display: flex;
     flex-flow: row nowrap;
@@ -90,16 +93,16 @@ watch(
     text-align: center;
     text-decoration-line: none;
 }
+.page {
+    margin-top: 9rem;
+    display: flex;
+    align-items: center;
+    flex-flow: column nowrap;
+}
 .userName{
     width: 50vw;
     text-align: center;
     margin: 1rem;
-}
-.commentBox{
-    font-size: 5rem;
-}
-.commentButton{
-    font-size: 5rem;
 }
 .comments {
     width: 40vw;
@@ -118,7 +121,7 @@ watch(
 }
 .comment p {
     margin-left: 0.5rem;
-    color: black
+    color: black;
 }
 .comment h5 {
     margin-right: 0.5rem;
@@ -135,6 +138,15 @@ watch(
 }
 .pfp {
     width: 30rem;
+    height: 30rem;
+    margin-top: 1rem
+}
+.pfp-change {
+    display: flex;
+    flex-flow: column nowrap;
+}
+label {
+    font-size: 1.6rem;
 }
 @media (max-width: 400px) {
     .comments {

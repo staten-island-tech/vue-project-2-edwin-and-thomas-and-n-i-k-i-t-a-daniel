@@ -15,7 +15,7 @@
       </nav>
       <transition-group> 
         <div v-if="showDropdown" class="dropdown">
-          <input v-if="user" type="search" name="search" v-model="search" class="dropdown-item top-item search" @keypress.enter="searchBar(), close()"/>
+          <input id=searchBar v-if="user" type="search" name="search" v-model="search" class="dropdown-item search top-item" @keypress.enter="searchBar(), close()"/>
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
           <router-link v-if="!user" to="/login" class="dropdown-item" :class="{ 'top-item': !user }">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
@@ -70,7 +70,7 @@ export default {
       router.push("/")
     }
     const searchBar = () => {
-      store.dispatch('searchPosts', {search: search.value}) // Works but doesnt re-add all the posts
+      store.dispatch('searchPosts', {search: search.value})
       router.push(`/search/${search.value}`)
       search.value = ''
     }
@@ -83,7 +83,7 @@ export default {
 nav {
   position: fixed;
   top:0;
-  background-color:#724949;
+  background-color:#764a4a;
   height: 9rem;
   width: 100vw;
   display: flex;
@@ -133,7 +133,7 @@ a {
 }
 .dropdown {
   position: fixed;
-  background-color: #975F5F;
+  background-color: #9d6060;
   z-index: 4;
   height: 100%;
   width: 30rem;
@@ -164,7 +164,7 @@ a {
   margin-top: 3rem;
 }
 .dropdown-item {
-  background-color: #e08b8b43;
+  background-color: #b6706f;
   border: none;
   border-radius: 2rem;
   width: 85%;
@@ -228,5 +228,10 @@ a {
     width: 600%;
   }
 }
-
+label {
+  font-size: 2.4rem;
+  color: white;
+  text-align: center;
+  text-decoration-line: none;
+}
 </style>

@@ -1,13 +1,13 @@
 <template>
     <main>
         <h3>Password Reset</h3>
-        <form @submit.prevent="handleSubmit">
+        <form class="form-input" @submit.prevent="handleSubmit">
             <label for="email">Email:</label>
-            <input type="email" name="email" v-model="email">
+            <input id=email type="email" name="email" v-model="email">
 
             <BasicButton>Send Password Reset</BasicButton>
         </form>
-        <h5 class="error">{{ error }}</h5>
+        <h5 v-if="error" class="error">{{ error }}</h5>
     </main>
 </template>
 
@@ -47,6 +47,13 @@ input {
 }
 label {
     font-size: 1.6rem;
+    margin-right:auto;
+}
+.form-input {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 2rem;
 }
 
 @media (max-width: 400px) {

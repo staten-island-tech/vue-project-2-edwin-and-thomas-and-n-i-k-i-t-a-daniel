@@ -100,9 +100,6 @@ const store = createStore({
           posts: [],
           comments: [],
           picture: `https://avatars.dicebear.com/api/personas/:${res.user.uid}.svg`,
-          karma: 0,
-          upvotes: [],
-          downvotes: [],
         });
       } else {
         throw new Error("could not complete signup");
@@ -151,7 +148,6 @@ const store = createStore({
         imageLink: imageLink,
         comments: [],
         tags: tags,
-        score: 0,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
       await setDoc(
@@ -194,7 +190,6 @@ const store = createStore({
         },
         content: content,
         post: id,
-        score: 0,
       };
       const docRef = await addDoc(collection(db, "comments"), docData);
       console.log("comment action firebase");
@@ -301,6 +296,13 @@ const store = createStore({
         .catch((err) => {
           throw new Error(err);
         });
+    },
+    async changePicture(context, pictureLink) {
+      const userRef = doc(db, "users", this.state.user.uid);
+      console.log(pictureLink);
+      await updateDoc(userRef, {
+        picture: `${pictureLink.picture}`,
+      });
     },
     async vote(context, { targetID, type, value }) {
       const docRef = doc(db, type, targetID);

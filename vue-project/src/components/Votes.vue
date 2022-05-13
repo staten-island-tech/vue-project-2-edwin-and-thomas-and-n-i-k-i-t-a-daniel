@@ -108,4 +108,9 @@ getScore()
 .votepost svg{
   transform: scale(2);
 }
+.votecomment h4{
+  margin-left: 0.5rem;
+  font-size: 1.75rem;
+}
+
 </style>
