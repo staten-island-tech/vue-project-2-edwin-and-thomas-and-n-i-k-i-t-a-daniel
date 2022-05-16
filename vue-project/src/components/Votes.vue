@@ -1,14 +1,14 @@
 <template>
     <div :class="{ votepost: type === 'posts', votecomment: type === 'comments'}" class="votes">
-            <svg @click="upvote" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" :class="{ selected: vote === 1 }">
-                <path d="M5 19V8H1L8 1L15 8H11V19H5Z" stroke="#E08B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+      <svg @click="upvote" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" :class="{ selected: vote === 1 }">
+        <path d="M5 19V8H1L8 1L15 8H11V19H5Z" stroke="#E08B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
 
-            <svg @click="downvote" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" :class="{ selected: vote === -1 }">
-                <path d="M5 1H11V12H15L8 19L1 12H5V1Z" stroke="#E08B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
-            <h4>{{ score }}</h4>
-        </div>
+      <svg @click="downvote" width="16" height="20" viewBox="0 0 16 20" fill="none" xmlns="http://www.w3.org/2000/svg" :class="{ selected: vote === -1 }">
+        <path d="M5 1H11V12H15L8 19L1 12H5V1Z" stroke="#E08B8B" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <h4>{{ score }}</h4>
+    </div>
 </template>
 
 <script setup>

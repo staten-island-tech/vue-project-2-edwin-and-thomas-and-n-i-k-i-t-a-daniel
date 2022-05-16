@@ -395,6 +395,7 @@ const store = createStore({
       });
       console.log(this.state.posts);
     },
+    async editPost(context, { title, content, imageLink, tags }) {},
   },
 });
 // wait until auth is ready

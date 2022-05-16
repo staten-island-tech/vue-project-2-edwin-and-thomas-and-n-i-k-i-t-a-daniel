@@ -34,6 +34,7 @@
             <h2>Edit</h2>
 
             <BasicButton @on-click="handleDelete">Delete</BasicButton>
+            <BasicButton @on-click="router.push(`${route.path}/draft`)">Edit</BasicButton>
 
             <h5 v-if="error" class="error">{{ error }}</h5>
         </div>
@@ -94,6 +95,7 @@ const handleDelete = async () => {
         error.value = err
     }
 }
+
 watch(
     () => route.params.id,
     async (newId) => {
