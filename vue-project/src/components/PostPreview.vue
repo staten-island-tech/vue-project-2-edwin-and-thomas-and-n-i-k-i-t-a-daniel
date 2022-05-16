@@ -5,20 +5,18 @@
         @before-enter="beforeEnter"
         @enter="headerEnter"
       > 
-        <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
-      </transition>
-      <img v-bind:src="imageLink" alt="postImage" class="postImage" v-if="imageLink != null" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
-      <img v-else src="/src/assets/imageNotFound.svg" class="nullImage">
+    
+      </transition>    
+      <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
+      <img v-bind:src="imageLink" alt="postImage" class="postImage centered" v-if="imageLink != null" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
+      <img v-else src="/src/assets/imageNotFound.svg" class="nullImage centered">
       <transition-group
         appear
         @before-enter="beforeEnter"
         @enter="bodyEnter"
       >
-  
-        <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
-      <img v-bind:src="imageLink" alt="postImage" class="image clickable" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';this.alt='nullImage'" @click="postClick(id)">
         <p class="description clickable" @click="postClick(id)">{{ description }}</p>
-        <h4 @click="userClick(author.uid)" class="clickable">by {{ author.dname }}</h4>
+        <h4 @click="userClick(author.uid)" class="clickable centered">by {{ author.dname }}</h4>
    
 </transition-group> 
 </div> 
@@ -81,6 +79,8 @@ const bodyEnter = (el) => {
 .clickable {
   cursor: pointer;
   width: fit-content;
+}
+.centered{
   margin: auto;
 }
 .postImage{

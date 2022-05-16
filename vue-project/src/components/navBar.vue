@@ -19,8 +19,10 @@
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
           <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
-          <router-link v-if="user" to="/theme" class="dropdown-item">Theme</router-link>
-          <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick(); keyChange()">Sign Out</router-link>
+          <!-- <router-link v-if="user" to="/theme" class="dropdown-item">Theme</router-link> -->
+          <button v-if="viewClassic === true" @click="toggleViewCard" class="dropdown-item">Card View</button>
+          <button v-if="viewClassic === false" @click="toggleViewClassic" class="dropdown-item">Classic View</button>
+          <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick()">Sign Out</router-link>
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
       </transition-group>
@@ -50,6 +52,7 @@ export default {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
     },
+
     // keyChange(){
     //   this.keyvalue = !this.keyvalue
     // },
@@ -69,6 +72,7 @@ export default {
     const store = useStore()
     const user = computed(() => store.state.user)
     const authIsReady = computed(() => store.state.authIsReady)
+    const viewClassic = computed(()=> store.state.viewClassic)
     const handleClick = () => {
       store.dispatch('logout')
       router.push("/")
@@ -78,7 +82,13 @@ export default {
       router.push(`/search/${search.value}`)
       search.value = ''
     }
-    return { search, router, route, store, handleClick, user, authIsReady, searchBar }
+    const toggleViewCard = () => {
+      store.dispatch('setViewMode', false)
+    }
+    const toggleViewClassic = () => {
+      store.dispatch('setViewMode', true)
+    }
+    return { search, router, route, store, handleClick, user, authIsReady, searchBar, toggleViewCard, toggleViewClassic, viewClassic, }
   },
 }
 </script>
@@ -188,6 +198,9 @@ a {
   color: white;
   text-align: center;
   text-decoration-line: none;
+}
+button{
+  cursor: pointer;
 }
 .background{
   z-index: -10;

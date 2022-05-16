@@ -1,15 +1,15 @@
 <template>
-  <main>
+  <main>    
+    <!-- <div class="viewButtons">
+      <button @click="!viewClassic" class="button">Change View</button>
+    </div> -->
     <transition-group>
-    <div class="viewButtons">
-      <div v-if="viewClassic" @click="changeView" class="button">Card View</div>
-      <div v-else @click="changeView" class="button">Classic View</div>
-    </div>
     <!-- lint says error but it's fine dw -->
     <div class="postContainer" v-if="user">
-      <div class="postClassicContainer" v-if="viewClassic">
-    <PostClassic   v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  </div>
-      <div class="postCardContainer" v-else>
+      <div class="postClassicContainer" v-if="viewClassic === true">
+    <PostClassic   v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  
+    </div>
+      <div class="postCardContainer" v-if="viewClassic !== true">
     <PostPreview   v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  </div>
     </div>
     <div v-if="!user">
@@ -28,10 +28,7 @@ const store = useStore();
 store.dispatch("getPosts");
 const posts = computed(() => store.state.posts)
 const user = computed(() => store.state.user)
-let viewClassic = true
-const changeView = ()=>{
-  viewClassic = !viewClassic
-} 
+const viewClassic = computed(()=> store.state.viewClassic)
 </script>
 
 

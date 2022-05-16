@@ -90,6 +90,10 @@ const subtextEnter = (el) => {
   width: fit-content;
   margin: auto;
 }
+.clickable:hover {
+  color: #724949;
+  transform: scale(103%);
+}
 .postImage{
   max-height: 7vh;
   border-radius: .5rem;
@@ -102,7 +106,7 @@ const subtextEnter = (el) => {
 /* Phones */
 @media (max-width: 400px) {
   h2 {
-    font-size: 3rem;
+    font-size: 2rem;
   }
   p {
     display: none;
