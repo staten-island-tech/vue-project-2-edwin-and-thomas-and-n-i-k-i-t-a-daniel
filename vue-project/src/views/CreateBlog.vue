@@ -44,7 +44,7 @@
                     name="content" id=content />
             </div>
 
-            <BasicButton type="submit">Upload Post</BasicButton>
+            <BasicButton type="submit">Preview</BasicButton>
         </form>
     </main>
 </template>

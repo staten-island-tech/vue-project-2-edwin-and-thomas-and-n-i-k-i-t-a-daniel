@@ -395,7 +395,43 @@ const store = createStore({
       });
       console.log(this.state.posts);
     },
-    async editPost(context, { title, content, imageLink, tags }) {},
+    async editPost(context, { title, content, imageLink, tags, id }) {
+      const docData = {
+        author: {
+          uid: this.state.user.uid,
+          dname: this.state.user.displayName,
+        },
+        content: content,
+        title: title,
+        imageLink: imageLink,
+        comments: [],
+        tags: tags,
+      };
+      await setDoc(doc(db, "posts", id), docData, { merge: true });
+    },
+    async createDraft(context, { title, content, imageLink, tags }) {
+      const docData = {
+        author: {
+          uid: this.state.user.uid,
+          dname: this.state.user.displayName,
+        },
+        content: content,
+        title: title,
+        imageLink: imageLink,
+        comments: [],
+        tags: tags,
+      };
+      const docRef = await addDoc(collection(db, "drafts"), docData);
+      await setDoc(
+        doc(db, "drafts", docRef.id),
+        { id: docRef.id },
+        { merge: true }
+      );
+      const postRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(postRef, {
+        drafts: arrayUnion(docRef.id),
+      });
+    },
   },
 });
 // wait until auth is ready

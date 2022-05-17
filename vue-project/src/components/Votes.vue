@@ -23,7 +23,7 @@ const upvotes = computed(() => store.state.upvotes)
 const downvotes = computed(() => store.state.downvotes)
 
 const vote = ref(0)
-const score = ref()
+const score = ref(0)
 
 const props = defineProps({
   id: String,
