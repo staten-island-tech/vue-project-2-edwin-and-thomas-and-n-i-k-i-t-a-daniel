@@ -1,5 +1,11 @@
 <template>
     <main>
+        <select v-model="draft">
+            <option disabled value="">Edit Draft</option>
+            <option v-for="draft in drafts" :key="draft.id" :value="draft.id">{{ 
+            draft.title }}</option>
+        </select>
+        <BasicButton @on-click="getDraft">Switch to Draft</BasicButton>
         <form @submit.prevent="handleSubmit">
 
             <div class="form-input">
@@ -44,8 +50,9 @@
                     name="content" id=content />
             </div>
 
-            <BasicButton type="submit">Preview</BasicButton>
+            <BasicButton type="submit">Post</BasicButton>
         </form>
+            <BasicButton @on-click="handleDraft">Save as Draft</BasicButton>
     </main>
 </template>
 
@@ -54,25 +61,44 @@ import Editor from '@tinymce/tinymce-vue'
 import BasicButton from '../components/BasicButton.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { computed, onUpdated, ref } from 'vue'
+import { doc, getDoc } from '@firebase/firestore'
+import { db } from '../firebase/config'
 
 const store = useStore()
 const router = useRouter()
 
 const title = ref('')
-const description = ref('')
 const content = ref('')
 const newTag = ref('')
 const tags = ref([])
 const imageLink = ref('')
+
+store.dispatch('getDrafts')
+const drafts = computed(() => store.state.drafts)
+const draft = ref('')
 
 const handleSubmit = async () => {
     try {
         await store.dispatch('createPost', {
             title: title.value,
             content: content.value,
+            imageLink: imageLink.value,
             tags: tags.value,
-            imageLink: imageLink.value
+        })
+        console.log(content)
+        router.push('/')
+    } catch (err) {
+        console.log(err)
+    }
+}
+const handleDraft = async () => {
+    try {
+        await store.dispatch('createDraft', {
+            title: title.value,
+            content: content.value,
+            imageLink: imageLink.value,
+            tags: tags.value,
         })
         console.log(content)
         router.push('/')
@@ -92,11 +118,25 @@ const removeTag = (index) => {
     arr.splice(index, 1)
     console.log(`1 deleted at ${index} index`)
 }
+
+const getDraft = async () => {
+    await store.dispatch('getSingleDraft', draft.value)
+    const doc = store.state.posts[0]
+    title.value = doc.title
+    content.value = doc.content
+    tags.value = doc.tags
+    imageLink.value = doc.imageLink
+}
 </script>
 
 
 
 <style scoped>
+main {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
 form {
     width: 100%;
     /* height: 75vh; */
@@ -136,7 +176,9 @@ input {
     cursor: pointer;
     font-size: 2rem
 }
-
+select{
+    font-size: 2rem;
+}
 @media (max-width: 400px) {
     .editor, input {
         width: 90vw

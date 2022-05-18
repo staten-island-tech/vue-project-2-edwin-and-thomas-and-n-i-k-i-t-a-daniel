@@ -33,6 +33,7 @@ const store = createStore({
     viewingProfile: null,
     upvotes: [],
     downvotes: [],
+    drafts: [],
   },
   mutations: {
     setUser(state, payload) {
@@ -75,6 +76,12 @@ const store = createStore({
     clearVotes(state) {
       state.upvotes = [];
       state.downvotes = [];
+    },
+    addDraft(state, payload) {
+      state.drafts.push(payload);
+    },
+    clearDrafts(state) {
+      state.drafts = [];
     },
   },
   actions: {
@@ -431,6 +438,28 @@ const store = createStore({
       await updateDoc(postRef, {
         drafts: arrayUnion(docRef.id),
       });
+    },
+    async getDrafts(context) {
+      context.commit("clearDrafts");
+      const userRef = doc(db, "users", this.state.user.uid);
+      const userData = await getDoc(userRef);
+      const user = userData.data();
+      console.log("drafts gotten");
+      if (user.drafts) {
+        user.drafts.forEach(async (id) => {
+          console.log(id);
+          const draftRef = doc(db, "drafts", id);
+          const draftData = await getDoc(draftRef);
+          context.commit("addDraft", draftData.data());
+        });
+      }
+    },
+    async getSingleDraft(context, id) {
+      context.commit("clearPosts");
+      const docRef = doc(db, "drafts", id);
+      const docSnap = await getDoc(docRef);
+      const docu = docSnap.data();
+      context.commit("addPost", docu);
     },
   },
 });
