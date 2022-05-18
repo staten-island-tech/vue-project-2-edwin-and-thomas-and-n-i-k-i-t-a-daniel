@@ -71,11 +71,10 @@ const subtextEnter = (el) => {
   display: grid;
   grid-template-columns: 3fr 1fr 1fr;
   grid-template-rows: 3fr 1fr;
-  border-style:  solid none none none;
+  border-style:  none none solid none;
   border-color: #724949;
   width: 75vw;
   max-height: 15vh;
-  margin: 5rem;
   color: black;
   padding: 3rem;
 }
@@ -91,7 +90,7 @@ const subtextEnter = (el) => {
   margin: auto;
 }
 .clickable:hover {
-  color: #724949;
+  color: #2F1E1E;
   transform: scale(103%);
 }
 .postImage{
@@ -102,6 +101,23 @@ const subtextEnter = (el) => {
 .nullImage{
   margin: 1rem auto;
   max-height: 7vh;
+}
+.clickable:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #2F1E1E;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.clickable:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 /* Phones */
 @media (max-width: 400px) {

@@ -73,6 +73,9 @@ const bodyEnter = (el) => {
 .post h2,h4,p{
   margin: .5rem
 }
+.post h2{
+  height: fit-content;
+}
 .post p{
   font-size: 2rem;
 }
@@ -90,6 +93,23 @@ const bodyEnter = (el) => {
 }
 .nullImage{
   margin: 1rem auto;
+}
+.clickable:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #ffffff;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.clickable:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
 }
 /* Phones */
 @media (max-width: 400px) {

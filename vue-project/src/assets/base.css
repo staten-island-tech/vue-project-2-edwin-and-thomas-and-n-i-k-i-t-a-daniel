@@ -92,7 +92,7 @@ main,
 
 /* This is just for white text */
 .clickable:hover {
-  color: rgba(255, 255, 255, 0.712);
+  /* color: rgba(255, 255, 255, 0.712); */
   transform: scale(103%);
 }
 .clickable-blk:hover {
