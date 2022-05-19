@@ -160,7 +160,7 @@ watch(
 }
 .image{
    border-radius: 1rem;
-   width: 50%;
+   max-width: 75rem;
    margin: auto;
 }
 #error{
