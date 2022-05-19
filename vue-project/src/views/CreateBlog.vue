@@ -5,7 +5,10 @@
             <option v-for="draft in drafts" :key="draft.id" :value="draft.id">{{ 
             draft.title }}</option>
         </select>
-        <BasicButton @on-click="getDraft">Switch to Draft</BasicButton>
+        <div class='top-buttons'>
+            <BasicButton @on-click="getDraft">Switch</BasicButton>
+            <BasicButton @on-click="clearFields">Clear Fields</BasicButton>
+        </div>
         <form @submit.prevent="handleSubmit">
 
             <div class="form-input">
@@ -61,9 +64,7 @@ import Editor from '@tinymce/tinymce-vue'
 import BasicButton from '../components/BasicButton.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { computed, onUpdated, ref } from 'vue'
-import { doc, getDoc } from '@firebase/firestore'
-import { db } from '../firebase/config'
+import { computed, ref, watch } from 'vue'
 
 const store = useStore()
 const router = useRouter()
@@ -74,7 +75,6 @@ const newTag = ref('')
 const tags = ref([])
 const imageLink = ref('')
 
-store.dispatch('getDrafts')
 const drafts = computed(() => store.state.drafts)
 const draft = ref('')
 
@@ -127,6 +127,20 @@ const getDraft = async () => {
     tags.value = doc.tags
     imageLink.value = doc.imageLink
 }
+const clearFields = () => {
+    title.value = ''
+    content.value = ''
+    tags.value = ''
+    imageLink.value = ''
+    draft.value = ''
+}
+
+watch(
+    () => store.state.user,
+    async () => {
+        store.dispatch('getDrafts')
+    }
+)
 </script>
 
 
@@ -144,7 +158,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    padding-top: 3rem;
+    /* padding-top: 3rem; */
 }
 label {
     font-size: 1.6rem;
@@ -178,6 +192,10 @@ input {
 }
 select{
     font-size: 2rem;
+    margin-top: 3rem;
+}
+.top-buttons {
+    transform: scale(0.7);
 }
 @media (max-width: 400px) {
     .editor, input {
