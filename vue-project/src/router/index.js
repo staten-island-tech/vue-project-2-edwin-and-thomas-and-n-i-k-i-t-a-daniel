@@ -8,7 +8,7 @@ import Post from "../views/Post.vue";
 import Err from "../views/404.vue";
 import Reset from "../views/PasswordReset.vue";
 import Search from "../views/Search.vue";
-import Draft from "../views/Draft.vue";
+import Edit from "../views/Edit.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -44,9 +44,9 @@ const router = createRouter({
       component: Post,
     },
     {
-      path: "/post/:id/draft",
-      name: "Draft",
-      component: Draft,
+      path: "/post/:id/edit",
+      name: "Edit",
+      component: Edit,
     },
     {
       path: "/:pathmatch(.*)*/",

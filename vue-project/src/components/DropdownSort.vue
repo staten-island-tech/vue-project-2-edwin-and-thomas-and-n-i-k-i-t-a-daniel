@@ -2,7 +2,7 @@
 <div class='container'>
 <div class="sort">
     <select v-model="selected">
-        <option disabled value="">Select an option</option>
+        <option disabled value="">Sort by</option>
         <option value="ascending">Most Popular</option>
         <option value="descending">Least Popular</option>
     </select>

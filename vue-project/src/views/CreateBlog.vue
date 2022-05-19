@@ -1,5 +1,14 @@
 <template>
     <main>
+        <select v-model="draft">
+            <option disabled value="">Edit Draft</option>
+            <option v-for="draft in drafts" :key="draft.id" :value="draft.id">{{ 
+            draft.title }}</option>
+        </select>
+        <div class='top-buttons'>
+            <BasicButton @on-click="getDraft">Switch</BasicButton>
+            <BasicButton @on-click="clearFields">Clear Fields</BasicButton>
+        </div>
         <form @submit.prevent="handleSubmit">
 
             <div class="form-input">
@@ -44,8 +53,9 @@
                     name="content" id=content />
             </div>
 
-            <BasicButton type="submit">Upload Post</BasicButton>
+            <BasicButton type="submit">Post</BasicButton>
         </form>
+            <BasicButton @on-click="handleDraft">Save as Draft</BasicButton>
     </main>
 </template>
 
@@ -54,25 +64,41 @@ import Editor from '@tinymce/tinymce-vue'
 import BasicButton from '../components/BasicButton.vue'
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
-import { ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 
 const store = useStore()
 const router = useRouter()
 
 const title = ref('')
-const description = ref('')
 const content = ref('')
 const newTag = ref('')
 const tags = ref([])
 const imageLink = ref('')
+
+const drafts = computed(() => store.state.drafts)
+const draft = ref('')
 
 const handleSubmit = async () => {
     try {
         await store.dispatch('createPost', {
             title: title.value,
             content: content.value,
+            imageLink: imageLink.value,
             tags: tags.value,
-            imageLink: imageLink.value
+        })
+        console.log(content)
+        router.push('/')
+    } catch (err) {
+        console.log(err)
+    }
+}
+const handleDraft = async () => {
+    try {
+        await store.dispatch('createDraft', {
+            title: title.value,
+            content: content.value,
+            imageLink: imageLink.value,
+            tags: tags.value,
         })
         console.log(content)
         router.push('/')
@@ -92,11 +118,39 @@ const removeTag = (index) => {
     arr.splice(index, 1)
     console.log(`1 deleted at ${index} index`)
 }
+
+const getDraft = async () => {
+    await store.dispatch('getSingleDraft', draft.value)
+    const doc = store.state.posts[0]
+    title.value = doc.title
+    content.value = doc.content
+    tags.value = doc.tags
+    imageLink.value = doc.imageLink
+}
+const clearFields = () => {
+    title.value = ''
+    content.value = ''
+    tags.value = ''
+    imageLink.value = ''
+    draft.value = ''
+}
+
+watch(
+    () => store.state.user,
+    async () => {
+        store.dispatch('getDrafts')
+    }
+)
 </script>
 
 
 
 <style scoped>
+main {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+}
 form {
     width: 100%;
     /* height: 75vh; */
@@ -104,7 +158,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-    padding-top: 3rem;
+    /* padding-top: 3rem; */
 }
 label {
     font-size: 1.6rem;
@@ -136,7 +190,13 @@ input {
     cursor: pointer;
     font-size: 2rem
 }
-
+select{
+    font-size: 2rem;
+    margin-top: 3rem;
+}
+.top-buttons {
+    transform: scale(0.7);
+}
 @media (max-width: 400px) {
     .editor, input {
         width: 90vw
