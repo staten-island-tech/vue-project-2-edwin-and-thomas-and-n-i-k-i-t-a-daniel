@@ -20,8 +20,8 @@
           <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
           <!-- <router-link v-if="user" to="/theme" class="dropdown-item">Theme</router-link> -->
-          <button v-if="viewClassic === true && router.name == 'home'" @click="toggleViewCard" class="dropdown-item">Card View</button>
-          <button v-if="viewClassic === false && router.name == 'home'" @click="toggleViewClassic" class="dropdown-item">Classic View</button>
+          <button v-if="viewClassic === true && router.name === 'home'" @click="toggleViewCard" class="dropdown-item">Card View</button>
+          <button v-if="viewClassic === false && router.name === 'home'" @click="toggleViewClassic" class="dropdown-item">Classic View</button>
           <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick()">Sign Out</router-link>
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
