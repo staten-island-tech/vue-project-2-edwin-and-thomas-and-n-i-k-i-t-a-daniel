@@ -12,15 +12,19 @@ body,
 
 :root {
   --primary: #724949;
+  --dark-primary: #e08b8b43;
   --secondary: #975f5f;
-  --tertiary: #ffffff;
+  --white: #ffffff;
+  --black: #000;
 }
 
 /* semantic color variables for this project */
 :root {
   --color-primary: var(--primary);
+  --color-dark-primary: var(--dark-primary);
   --color-secondary: var(--secondary);
-  --color-tertiary: var(--tertiary);
+  --color-light-text: var(--white);
+  --color-dark-text: var(--black);
 }
 
 :root {

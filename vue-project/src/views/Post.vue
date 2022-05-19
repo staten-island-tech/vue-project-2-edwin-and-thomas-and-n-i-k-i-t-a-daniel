@@ -103,7 +103,7 @@ watch(
 .radio-item {
     cursor: pointer;
     background-color: #794d4d51;
-    color: #724949;
+    color: var(--color-primary);
     border: none;
     border-radius: 2rem;
     height: 5rem;

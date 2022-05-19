@@ -62,11 +62,11 @@ const bodyEnter = (el) => {
 .post{
   display: grid;
   grid-template-columns: 3fr 1fr;
-  background-color: #724949;
+  background-color: var(--color-primary);
   width: 73vw;
   max-height: 45vh;
   margin: 3rem;
-  color: white;
+  color: var( --color-light-text);
   border-radius: 1rem;
   padding: 3rem;
 }
@@ -102,7 +102,7 @@ const bodyEnter = (el) => {
   height: 2px;
   bottom: 0;
   left: 0;
-  background-color: #ffffff;
+  background-color: var(--color-light-text);
   transform-origin: bottom right;
   transition: transform 0.25s ease-out;
 }

@@ -6,8 +6,8 @@
 
 <style scoped>
 button {
-    color: white;
-    background-color: #724646;
+    color: var( --color-light-text);
+    background-color: var(--color-primary);
     text-transform: uppercase;
     text-decoration: none;
     padding: 1.2rem 3.2rem;

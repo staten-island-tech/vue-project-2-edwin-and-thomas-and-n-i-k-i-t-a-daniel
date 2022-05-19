@@ -97,7 +97,7 @@ export default {
 nav {
   position: fixed;
   top:0;
-  background-color:#724949;
+  background-color:var(--color-primary);
   height: 9rem;
   width: 100vw;
   display: flex;
@@ -109,7 +109,7 @@ nav {
   z-index: 5;
 }
 a {
-  color: white;
+  color: var(--color-light-text);
   text-decoration: underline;
 }
 .router {
@@ -147,11 +147,11 @@ a {
 }
 .dropdown {
   position: fixed;
-  background-color: #975F5F;
+  background-color: var(--color-secondary);
   z-index: 4;
   height: 100%;
   width: 30rem;
-  color: white;
+  color: var(--color-light-text);
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -170,7 +170,7 @@ a {
 
 .top-item {
   margin-bottom: 2rem;
-  background-color: #e08b8b43;
+  background-color: var(--color-dark-primary);
   background-image: url('../assets/search.svg');
   background-repeat: no-repeat;
   background-position: left center;
@@ -183,11 +183,11 @@ a {
   font-size: 2rem;
   text-align: left;
   margin-top: 3rem;
-  color: white;
+  color: var(--color-light-text);
   text-indent: 3rem
 }
 .dropdown-item {
-  background-color: #e08b8b43;
+  background-color: var(--color-dark-primary);
   border: none;
   border-radius: 2rem;
   width: 85%;
@@ -195,7 +195,7 @@ a {
   padding: .6rem 1.6rem;
   font-size: 2.4rem;
   margin-bottom: 2rem;
-  color: white;
+  color: var(--color-light-text);
   text-align: center;
   text-decoration-line: none;
 }

@@ -72,10 +72,10 @@ const subtextEnter = (el) => {
   grid-template-columns: 3fr 1fr 1fr;
   grid-template-rows: 3fr 1fr;
   border-style:  none none solid none;
-  border-color: #724949;
+  border-color: var(--color-primary);
   width: 75vw;
   max-height: 15vh;
-  color: black;
+  color: var( --color-dark-text);
   padding: 3rem;
 }
 .post h2,h4{
@@ -90,7 +90,6 @@ const subtextEnter = (el) => {
   margin: auto;
 }
 .clickable:hover {
-  color: #2F1E1E;
   transform: scale(103%);
 }
 .postImage{
