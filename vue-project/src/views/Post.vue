@@ -162,7 +162,7 @@ watch(
     margin: auto;
 }
 .commentHolder {
-    width: 100vw;
+    width: 60vw
 }
 
 .comments h2 {
@@ -217,5 +217,14 @@ label {
     font-size: 3rem;
     margin-top: auto;
     margin-bottom: auto;
+}
+
+@media (max-width: 400px) {
+    .commentHolder {
+        width: 95vw;
+    }
+    .commentSubmit {
+        transform: scale(0.8);
+    }
 }
 </style>

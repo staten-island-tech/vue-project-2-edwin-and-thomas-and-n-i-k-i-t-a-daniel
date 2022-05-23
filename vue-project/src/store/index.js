@@ -450,7 +450,9 @@ const store = createStore({
           console.log(id);
           const draftRef = doc(db, "drafts", id);
           const draftData = await getDoc(draftRef);
-          context.commit("addDraft", draftData.data());
+          const draft = draftData.data();
+          if (draft.title.trim() === "") draft.title = "[Untitled]";
+          context.commit("addDraft", draft);
         });
       }
     },

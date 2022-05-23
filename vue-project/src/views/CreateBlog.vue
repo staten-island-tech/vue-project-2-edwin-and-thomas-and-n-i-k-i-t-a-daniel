@@ -141,6 +141,7 @@ watch(
         store.dispatch('getDrafts')
     }
 )
+store.dispatch('getDrafts')
 </script>
 
 
