@@ -42,7 +42,7 @@
                 name="content" id=content />
         </div>
         <BasicButton @on-click="discardChanges">Discard Changes</BasicButton>
-        <BasicButton @on-click="saveDraft">Save Draft</BasicButton>
+        <BasicButton @on-click="saveDraft">Save Changes</BasicButton>
     </main>
 </template>
 

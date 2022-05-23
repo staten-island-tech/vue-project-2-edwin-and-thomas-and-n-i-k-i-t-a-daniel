@@ -147,6 +147,9 @@ watch(
     display: flex;
     align-content: center;
 }
+#commentSubmit{
+    width: 40vw;
+}
 .commentBox{
     margin: auto;
     font-size: 3rem;
@@ -158,9 +161,10 @@ watch(
     font-size: 5rem;
     margin: auto;
 }
-.comments {
-    width: 40vw;
+.commentHolder {
+    width: 100vw;
 }
+
 .comments h2 {
     text-align: center;
 }

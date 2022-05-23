@@ -122,6 +122,7 @@ const changePicture = () => {
 .comment p {
     margin-left: 0.5rem;
     color: black;
+    
 }
 .comment h5 {
     margin-right: 0.5rem;
