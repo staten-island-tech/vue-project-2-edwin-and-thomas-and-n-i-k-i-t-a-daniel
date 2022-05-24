@@ -21,6 +21,8 @@ const error = ref(null)
 const store = useStore()
 
 const handleSubmit = () => store.dispatch('passwordReset', email.value)
+
+document.title = 'Reset Password | Review Site'
 </script>
 
 <style scoped>

@@ -3,7 +3,7 @@
     <transition-group>
     <DropdownSort v-if="user" />
     <div class="postContainer" v-if="user">
-      <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  
+      <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" :altText="post.altText" />  
     </div>
     <div v-if="!user">
       <h2 class="message">Please sign in to view posts</h2>
@@ -21,6 +21,8 @@ const store = useStore();
 store.dispatch("getPosts");
 const posts = computed(() => store.state.posts)
 const user = computed(() => store.state.user)
+
+document.title = "Review Site"
 </script>
 
 

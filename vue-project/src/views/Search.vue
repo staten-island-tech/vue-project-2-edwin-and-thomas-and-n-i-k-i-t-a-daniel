@@ -5,7 +5,7 @@
         <DropdownSort/>
 
         <div class="posts" v-if="user">
-            <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>  
+            <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" :altText="post.altText"/>  
         </div>
     </main>
 </template>
@@ -20,6 +20,7 @@ const store = useStore()
 const posts = computed(() => store.state.posts)
 const user = computed(() => store.state.user)
 
+document.title = 'Search Results | Review Site'
 </script>
 
 <style scoped>

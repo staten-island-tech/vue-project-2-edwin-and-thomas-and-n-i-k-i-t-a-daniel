@@ -9,6 +9,7 @@
 import { useRouter } from "vue-router";
 
 const router = useRouter()
+document.title = '404 | Review Site Thing'
 router.push('/')
 </script>
 

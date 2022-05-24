@@ -7,7 +7,7 @@
       > 
         <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
       </transition>
-      <img v-bind:src="imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
+      <img v-bind:src="imageLink" :alt="altText" class="image" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
       <transition-group
         appear
         @before-enter="beforeEnter"
@@ -43,6 +43,7 @@ const props = defineProps({
     description: String,
     id: String,
     imageLink: String,
+    altText: String
 })
 
 const postClick = (postID) => {

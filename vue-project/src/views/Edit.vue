@@ -8,6 +8,10 @@
             <label for="imageLink">Image Link:</label>
             <input id=imageLink type="url" name="imageLink" v-model="imageLink">
         </div>
+        <div class="form-input">
+            <label for="imageLink">Alt Text: (Optional)</label>
+            <input id=altText type="alt" name="altText" v-model="altText">
+        </div>
 
         <div class="form-input">
             <label for="tags">Tags: (Optional)</label>
@@ -68,6 +72,7 @@ const content = ref('')
 const newTag = ref('')
 const tags = ref([])
 const imageLink = ref('')
+const altText = ref('')
 
 const addTag = () => {
     const arr = tags.value
@@ -100,7 +105,8 @@ const saveDraft = async () => {
         content: content.value,
         imageLink: imageLink.value,
         tags: tags.value,
-        id: route.params.id
+        id: route.params.id,
+        altText: altText.value
     })
     router.push(`/post/${route.params.id}`)
 }
@@ -117,6 +123,8 @@ watch(
         getPost(newId)
     }
 )
+
+document.title = 'Editing Post | Review Site'
 </script>
 
 <style scoped>

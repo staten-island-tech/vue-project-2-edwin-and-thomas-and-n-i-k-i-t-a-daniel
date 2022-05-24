@@ -143,7 +143,7 @@ const store = createStore({
       context.dispatch("getProfilePosts");
       context.dispatch("getProfileComments");
     },
-    async createPost(context, { title, content, imageLink, tags }) {
+    async createPost(context, { title, content, imageLink, tags, altText }) {
       console.log("create post action");
       const docData = {
         author: {
@@ -155,6 +155,7 @@ const store = createStore({
         imageLink: imageLink,
         comments: [],
         tags: tags,
+        altText: altText,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
       await setDoc(
@@ -402,7 +403,7 @@ const store = createStore({
       });
       console.log(this.state.posts);
     },
-    async editPost(context, { title, content, imageLink, tags, id }) {
+    async editPost(context, { title, content, imageLink, tags, id, altText }) {
       const docData = {
         author: {
           uid: this.state.user.uid,
@@ -413,10 +414,11 @@ const store = createStore({
         imageLink: imageLink,
         comments: [],
         tags: tags,
+        altText: altText,
       };
       await setDoc(doc(db, "posts", id), docData, { merge: true });
     },
-    async createDraft(context, { title, content, imageLink, tags }) {
+    async createDraft(context, { title, content, imageLink, tags, altText }) {
       const docData = {
         author: {
           uid: this.state.user.uid,
@@ -427,6 +429,7 @@ const store = createStore({
         imageLink: imageLink,
         comments: [],
         tags: tags,
+        altText: altText,
       };
       const docRef = await addDoc(collection(db, "drafts"), docData);
       await setDoc(

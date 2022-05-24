@@ -44,6 +44,8 @@ const handleSubmit = async () => {
         error.value = err.message
     }
 }
+
+document.title = 'Login | Review Site'
 </script>
 
 <style scoped>

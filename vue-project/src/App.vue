@@ -7,7 +7,6 @@
 
 <script setup>
 import Navbar from "./components/Navbar.vue"
-document.title = "Review Site"
 </script>
 
 <style>

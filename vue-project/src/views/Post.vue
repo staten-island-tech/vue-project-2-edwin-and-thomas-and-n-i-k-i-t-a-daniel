@@ -44,7 +44,7 @@
 <script setup>
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router';
-import { computed, watch, ref } from 'vue';
+import { computed, watch, ref, onUpdated, onMounted } from 'vue';
 import BasicButton from '../components/BasicButton.vue'
 import Votes from '../components/Votes.vue'
 
@@ -102,6 +102,8 @@ watch(
         store.dispatch("getSinglePost", newId)
     }
 )
+
+document.title = 'Viewing Post | Review Site'
 </script>
 
 <style scoped>
