@@ -35,5 +35,6 @@ watch(
     width: 50vw;
     text-align: center;
     margin: 1rem;
+    color: var(--color-contrast-text);
 }
 </style>

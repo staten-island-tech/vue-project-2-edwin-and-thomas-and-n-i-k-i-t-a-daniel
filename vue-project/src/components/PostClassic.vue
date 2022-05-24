@@ -131,5 +131,12 @@ const subtextEnter = (el) => {
   }
 
 }
-
+@media (prefers-color-scheme: dark) {
+  .post{
+    color: var(--color-light-text);
+  }
+  .clickable:after{
+    background-color: var(--color-light-text);
+  }
+}
 </style>
