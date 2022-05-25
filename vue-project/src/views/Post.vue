@@ -11,7 +11,7 @@
             <Votes :key="route.params.id" :id="route.params.id" :type="'posts'"/>
             <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
             <div id="content" v-html="post.content"></div>
-            <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.id='error';">
+            <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.id='error';">
 
         </div>
         <div v-if="radio === 'comments'" class="commentHolder">
@@ -109,6 +109,8 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
+    padding-top: 9rem;
+    color: var(--color-contrast-text);
 }
 .radio {
     display: flex;
@@ -117,7 +119,7 @@ watch(
 .radio-item {
     cursor: pointer;
     background-color: #e5dbdb;
-    color: #724949;
+    color: var(--color-primary);
     border: none;
     border-radius: 2rem;
     height: 5rem;
@@ -166,7 +168,7 @@ watch(
 }
 .comment {
     margin: 1rem;
-    color: black;
+    color: var(--color-contrast-text);
     border-radius: 1.5rem;
 }
 .comment div h5 {
@@ -177,7 +179,7 @@ watch(
 }
 .deleteButton {
     background-color: #e5dbdb;
-    color: #724949;
+    color: var(--color-primary);
     border: none;
     border-radius: 2rem;
     height: 5rem;
@@ -192,7 +194,7 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     width: 80vw;
-    color: #764a4a;
+    color: var(--color-primary);
 }
 .post h2, h4, div {
     align-self: center;
@@ -202,7 +204,7 @@ watch(
 }
 .image{
    border-radius: 1rem;
-   width: 50%;
+   max-width: 75rem;
    margin: auto;
 }
 #error{
@@ -213,5 +215,10 @@ label {
     font-size: 3rem;
     margin-top: auto;
     margin-bottom: auto;
+    }
+@media (prefers-color-scheme: dark) {
+    .radio h3{
+    color: var(--color-contrast-text);
+    }
 }
 </style>

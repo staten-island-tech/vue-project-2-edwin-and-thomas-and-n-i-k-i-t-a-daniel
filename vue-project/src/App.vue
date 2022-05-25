@@ -11,5 +11,5 @@ document.title = "Review Site"
 </script>
 
 <style>
-@import url("./assets/base.css");
+@import url('./assets/base.css');
 </style>

@@ -71,12 +71,11 @@ const subtextEnter = (el) => {
   display: grid;
   grid-template-columns: 3fr 1fr 1fr;
   grid-template-rows: 3fr 1fr;
-  border-style:  solid none none none;
-  border-color: #724949;
+  border-style:  none none solid none;
+  border-color: var(--color-primary);
   width: 75vw;
   max-height: 15vh;
-  margin: 5rem;
-  color: black;
+  color: var( --color-dark-text);
   padding: 3rem;
 }
 .post h2,h4{
@@ -90,6 +89,9 @@ const subtextEnter = (el) => {
   width: fit-content;
   margin: auto;
 }
+.clickable:hover {
+  transform: scale(103%);
+}
 .postImage{
   max-height: 7vh;
   border-radius: .5rem;
@@ -99,10 +101,27 @@ const subtextEnter = (el) => {
   margin: 1rem auto;
   max-height: 7vh;
 }
+.clickable:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  background-color: #2F1E1E;
+  transform-origin: bottom right;
+  transition: transform 0.25s ease-out;
+}
+
+.clickable:hover:after {
+  transform: scaleX(1);
+  transform-origin: bottom left;
+}
 /* Phones */
 @media (max-width: 400px) {
   h2 {
-    font-size: 3rem;
+    font-size: 2rem;
   }
   p {
     display: none;
@@ -112,5 +131,12 @@ const subtextEnter = (el) => {
   }
 
 }
-
+@media (prefers-color-scheme: dark) {
+  .post{
+    color: var(--color-light-text);
+  }
+  .clickable:after{
+    background-color: var(--color-light-text);
+  }
+}
 </style>

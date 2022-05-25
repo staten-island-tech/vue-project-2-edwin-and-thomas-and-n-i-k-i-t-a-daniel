@@ -9,6 +9,7 @@ import Err from "../views/404.vue";
 import Reset from "../views/PasswordReset.vue";
 import Search from "../views/Search.vue";
 import Edit from "../views/Edit.vue";
+import ThemeSelector from "../views/ThemeSelector.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -37,6 +38,11 @@ const router = createRouter({
       path: "/create",
       name: "createblog",
       component: CreateBlog,
+    },
+    {
+      path: "/theme",
+      name: "themeselector",
+      component: ThemeSelector,
     },
     {
       path: "/post/:id",

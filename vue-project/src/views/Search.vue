@@ -33,5 +33,6 @@ h3{
     padding-top: 4rem;
     margin: auto;
     text-align: center;
+    color: var(--color-contrast-text);
 }
 </style>

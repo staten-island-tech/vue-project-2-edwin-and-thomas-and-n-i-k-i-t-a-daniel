@@ -120,8 +120,6 @@ const removeTag = (index) => {
     console.log(`1 deleted at ${index} index`)
 }
 
-<<<<<<< HEAD
-=======
 const getDraft = async () => {
     await store.dispatch('getSingleDraft', draft.value)
     const doc = store.state.posts[0]
@@ -144,7 +142,6 @@ watch(
         store.dispatch('getDrafts')
     }
 )
->>>>>>> 7b4cc29405a294a24474edad923b3eea2379907a
 </script>
 
 
@@ -162,11 +159,9 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
-<<<<<<< HEAD
     padding-top: 5rem;
-=======
     /* padding-top: 3rem; */
->>>>>>> 7b4cc29405a294a24474edad923b3eea2379907a
+    color: var(--color-contrast-text);
 }
 label {
     font-size: 1.6rem;
