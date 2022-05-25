@@ -40,6 +40,7 @@ main {
 }
 .message{
   padding-top: 15rem;
+  color: var(--color-contrast-text);
 }
 .viewButtons{
   padding-top: 15rem;
@@ -65,10 +66,5 @@ main {
 .v-enter-from,
 .v-leave-to {
   opacity: 0;
-}
-@media (prefers-color-theme: dark){
-  main{
-   background-color: #034078;
-  }
 }
 </style>

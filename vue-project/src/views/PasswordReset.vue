@@ -29,6 +29,7 @@ main {
     flex-flow: nowrap column;
     align-items: center;
     padding-top: 5rem;
+    color: var(--color-contrast-text);
 }
 form {
     display: flex;

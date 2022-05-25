@@ -112,6 +112,7 @@ form {
     align-items: center;
     flex-flow: column nowrap;
     padding-top: 5rem;
+    color: var(--color-contrast-text);
 }
 label {
     font-size: 1.6rem;

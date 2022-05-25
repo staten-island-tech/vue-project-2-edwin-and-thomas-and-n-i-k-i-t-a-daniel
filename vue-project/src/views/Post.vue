@@ -95,6 +95,7 @@ watch(
     flex-flow: column nowrap;
     align-items: center;
     padding-top: 9rem;
+    color: var(--color-contrast-text);
 }
 .radio {
     display: flex;
@@ -118,6 +119,7 @@ watch(
 #content {
     font-size: 2rem;
 }
+
 .commentHolder{
     background-color:rgb(114, 73, 73, 0.2);
     padding: 1rem;
@@ -165,5 +167,10 @@ watch(
 }
 #error{
     display: none;
+}
+@media (prefers-color-scheme: dark) {
+    .radio h3{
+    color: var(--color-contrast-text);
+}
 }
 </style>
