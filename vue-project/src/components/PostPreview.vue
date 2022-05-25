@@ -14,7 +14,6 @@
         appear
         @before-enter="beforeEnter"
         @enter="bodyEnter"
-<<<<<<< HEAD
       > 
         <Votes :key="id" :id="id" :type="'posts'"/>
       </transition-group>
@@ -26,15 +25,10 @@
         <h4 @click="userClick(author.uid)" class="clickable">by {{ author.dname }}</h4>
       </transition>
 
-    </div>
-=======
-      >
+    
         <p class="description clickable" @click="postClick(id)">{{ description }}</p>
         <h4 @click="userClick(author.uid)" class="clickable centered">by {{ author.dname }}</h4>
-   
-</transition-group> 
-</div> 
->>>>>>> Wanderbranch
+   </div> 
 </template>
 
 <script setup>
@@ -78,11 +72,7 @@ const bodyEnter = (el) => {
 .post{
   display: grid;
   grid-template-columns: 3fr 1fr;
-<<<<<<< HEAD
-  background-color: #764a4a;
-=======
   background-color: var(--color-primary);
->>>>>>> Wanderbranch
   width: 73vw;
   max-height: 45vh;
   margin: 3rem;
@@ -100,7 +90,6 @@ const bodyEnter = (el) => {
   font-size: 2rem;
 }
 .clickable {
-<<<<<<< HEAD
   cursor: pointer;
   width: fit-content;
 }
@@ -114,16 +103,11 @@ const bodyEnter = (el) => {
 }
 .nullImage{
   margin: 1rem auto;
-}
-<<<<<<< HEAD
-=======
   width: fit-content
 }
 h2 {
   height: fit-content
 }
->>>>>>> 7b4cc29405a294a24474edad923b3eea2379907a
-=======
 .clickable:after {
   content: '';
   position: absolute;
@@ -141,9 +125,8 @@ h2 {
   transform: scaleX(1);
   transform-origin: bottom left;
 }
->>>>>>> Wanderbranch
 /* Phones */
-@media (max-width: 400px) {
+@media (max-width: 660px) {
   h2 {
     font-size: 3rem;
   }
@@ -157,5 +140,15 @@ h2 {
     display: none
   }
 
+}
+@media (max-width: 804px) {
+    img{
+      display: none;
+    }
+    .post{
+  display: flex;
+  flex-direction: column;
+  flex-flow: wrap;
+  }
 }
 </style>

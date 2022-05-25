@@ -19,12 +19,9 @@
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
           <router-link v-if="!user" to="/login" class="dropdown-item" :class="{ 'top-item': !user }">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
-<<<<<<< HEAD:vue-project/src/components/Navbar.vue
-=======
           <!-- <router-link v-if="user" to="/theme" class="dropdown-item">Theme</router-link> -->
           <button v-if="viewClassic === true && $route.name==='home'" @click="toggleViewCard" class="dropdown-item">Card View</button>
           <button v-if="viewClassic === false && $route.name==='home'" @click="toggleViewClassic" class="dropdown-item">Classic View</button>
->>>>>>> Wanderbranch:vue-project/src/components/navBar.vue
           <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick()">Sign Out</router-link>
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
@@ -55,13 +52,6 @@ export default {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
     },
-<<<<<<< HEAD:vue-project/src/components/Navbar.vue
-=======
-
-    // keyChange(){
-    //   this.keyvalue = !this.keyvalue
-    // },
->>>>>>> Wanderbranch:vue-project/src/components/navBar.vue
     close() {
       this.showDropdown = false
     }
@@ -103,11 +93,7 @@ export default {
 nav {
   position: fixed;
   top:0;
-<<<<<<< HEAD:vue-project/src/components/Navbar.vue
-  background-color:#764a4a;
-=======
   background-color:var(--color-primary);
->>>>>>> Wanderbranch:vue-project/src/components/navBar.vue
   height: 9rem;
   width: 100vw;
   display: flex;
@@ -157,11 +143,7 @@ a {
 }
 .dropdown {
   position: fixed;
-<<<<<<< HEAD:vue-project/src/components/Navbar.vue
-  background-color: #9d6060;
-=======
   background-color: var(--color-secondary);
->>>>>>> Wanderbranch:vue-project/src/components/navBar.vue
   z-index: 4;
   height: 100%;
   width: 30rem;
@@ -178,24 +160,19 @@ a {
   top: 0;
   width:100%;
   height:100%;
-<<<<<<< HEAD:vue-project/src/components/Navbar.vue
   z-index: 3;
 }
 .search {
-=======
   z-index: 3;}
 
 .top-item {
   margin-bottom: 2rem;
   background-color: var(--color-dark-primary);
->>>>>>> Wanderbranch:vue-project/src/components/navBar.vue
   background-image: url('../assets/search.svg');
   background-repeat: no-repeat;
   background-position: left center;
   background-position-x: 5%;
-<<<<<<< HEAD:vue-project/src/components/Navbar.vue
   text-align: left !important;
-=======
   border: none;
   border-radius: 2rem;
   width: 85%;
@@ -205,18 +182,13 @@ a {
   text-align: left;
   margin-top: 3rem;
   color: var(--color-light-text);
->>>>>>> Wanderbranch:vue-project/src/components/navBar.vue
   text-indent: 3rem
 }
 .top-item {
   margin-top: 3rem;
 }
 .dropdown-item {
-<<<<<<< HEAD:vue-project/src/components/Navbar.vue
-  background-color: #b6706f;
-=======
   background-color: var(--color-dark-primary);
->>>>>>> Wanderbranch:vue-project/src/components/navBar.vue
   border: none;
   border-radius: 2rem;
   width: 85%;
