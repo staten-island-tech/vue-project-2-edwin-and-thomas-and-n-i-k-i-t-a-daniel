@@ -1,13 +1,12 @@
 <template>
   <div>
-    <navBar/>
+    <Navbar/>
     <router-view/>
   </div>
 </template>
 
 <script setup>
-import { useStore } from "vuex";
-import navBar from "./components/navBar.vue";
+import Navbar from "./components/Navbar.vue"
 document.title = "Review Site"
 </script>
 

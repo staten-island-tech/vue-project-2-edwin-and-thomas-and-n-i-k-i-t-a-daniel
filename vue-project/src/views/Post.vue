@@ -8,6 +8,7 @@
 
         <div v-if="radio === 'post'" class="post" >
             <h2>{{ post.title }}</h2>
+            <Votes :key="route.params.id" :id="route.params.id" :type="'posts'"/>
             <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
             <div id="content" v-html="post.content"></div>
             <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.onerror=null;this.id='error';">
@@ -16,26 +17,27 @@
         <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment"  >
-                <h5 class="commentAuthor" v-if="comment.content != ''">{{comment.author.dname}}:</h5>
-                <p>{{ comment.content }}</p>
-                <div>
+                <em>{{ comment.content }}</em>
+                <div v-if="comment.content.trim() != ''">
+                    <Votes :key="comment.id" :id="comment.id" :type="'comments'"/>
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
-                    <BasicButton v-if="comment.author.uid === store.state.user.uid">DELETE</BasicButton>
+                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)" class="delete">DELETE</BasicButton>
                 </div>
             </div>
             <div class="commentSubmit">
-            <input type="text" v-model="comment" class="commentBox">
+            <label for=commentSubmit>Comment:</label>
+            <input id=commentSubmit type="text" v-model="comment" class="commentBox">
             <BasicButton @click="handleComment">Post</BasicButton>
             </div>
-
+        </div>
         <div v-if="radio === 'edit'">
             <h2>Edit</h2>
 
             <BasicButton @on-click="handleDelete">Delete</BasicButton>
+            <BasicButton @on-click="router.push(`${route.path}/edit`)">Edit</BasicButton>
 
             <h5 v-if="error" class="error">{{ error }}</h5>
         </div>
-    </div>
     </div>
 </template>
 
@@ -44,6 +46,7 @@ import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router';
 import { computed, watch, ref } from 'vue';
 import BasicButton from '../components/BasicButton.vue'
+import Votes from '../components/Votes.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -72,10 +75,22 @@ const handleComment = async () => {
         error.value = err
     }
 }
+
+const deleteComment = async (id, post) => {
+    try {
+        await store.dispatch("deleteComment", { 
+        commentID: id,
+        postID: post
+        })
+    } catch (err) {
+        error.value = err
+    }
+}
+
 const handleDelete = async () => {
     try {
         await store.dispatch("deletePost", route.params.id)
-        router.push('/')
+        router.push(`/`)
     } catch (err) {
         error.value = err
     }
@@ -94,7 +109,6 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    padding-top: 9rem;
 }
 .radio {
     display: flex;
@@ -102,7 +116,7 @@ watch(
 }
 .radio-item {
     cursor: pointer;
-    background-color: #794d4d51;
+    background-color: #e5dbdb;
     color: #724949;
     border: none;
     border-radius: 2rem;
@@ -117,6 +131,11 @@ watch(
 }
 #content {
     font-size: 2rem;
+}
+.comment div {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
 }
 .commentHolder{
     background-color:rgb(114, 73, 73, 0.2);
@@ -133,6 +152,7 @@ watch(
     font-size: 3rem;
     height: 4rem;
     width: 50rem;
+    
 }
 .commentButton{
     font-size: 5rem;
@@ -146,11 +166,33 @@ watch(
 }
 .comment {
     margin: 1rem;
+    color: black;
+    border-radius: 1.5rem;
+}
+.comment div h5 {
+    margin-left: 0.5rem
+}
+.commentContent {
+    margin-left: 0.7rem;
+}
+.deleteButton {
+    background-color: #e5dbdb;
+    color: #724949;
+    border: none;
+    border-radius: 2rem;
+    height: 5rem;
+    padding: .6rem 1.6rem;
+    font-size: 2.4rem;
+    margin-top: 2rem;
+    margin-left: 60rem;
+    text-align: center;
+    text-decoration-line: none;
 }
 .post {
     display: flex;
     flex-flow: column nowrap;
     width: 80vw;
+    color: #764a4a;
 }
 .post h2, h4, div {
     align-self: center;
@@ -165,5 +207,11 @@ watch(
 }
 #error{
     display: none;
+}
+label {
+    font-size: 1.6rem;
+    font-size: 3rem;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 </style>

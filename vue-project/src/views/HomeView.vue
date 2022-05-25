@@ -1,9 +1,13 @@
 <template>
   <main>
     <transition-group>
-    <!-- lint says error but it's fine dw -->
+    <DropdownSort v-if="user" />
     <div class="postContainer" v-if="user">
+<<<<<<< HEAD
     <PostClassic  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  
+=======
+      <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  
+>>>>>>> 7b4cc29405a294a24474edad923b3eea2379907a
     </div>
     <div v-if="!user">
       <h2 class="message">Please sign in to view posts</h2>
@@ -14,7 +18,11 @@
 
 <script setup>
 import PostPreview from '../components/PostPreview.vue'
+<<<<<<< HEAD
 import PostClassic from '../components/PostClassic.vue'
+=======
+import DropdownSort from '../components/DropdownSort.vue'
+>>>>>>> 7b4cc29405a294a24474edad923b3eea2379907a
 import { useStore } from 'vuex' 
 import { computed } from '@vue/runtime-core';
 const store = useStore();  
