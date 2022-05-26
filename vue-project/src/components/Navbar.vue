@@ -260,7 +260,7 @@ button{
 } */
 
 /* Phones */
-@media (max-width: 400px) {
+@media (max-width: 660px) {
   .router:not(#Home) {
     display: none;
   }

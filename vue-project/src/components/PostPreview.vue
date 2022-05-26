@@ -141,7 +141,7 @@ h2 {
   }
 
 }
-@media (max-width: 804px) {
+@media (max-width: 820px) {
     img{
       display: none;
     }

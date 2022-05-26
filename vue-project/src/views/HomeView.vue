@@ -8,7 +8,12 @@
     <div class="postContainer" v-if="user">
 
     <div :class="{'postClassicContainer': viewClassic, 'postCardContainer': !viewClassic}">
+      <div v-if="viewClassic == false">
       <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" :altText="post.altText" />  
+      </div>
+      <div v-if="viewClassic == true">
+      <PostClassic  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" :altText="post.altText" />  
+      </div>
     </div>
     </div>
     <div v-if="!user">

@@ -16,6 +16,7 @@
       </transition>
       <img v-bind:src="imageLink" alt="postImage" class="postImage" v-if="imageLink != null" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
       <img v-else src="/src/assets/imageNotFound.svg" class="nullImage">
+        <Votes :key="id" :id="id" :type="'posts'"/>
     </div>
 </template>
 
@@ -24,6 +25,7 @@ import { computed } from '@vue/runtime-core'
 import gsap from 'gsap'
 import { useRouter } from 'vue-router'
 import { useStore } from 'vuex'
+import Votes from '../components/Votes.vue'
 
 const store = useStore()
 const router = useRouter()
@@ -69,14 +71,14 @@ const subtextEnter = (el) => {
 <style scoped>
 .post{
   display: grid;
-  grid-template-columns: 3fr 1fr 1fr;
+  grid-template-columns: 3fr 1fr 1fr 1fr;
   grid-template-rows: 3fr 1fr;
   border-style:  none none solid none;
   border-color: var(--color-primary);
   width: 75vw;
-  max-height: 15vh;
   color: var( --color-dark-text);
   padding: 3rem;
+  overflow: auto;
 }
 .post h2,h4{
   margin: .5rem
@@ -119,7 +121,7 @@ const subtextEnter = (el) => {
   transform-origin: bottom left;
 }
 /* Phones */
-@media (max-width: 400px) {
+@media (max-width: 700px) {
   h2 {
     font-size: 2rem;
   }
@@ -128,8 +130,11 @@ const subtextEnter = (el) => {
   }
   .post {
     height: fit-content;
+    display: flex;
   }
-
+  img{
+    display: none;
+  }
 }
 @media (prefers-color-scheme: dark) {
   .post{
