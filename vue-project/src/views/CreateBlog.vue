@@ -112,6 +112,7 @@ const handleDraft = async () => {
         console.log(err)
     }
 }
+
 const addTag = () => {
     const arr = tags.value
     if(newTag.value.trim() != ''){
@@ -167,7 +168,9 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
+    padding-top: 5rem;
     /* padding-top: 3rem; */
+    color: var(--color-contrast-text);
 }
 label {
     font-size: 1.6rem;

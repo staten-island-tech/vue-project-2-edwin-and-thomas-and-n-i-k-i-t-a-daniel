@@ -73,6 +73,7 @@ form {
     align-items: center;
     flex-flow: column nowrap;
     padding-top: 15rem;
+    color: var(--color-contrast-text);
 }
 
 .form-input {
@@ -80,6 +81,7 @@ form {
     justify-content: center;
     flex-direction: column;
     margin-bottom: 2rem;
+    
 }
 
 input {
@@ -101,5 +103,4 @@ label {
         width: 90vw
     }
 }
-
 </style>

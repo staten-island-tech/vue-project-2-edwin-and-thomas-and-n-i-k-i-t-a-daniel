@@ -57,6 +57,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
+    color: var(--color-contrast-text);
 }
 
 .form-input {

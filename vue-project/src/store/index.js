@@ -34,6 +34,7 @@ const store = createStore({
     upvotes: [],
     downvotes: [],
     drafts: [],
+    viewClassic: false,
   },
   mutations: {
     setUser(state, payload) {
@@ -49,10 +50,15 @@ const store = createStore({
     clearPosts(state) {
       state.posts = [];
     },
+    setViewMode(state, payload) {
+      state.viewClassic = payload;
+      console.log("test");
+    },
     setViewing(state, payload) {
       state.viewingProfile = payload;
       console.log("viewing user:", payload);
     },
+
     clearComments(state) {
       state.comments = [];
     },
@@ -111,6 +117,10 @@ const store = createStore({
       } else {
         throw new Error("could not complete signup");
       }
+    },
+    setViewMode(context, payload) {
+      context.commit("setViewMode", payload);
+      console.log("test");
     },
     async login(context, { email, password }) {
       console.log("login action");

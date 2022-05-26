@@ -19,6 +19,9 @@
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
           <router-link v-if="!user" to="/login" class="dropdown-item" :class="{ 'top-item': !user }">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
+          <!-- <router-link v-if="user" to="/theme" class="dropdown-item">Theme</router-link> -->
+          <button v-if="viewClassic === true && $route.name==='home'" @click="toggleViewCard" class="dropdown-item">Card View</button>
+          <button v-if="viewClassic === false && $route.name==='home'" @click="toggleViewClassic" class="dropdown-item">Classic View</button>
           <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick()">Sign Out</router-link>
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
@@ -30,7 +33,7 @@
       <transition name="moveLeft">
       <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
       </transition>
-    </div>
+      </div>
 </template>
 
 
@@ -65,6 +68,7 @@ export default {
     const store = useStore()
     const user = computed(() => store.state.user)
     const authIsReady = computed(() => store.state.authIsReady)
+    const viewClassic = computed(()=> store.state.viewClassic)
     const handleClick = () => {
       store.dispatch('logout')
       router.push("/")
@@ -74,7 +78,13 @@ export default {
       router.push(`/search/${search.value}`)
       search.value = ''
     }
-    return { search, router, route, store, handleClick, user, authIsReady, searchBar }
+    const toggleViewCard = () => {
+      store.dispatch('setViewMode', false)
+    }
+    const toggleViewClassic = () => {
+      store.dispatch('setViewMode', true)
+    }
+    return { search, router, route, store, handleClick, user, authIsReady, searchBar, toggleViewCard, toggleViewClassic, viewClassic, }
   },
 }
 </script>
@@ -83,7 +93,7 @@ export default {
 nav {
   position: fixed;
   top:0;
-  background-color:#764a4a;
+  background-color:var(--color-primary);
   height: 9rem;
   width: 100vw;
   display: flex;
@@ -95,7 +105,7 @@ nav {
   z-index: 5;
 }
 a {
-  color: white;
+  color: var(--color-light-text);
   text-decoration: underline;
 }
 .router {
@@ -133,11 +143,11 @@ a {
 }
 .dropdown {
   position: fixed;
-  background-color: #9d6060;
+  background-color: var(--color-secondary);
   z-index: 4;
   height: 100%;
   width: 30rem;
-  color: white;
+  color: var(--color-light-text);
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
@@ -153,18 +163,32 @@ a {
   z-index: 3;
 }
 .search {
+  z-index: 3;}
+
+.top-item {
+  margin-bottom: 2rem;
+  background-color: var(--color-dark-primary);
   background-image: url('../assets/search.svg');
   background-repeat: no-repeat;
   background-position: left center;
   background-position-x: 5%;
   text-align: left !important;
+  border: none;
+  border-radius: 2rem;
+  width: 85%;
+  height: 5rem;
+  padding: .6rem 1.6rem;
+  font-size: 2rem;
+  text-align: left;
+  margin-top: 3rem;
+  color: var(--color-light-text);
   text-indent: 3rem
 }
 .top-item {
   margin-top: 3rem;
 }
 .dropdown-item {
-  background-color: #b6706f;
+  background-color: var(--color-dark-primary);
   border: none;
   border-radius: 2rem;
   width: 85%;
@@ -172,10 +196,17 @@ a {
   padding: .6rem 1.6rem;
   font-size: 2.4rem;
   margin-bottom: 2rem;
-  color: white;
+  color: var(--color-light-text);
   text-align: center;
   text-decoration-line: none;
   cursor: pointer;
+}
+button{
+  cursor: pointer;
+}
+.background{
+  z-index: -10;
+
 }
 .v-enter-active,
 .v-leave-active {
@@ -217,6 +248,14 @@ a {
 .moveLeft-enter-active{
   animation: moveLeft 2.5s ease-in-out;
 
+} */
+/* @media (prefers-color-scheme: dark){
+  nav{
+    background-color: #001F54;
+  }
+  .background{
+    background-color: #34344A;
+  }
 } */
 
 /* Phones */

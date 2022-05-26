@@ -17,5 +17,9 @@ router.push('/')
 main {
     margin-top: 10rem
 }
-
+@media (prefers-color-scheme: dark) {
+    h2{
+        color: var(--color-light-text);
+    }
+}
 </style>

@@ -81,7 +81,7 @@ const changePicture = () => {
 .radio-item {
     cursor: pointer;
     background-color: #794d4d51;
-    color: #724949;
+    color: var(color--primary);
     border: none;
     border-radius: 2rem;
     height: 5rem;
@@ -98,11 +98,13 @@ const changePicture = () => {
     display: flex;
     align-items: center;
     flex-flow: column nowrap;
+    color: var(--color-contrast-text);
 }
 .userName{
     width: 50vw;
     text-align: center;
     margin: 1rem;
+    color: var(--color-contrast-text);
 }
 .comments {
     width: 40vw;
@@ -147,6 +149,9 @@ const changePicture = () => {
     flex-flow: column nowrap;
     align-items: center;
 }
+#changePicture{
+    font-size: 1rem;
+}
 label {
     font-size: 1.6rem;
 }
@@ -156,6 +161,12 @@ input {
 @media (max-width: 400px) {
     .comments {
         width: 80vw
+    }
+}
+
+@media (prefers-color-scheme: dark) {
+    .radio-item{
+        color: var(--color-contrast-text);
     }
 }
 </style>
