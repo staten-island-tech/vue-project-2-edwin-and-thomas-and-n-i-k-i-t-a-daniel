@@ -3,7 +3,7 @@
         <img class=pfp :src="store.state.viewingProfile.picture">
         <form class="pfp-change" @submit="changePicture()" v-if="route.params.uid === store.state.user.uid">
             <label for="changePicture">Change PFP (image URL)</label>
-            <input  type="url" name="changePicture" id=changePicture v-model="pictureLink"/>
+            <input  type="url" name="changePicture" id=changePicture v-model="pictureLink" placeholder="Press enter to submit"/>
         </form>
         <h2 class=userName>{{ store.state.viewingProfile.dname }}</h2>
         <h3>{{ store.state.viewingProfile.karma }} Daniel Points</h3>
@@ -13,7 +13,7 @@
         </div>
         <DropdownSort v-if="radio === 'post'"/>
         <div v-if="radio === 'post'" class="post">
-            <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink"/>
+            <PostPreview v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" :altText="post.altText"/>
         </div>
         <div v-if="radio === 'comments'" class="comments">
             <div v-for="comment in comments" :key="comment.id" class="comment">
@@ -124,6 +124,7 @@ const changePicture = () => {
 .comment p {
     margin-left: 0.5rem;
     color: black;
+    
 }
 .comment h5 {
     margin-right: 0.5rem;
@@ -146,12 +147,16 @@ const changePicture = () => {
 .pfp-change {
     display: flex;
     flex-flow: column nowrap;
+    align-items: center;
 }
 #changePicture{
     font-size: 1rem;
 }
 label {
     font-size: 1.6rem;
+}
+input {
+    font-size: 2rem;
 }
 @media (max-width: 400px) {
     .comments {

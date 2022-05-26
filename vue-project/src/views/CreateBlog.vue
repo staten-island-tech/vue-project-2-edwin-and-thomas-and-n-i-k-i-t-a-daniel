@@ -19,7 +19,10 @@
                 <label for="imageLink">Image Link:</label>
                 <input id=imageLink type="url" name="imageLink" v-model="imageLink">
             </div>
-
+            <div class="form-input" v-if="imageLink">
+                <label for="imageLink">Alt Text: (Required)</label>
+                <input id=altText type="alt" name="altText" v-model="altText" required>
+            </div>
             <div class="form-input">
                 <label for="tags">Tags: (Optional)</label>
                 
@@ -74,6 +77,7 @@ const content = ref('')
 const newTag = ref('')
 const tags = ref([])
 const imageLink = ref('')
+const altText = ref('')
 
 const drafts = computed(() => store.state.drafts)
 const draft = ref('')
@@ -85,6 +89,7 @@ const handleSubmit = async () => {
             content: content.value,
             imageLink: imageLink.value,
             tags: tags.value,
+            altText: altText.value
         })
         console.log(content)
         router.push('/')
@@ -99,6 +104,7 @@ const handleDraft = async () => {
             content: content.value,
             imageLink: imageLink.value,
             tags: tags.value,
+            altText: altText.value
         })
         console.log(content)
         router.push('/')
@@ -142,6 +148,9 @@ watch(
         store.dispatch('getDrafts')
     }
 )
+store.dispatch('getDrafts')
+
+document.title = 'Creating | Review Site'
 </script>
 
 

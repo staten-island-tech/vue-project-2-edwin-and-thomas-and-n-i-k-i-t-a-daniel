@@ -6,11 +6,10 @@
     <transition-group>
     <DropdownSort v-if="user" />
     <div class="postContainer" v-if="user">
-      <div class="postClassicContainer" v-if="viewClassic === true">
-    <PostClassic   v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  
+
+    <div :class="{'postClassicContainer': viewClassic, 'postCardContainer': !viewClassic}">
+      <PostPreview  v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" :altText="post.altText" />  
     </div>
-      <div class="postCardContainer" v-if="viewClassic !== true">
-    <PostPreview   v-for="post in posts" :key="post.id" :title="post.title" :author="post.author" :description="post.description" :id="post.id" :imageLink="post.imageLink" />  </div>
     </div>
     <div v-if="!user">
       <h2 class="message">Please sign in to view posts</h2>
@@ -30,6 +29,7 @@ store.dispatch("getPosts");
 const posts = computed(() => store.state.posts)
 const user = computed(() => store.state.user)
 const viewClassic = computed(()=> store.state.viewClassic)
+document.title = "Review Site"
 </script>
 
 

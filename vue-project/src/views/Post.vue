@@ -44,7 +44,7 @@
 <script setup>
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router';
-import { computed, watch, ref } from 'vue';
+import { computed, watch, ref, onUpdated, onMounted } from 'vue';
 import BasicButton from '../components/BasicButton.vue'
 import Votes from '../components/Votes.vue'
 
@@ -102,6 +102,8 @@ watch(
         store.dispatch("getSinglePost", newId)
     }
 )
+
+document.title = 'Viewing Post | Review Site'
 </script>
 
 <style scoped>
@@ -149,6 +151,9 @@ watch(
     display: flex;
     align-content: center;
 }
+#commentSubmit{
+    width: 40vw;
+}
 .commentBox{
     margin: auto;
     font-size: 3rem;
@@ -160,9 +165,10 @@ watch(
     font-size: 5rem;
     margin: auto;
 }
-.comments {
-    width: 40vw;
+.commentHolder {
+    width: 60vw
 }
+
 .comments h2 {
     text-align: center;
 }
@@ -219,6 +225,15 @@ label {
 @media (prefers-color-scheme: dark) {
     .radio h3{
     color: var(--color-contrast-text);
+    }
+}
+
+@media (max-width: 400px) {
+    .commentHolder {
+        width: 95vw;
+    }
+    .commentSubmit {
+        transform: scale(0.8);
     }
 }
 </style>

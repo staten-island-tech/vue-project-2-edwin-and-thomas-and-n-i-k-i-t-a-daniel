@@ -4,8 +4,7 @@
         appear
         @before-enter="beforeEnter"
         @enter="headerEnter"
-      > 
-    
+      >
       </transition>    
       <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
       <img v-bind:src="imageLink" alt="postImage" class="postImage centered" v-if="imageLink != null" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
@@ -48,6 +47,7 @@ const props = defineProps({
     description: String,
     id: String,
     imageLink: String,
+    altText: String
 })
 
 const postClick = (postID) => {
