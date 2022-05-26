@@ -1,6 +1,6 @@
 <template>
     <div class="page">
-        <img class=pfp :src="store.state.viewingProfile.picture">
+        <img class=pfp :src="store.state.viewingProfile.picture" :alt=store.state.viewingProfile.picture>
         <form class="pfp-change" @submit="changePicture()" v-if="route.params.uid === store.state.user.uid">
             <label for="changePicture">Change PFP (image URL)</label>
             <input  type="url" name="changePicture" id=changePicture v-model="pictureLink" placeholder="Press enter to submit"/>
