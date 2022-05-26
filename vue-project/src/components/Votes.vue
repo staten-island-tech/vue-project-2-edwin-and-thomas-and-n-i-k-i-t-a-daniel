@@ -97,6 +97,7 @@ getScore()
   flex-flow: row nowrap;
   align-items: center;
   cursor: pointer;
+  margin: 1rem;
 }
 .votepost svg{
   margin-right: 2rem;

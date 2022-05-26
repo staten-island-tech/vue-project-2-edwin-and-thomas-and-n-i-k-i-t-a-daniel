@@ -15,8 +15,8 @@
         <h4 @click="userClick(author.uid)" class="clickable">by {{ author.dname }}</h4>
       </transition>
       <img v-bind:src="imageLink" alt="postImage" class="postImage" v-if="imageLink != null" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
-      <img v-else src="/src/assets/imageNotFound.svg" class="nullImage">
-        <Votes :key="id" :id="id" :type="'posts'"/>
+      <img v-else src="/src/assets/imageNotFound.svg" class="nullImage" alt="nullImage">
+      <Votes :key="id" :id="id" :type="'posts'"/>
     </div>
 </template>
 

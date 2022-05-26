@@ -8,7 +8,7 @@
       </transition>    
       <h2 @click="postClick(id)" class="clickable">{{ title }}</h2> 
       <img v-bind:src="imageLink" alt="postImage" class="postImage centered" v-if="imageLink != null" onerror="this.onerror=null;this.src='/src/assets/imageNotFound.svg';">
-      <img v-else src="/src/assets/imageNotFound.svg" class="nullImage centered">
+      <img v-else src="/src/assets/imageNotFound.svg" class="nullImage centered" alt="nullImage">
       <transition-group
         appear
         @before-enter="beforeEnter"
