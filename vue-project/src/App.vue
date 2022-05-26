@@ -1,16 +1,14 @@
 <template>
   <div>
-    <navBar/>
+    <Navbar/>
     <router-view/>
   </div>
 </template>
 
 <script setup>
-import { useStore } from "vuex";
-import navBar from "./components/navBar.vue";
-document.title = "Review Site"
+import Navbar from "./components/Navbar.vue"
 </script>
 
 <style>
-@import url("./assets/base.css");
+@import url('./assets/base.css');
 </style>

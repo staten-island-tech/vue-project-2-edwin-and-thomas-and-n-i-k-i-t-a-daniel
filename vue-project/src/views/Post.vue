@@ -6,32 +6,37 @@
             <h3 class="radio-item" @click="radio = 'edit'" v-if="user.uid === post.author.uid">Edit</h3>
         </div>
 
-        <div v-if="radio === 'post'" class="post">
+        <div v-if="radio === 'post'" class="post" >
             <h2>{{ post.title }}</h2>
-            <h4>by <span class="clickable-blk" @click="userClick(post.author.uid)">{{ post.author.dname }}</span></h4>
-            <div id="content" v-html="post.content" />
-        </div>
+            <Votes :key="route.params.id" :id="route.params.id" :type="'posts'"/>
+            <h4 @click="userClick(post.author.uid)">by {{ post.author.dname }}</h4>
+            <div id="content" v-html="post.content"></div>
+            <img v-bind:src="post.imageLink" alt="postImage" class="image" onerror="this.id='error';">
 
-        <div v-if="radio === 'comments'" class="comments">
+        </div>
+        <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
-            <div v-for="comment in comments" :key="comment.id" class="comment">
-                <p>{{ comment.content }}</p>
-                <div>
+            <div v-for="comment in comments" :key="comment.id" class="comment"  >
+                <em>{{ comment.content }}</em>
+                <div v-if="comment.content.trim() != ''">
+                    <Votes :key="comment.id" :id="comment.id" :type="'comments'"/>
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
-                    <BasicButton v-if="comment.author.uid === store.state.user.uid">DELETE</BasicButton>
+                    <BasicButton v-if="comment.author.uid === store.state.user.uid" @on-click="deleteComment(comment.id, comment.post)" class="delete">DELETE</BasicButton>
                 </div>
             </div>
-            <input type="text" v-model="comment">
-            <BasicButton @on-click="handleComment">Post</BasicButton>
-            <h5 v-if="error">{{ error }}</h5>
+            <div class="commentSubmit">
+            <label for=commentSubmit>Comment:</label>
+            <input id=commentSubmit type="text" v-model="comment" class="commentBox">
+            <BasicButton @click="handleComment">Post</BasicButton>
+            </div>
         </div>
-
         <div v-if="radio === 'edit'">
             <h2>Edit</h2>
 
             <BasicButton @on-click="handleDelete">Delete</BasicButton>
+            <BasicButton @on-click="router.push(`${route.path}/edit`)">Edit</BasicButton>
 
-            <h5 v-if="error">{{ error }}</h5>
+            <h5 v-if="error" class="error">{{ error }}</h5>
         </div>
     </div>
 </template>
@@ -39,8 +44,9 @@
 <script setup>
 import { useStore } from 'vuex'
 import { useRoute, useRouter } from 'vue-router';
-import { computed, watch, ref } from 'vue';
+import { computed, watch, ref, onUpdated, onMounted } from 'vue';
 import BasicButton from '../components/BasicButton.vue'
+import Votes from '../components/Votes.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -69,10 +75,22 @@ const handleComment = async () => {
         error.value = err
     }
 }
+
+const deleteComment = async (id, post) => {
+    try {
+        await store.dispatch("deleteComment", { 
+        commentID: id,
+        postID: post
+        })
+    } catch (err) {
+        error.value = err
+    }
+}
+
 const handleDelete = async () => {
     try {
         await store.dispatch("deletePost", route.params.id)
-        router.push('/')
+        router.push(`/`)
     } catch (err) {
         error.value = err
     }
@@ -84,6 +102,8 @@ watch(
         store.dispatch("getSinglePost", newId)
     }
 )
+
+document.title = 'Viewing Post | Review Site'
 </script>
 
 <style scoped>
@@ -91,7 +111,8 @@ watch(
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    margin-top: 9rem;
+    padding-top: 9rem;
+    color: var(--color-contrast-text);
 }
 .radio {
     display: flex;
@@ -99,8 +120,8 @@ watch(
 }
 .radio-item {
     cursor: pointer;
-    background-color: #794d4d51;
-    color: #724949;
+    background-color: #e5dbdb;
+    color: var(--color-primary);
     border: none;
     border-radius: 2rem;
     height: 5rem;
@@ -115,45 +136,71 @@ watch(
 #content {
     font-size: 2rem;
 }
+.comment div {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+.commentHolder{
+    background-color:rgb(114, 73, 73, 0.2);
+    padding: 1rem;
+    border-radius: 3rem;
+    margin-top: 3rem;
+}
+.commentSubmit{
+    display: flex;
+    align-content: center;
+}
+#commentSubmit{
+    width: 40vw;
+}
 .commentBox{
-    font-size: 5rem;
+    margin: auto;
+    font-size: 3rem;
+    height: 4rem;
+    width: 50rem;
+    
 }
 .commentButton{
     font-size: 5rem;
+    margin: auto;
 }
-.comments {
-    width: 40vw;
+.commentHolder {
+    width: 60vw
 }
+
 .comments h2 {
     text-align: center;
 }
 .comment {
-    background-color: #724949;
-    display: flex;
-    flex-flow: column nowrap;
-    margin-bottom: 1rem;
-    color: white;
-    border-radius: 0.5rem;
-}
-.comment p {
-    margin-left: 0.5rem;
-}
-.comment h5 {
-    margin-right: 0.5rem;
-}
-.comment div {
-    align-self: flex-end;
-    cursor: pointer;
-    display: flex;
-    flex-flow: column-reverse nowrap;
+    margin: 1rem;
+    color: var(--color-contrast-text);
+    border-radius: 1.5rem;
 }
 .comment div h5 {
-    text-align: right;
+    margin-left: 0.5rem
+}
+.commentContent {
+    margin-left: 0.7rem;
+}
+.deleteButton {
+    background-color: #e5dbdb;
+    color: var(--color-primary);
+    border: none;
+    border-radius: 2rem;
+    height: 5rem;
+    padding: .6rem 1.6rem;
+    font-size: 2.4rem;
+    margin-top: 2rem;
+    margin-left: 60rem;
+    text-align: center;
+    text-decoration-line: none;
 }
 .post {
     display: flex;
     flex-flow: column nowrap;
     width: 80vw;
+    color: var(--color-primary);
 }
 .post h2, h4, div {
     align-self: center;
@@ -161,7 +208,32 @@ watch(
 .post h4 {
     cursor: pointer;
 }
-input {
-    font-size: 2rem;
+.image{
+   border-radius: 1rem;
+   max-width: 75rem;
+   margin: auto;
+}
+#error{
+    display: none;
+}
+label {
+    font-size: 1.6rem;
+    font-size: 3rem;
+    margin-top: auto;
+    margin-bottom: auto;
+    }
+@media (prefers-color-scheme: dark) {
+    .radio h3{
+    color: var(--color-contrast-text);
+    }
+}
+
+@media (max-width: 400px) {
+    .commentHolder {
+        width: 95vw;
+    }
+    .commentSubmit {
+        transform: scale(0.8);
+    }
 }
 </style>

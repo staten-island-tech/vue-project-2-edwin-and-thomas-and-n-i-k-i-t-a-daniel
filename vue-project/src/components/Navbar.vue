@@ -5,31 +5,35 @@
         name="rotate">
         <img src="../assets/logo.svg" id="logo" alt="Dropdown logo" @click="toggleDropdown()" :key="showDropdown">
         </transition>
-        <router-link class="router clickable" id="Home" to="/">HOME</router-link>
+        <router-link class="router clickable" id="Home" to="/" @click="close()">HOME</router-link>
         
-        <router-link class="router right clickable" to="/signup" @click="keyChange()" v-if="!user">SIGN UP</router-link>
-        <router-link class="router right clickable" to="/login" @click="keyChange()" v-if="!user">LOGIN</router-link>
-        <router-link class="router right clickable" :to="`/user/${user.uid}`" @click="keyChange()" v-if="user">PROFILE</router-link>
-        <router-link v-if="user" class="router right clickable" @click="handleClick(); keyChange()" to="/">SIGN OUT</router-link>
+        <router-link class="router right clickable" to="/signup" v-if="!user">SIGN UP</router-link>
+        <router-link class="router right clickable" to="/login" v-if="!user">LOGIN</router-link>
+        <router-link class="router right clickable" :to="`/user/${user.uid}`" v-if="user">PROFILE</router-link>
+        <router-link v-if="user" class="router right clickable" @click="handleClick()" to="/">SIGN OUT</router-link>
 
       </nav>
       <transition-group> 
         <div v-if="showDropdown" class="dropdown">
-          <input type="search" name="search" v-model="search" class="top-item" @keypress.enter="searchBar(), close()"/>
+          <input id=searchBar v-if="user" type="search" name="search" v-model="search" class="dropdown-item search top-item" @keypress.enter="searchBar(), close()"/>
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
-          <router-link v-if="!user" to="/login" class="dropdown-item">Login</router-link>
+          <router-link v-if="!user" to="/login" class="dropdown-item" :class="{ 'top-item': !user }">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
+          <!-- <router-link v-if="user" to="/theme" class="dropdown-item">Theme</router-link> -->
+          <button v-if="viewClassic === true && $route.name==='home'" @click="toggleViewCard" class="dropdown-item">Card View</button>
+          <button v-if="viewClassic === false && $route.name==='home'" @click="toggleViewClassic" class="dropdown-item">Classic View</button>
+          <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick()">Sign Out</router-link>
         </div>
         <div id="overlay" v-if="showDropdown" @click="close"></div>
       </transition-group>
       <transition name="moveRight">
-      <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave" :key="keyvalue">
+      <img src="../assets/BackmostVector.svg" id="backWave" class="wave" alt="backgroundDetailWave">
       </transition>
       <!-- <img src="../assets/BackmostVector2.svg" id="midWave" class="wave" alt="backgroundDetailWave" :key="keyvalue"> -->
       <transition name="moveLeft">
-      <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave" :key="keyvalue">
+      <img src="../assets/FrontVector.svg" id="frontWave" class="wave" alt="backgroundDetailWave">
       </transition>
-    </div>
+      </div>
 </template>
 
 
@@ -41,17 +45,12 @@ import { useStore } from 'vuex'
 export default {
   data() {
     return {
-      keyvalue: true,
       showDropdown: false,
     }
   },
   methods: {
     toggleDropdown() {
       this.showDropdown = !this.showDropdown
-      this.keyvalue = !this.keyvalue
-    },
-    keyChange(){
-      this.keyvalue = !this.keyvalue
     },
     close() {
       this.showDropdown = false
@@ -69,14 +68,23 @@ export default {
     const store = useStore()
     const user = computed(() => store.state.user)
     const authIsReady = computed(() => store.state.authIsReady)
+    const viewClassic = computed(()=> store.state.viewClassic)
     const handleClick = () => {
       store.dispatch('logout')
       router.push("/")
     }
     const searchBar = () => {
-      store.dispatch('searchPosts', {search: search.value}) // Works but doesnt re-add all the posts
+      store.dispatch('searchPosts', {search: search.value})
+      router.push(`/search/${search.value}`)
+      search.value = ''
     }
-    return { search, router, route, store, handleClick, user, authIsReady, searchBar}
+    const toggleViewCard = () => {
+      store.dispatch('setViewMode', false)
+    }
+    const toggleViewClassic = () => {
+      store.dispatch('setViewMode', true)
+    }
+    return { search, router, route, store, handleClick, user, authIsReady, searchBar, toggleViewCard, toggleViewClassic, viewClassic, }
   },
 }
 </script>
@@ -85,7 +93,7 @@ export default {
 nav {
   position: fixed;
   top:0;
-  background-color:#724949;
+  background-color:var(--color-primary);
   height: 9rem;
   width: 100vw;
   display: flex;
@@ -97,7 +105,7 @@ nav {
   z-index: 5;
 }
 a {
-  color: white;
+  color: var(--color-light-text);
   text-decoration: underline;
 }
 .router {
@@ -113,7 +121,7 @@ a {
 #logo {
   height: 85%;
   margin-left: 1rem;
-  cursor: help;
+  cursor: pointer;
   transition: transform 1s ease-in-out;
 }
 .wave{
@@ -125,44 +133,46 @@ a {
   position: fixed;
   bottom: 0;
   left: 0;
-
+  animation: moveLeft 30s infinite ease-in-out;
 }
 #backWave{
   position: fixed;
   bottom: 0;
   right: 0;
-
+  animation: moveRight 30s infinite ease-in-out;
 }
 .dropdown {
   position: fixed;
-  background-color: #975F5F;
+  background-color: var(--color-secondary);
   z-index: 4;
   height: 100%;
   width: 30rem;
-  color: white;
+  color: var(--color-light-text);
   display: flex;
   flex-flow: column nowrap;
   align-items: center;
-  /* border-bottom-right-radius: 2rem; */
 }
 
 #overlay {
-   background-color: rgba(0,0,0,0.2);
-  
+  background-color: rgba(0,0,0,0.2);
   position:fixed;
   left:0;
   top: 0;
   width:100%;
   height:100%;
+  z-index: 3;
+}
+.search {
   z-index: 3;}
 
 .top-item {
   margin-bottom: 2rem;
-  background-color: #e08b8b43;
+  background-color: var(--color-dark-primary);
   background-image: url('../assets/search.svg');
   background-repeat: no-repeat;
   background-position: left center;
   background-position-x: 5%;
+  text-align: left !important;
   border: none;
   border-radius: 2rem;
   width: 85%;
@@ -170,12 +180,15 @@ a {
   padding: .6rem 1.6rem;
   font-size: 2rem;
   text-align: left;
-  margin-top: 12rem;
-  color: white;
+  margin-top: 3rem;
+  color: var(--color-light-text);
   text-indent: 3rem
 }
+.top-item {
+  margin-top: 3rem;
+}
 .dropdown-item {
-  background-color: #e08b8b43;
+  background-color: var(--color-dark-primary);
   border: none;
   border-radius: 2rem;
   width: 85%;
@@ -183,9 +196,17 @@ a {
   padding: .6rem 1.6rem;
   font-size: 2.4rem;
   margin-bottom: 2rem;
-  color: white;
+  color: var(--color-light-text);
   text-align: center;
   text-decoration-line: none;
+  cursor: pointer;
+}
+button{
+  cursor: pointer;
+}
+.background{
+  z-index: -10;
+
 }
 .v-enter-active,
 .v-leave-active {
@@ -203,12 +224,12 @@ a {
 }
 @keyframes moveRight {
   0% {transform: translateX(0%);}
-  50% {transform: translateX(15%);}
+  50% {transform: translateX(25%);}
   100% {transform: translateX(0%);}
 }
 @keyframes moveLeft {
   0% {transform: translateX(0%);}
-  50% {transform: translateX(-15%);}
+  50% {transform: translateX(-25%);}
   100% {transform: translateX(0%);}
 }
 @keyframes hueShift {
@@ -221,12 +242,35 @@ a {
 .rotate-leave-active{
   display: none;
 }
-.moveRight-enter-active{
+/* .moveRight-enter-active{
   animation: moveRight 2.5s ease-in-out;
 }
 .moveLeft-enter-active{
   animation: moveLeft 2.5s ease-in-out;
 
-}
+} */
+/* @media (prefers-color-scheme: dark){
+  nav{
+    background-color: #001F54;
+  }
+  .background{
+    background-color: #34344A;
+  }
+} */
 
+/* Phones */
+@media (max-width: 400px) {
+  .router:not(#Home) {
+    display: none;
+  }
+  .wave {
+    width: 600%;
+  }
+}
+label {
+  font-size: 2.4rem;
+  color: white;
+  text-align: center;
+  text-decoration-line: none;
+}
 </style>

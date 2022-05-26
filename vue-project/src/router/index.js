@@ -6,6 +6,10 @@ import ViewProfile from "../views/UserProfile.vue";
 import CreateBlog from "../views/CreateBlog.vue";
 import Post from "../views/Post.vue";
 import Err from "../views/404.vue";
+import Reset from "../views/PasswordReset.vue";
+import Search from "../views/Search.vue";
+import Edit from "../views/Edit.vue";
+import ThemeSelector from "../views/ThemeSelector.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,14 +40,34 @@ const router = createRouter({
       component: CreateBlog,
     },
     {
+      path: "/theme",
+      name: "themeselector",
+      component: ThemeSelector,
+    },
+    {
       path: "/post/:id",
       name: "post",
       component: Post,
     },
     {
+      path: "/post/:id/edit",
+      name: "Edit",
+      component: Edit,
+    },
+    {
       path: "/:pathmatch(.*)*/",
       name: "Err",
       component: Err,
+    },
+    {
+      path: "/passwordreset",
+      name: "Reset",
+      component: Reset,
+    },
+    {
+      path: "/search/:query",
+      name: "Search",
+      component: Search,
     },
   ],
 });

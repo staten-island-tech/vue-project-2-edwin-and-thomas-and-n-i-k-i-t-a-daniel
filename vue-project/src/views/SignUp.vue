@@ -1,30 +1,33 @@
 <template>
-<transition-group>
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit" class="main">
         <h3>Sign up</h3>
 
         <div class="form-input">
             <label for="dname">Display Name:</label>
-            <input type="dname" name="dname" v-model="dname" required>
+            <input id=dname type="dname" name="dname" v-model="dname" required>
         </div>
 
         <div class="form-input">
             <label for="email">Email:</label>
-            <input type="email" name="email" v-model="email" required>
+            <input id=email type="email" name="email" v-model="email" required>
         </div>
 
         <div class="form-input">
-            <label for="email">Password:</label>
-            <input type="password" name="password" v-model="password" required>
+            <label for="password">Password:</label>
+            <input id=password type="password" name="password" v-model="password" required>
+        </div>
+
+        <div class="form-input">
+            <label for="confirm">Confirm Password:</label>
+            <input id=confirm type="password" name="confirm" v-model="confirm" required>
         </div>
         
         <BasicButton>Sign Up</BasicButton>
 
         <h4><router-link to="/login">Already have an account?</router-link></h4>
 
-        <h5 v-if="error">{{ error }}</h5>
+        <h5 class="error" v-if="error">{{ error }}</h5>
     </form>
-    </transition-group>
 </template>
 
 <script setup>
@@ -35,6 +38,7 @@ import BasicButton from '../components/BasicButton.vue'
 
 const email = ref('')
 const password = ref('')
+const confirm = ref('')
 const dname = ref('')
 const error = ref(null)
 
@@ -46,13 +50,17 @@ const handleSubmit = async () => {
         await store.dispatch('signup', {
             email: email.value,
             password: password.value,
-            dname: dname.value
+            confirm: confirm.value,
+            dname: dname.value,
+
         })
         router.push('/')
     } catch (err) {
         error.value = err.message
     }
 } 
+
+document.title = 'Sign Up | Review Site'
 </script>
 
 <style scoped>
@@ -64,6 +72,8 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
+    padding-top: 15rem;
+    color: var(--color-contrast-text);
 }
 
 .form-input {
@@ -71,6 +81,7 @@ form {
     justify-content: center;
     flex-direction: column;
     margin-bottom: 2rem;
+    
 }
 
 input {
@@ -87,13 +98,9 @@ label {
     font-size: 1.6rem;
 }
 
-.v-enter-active,
-.v-leave-active {
-  transition: opacity 0.5s ease;
+@media (max-width: 400px) {
+    input {
+        width: 90vw
+    }
 }
-.v-enter-from,
-.v-leave-to {
-  opacity: 0;
-}
-
 </style>

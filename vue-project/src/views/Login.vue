@@ -1,22 +1,23 @@
 <template>
-    <form @submit.prevent="handleSubmit">
+    <form @submit.prevent="handleSubmit" class="main">
         <h3>Login</h3>
 
         <div class="form-input">
             <label for="email">Email:</label>
-            <input type="email" name="email" v-model="email" required>            
+            <input id=email type="email" name="email" v-model="email" required>            
         </div>
 
         <div class="form-input">
-            <label for="email">Password:</label>
-            <input type="password" name="password" v-model="password" required>     
+            <label for="password">Password:</label>
+            <input id=password type="password" name="password" v-model="password" required>     
         </div>
 
         <BasicButton>Login</BasicButton>
 
+        <h4><router-link to="/passwordreset">Forgot your password?</router-link></h4>
         <h4><router-link to="/signup">Don't have an account?</router-link></h4>
 
-        <h5 v-if="error">{{ error }}</h5>
+        <h5 class="error" v-if="error">{{ error }}</h5>
     </form>
 </template>
 
@@ -43,6 +44,8 @@ const handleSubmit = async () => {
         error.value = err.message
     }
 }
+
+document.title = 'Login | Review Site'
 </script>
 
 <style scoped>
@@ -54,6 +57,7 @@ form {
     justify-content: center;
     align-items: center;
     flex-flow: column nowrap;
+    color: var(--color-contrast-text);
 }
 
 .form-input {
@@ -78,5 +82,10 @@ label {
 }
 
 
+@media (max-width: 400px) {
+    input {
+        width: 90vw
+    }
+}
 
 </style>

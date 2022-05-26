@@ -8,6 +8,7 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import {
   setDoc,
@@ -18,10 +19,9 @@ import {
   addDoc,
   updateDoc,
   arrayUnion,
-  query,
-  where,
   deleteDoc,
   arrayRemove,
+  increment,
 } from "firebase/firestore";
 
 const store = createStore({
@@ -31,6 +31,10 @@ const store = createStore({
     posts: [],
     comments: [],
     viewingProfile: null,
+    upvotes: [],
+    downvotes: [],
+    drafts: [],
+    viewClassic: false,
   },
   mutations: {
     setUser(state, payload) {
@@ -46,20 +50,52 @@ const store = createStore({
     clearPosts(state) {
       state.posts = [];
     },
+    setViewMode(state, payload) {
+      state.viewClassic = payload;
+      console.log("test");
+    },
     setViewing(state, payload) {
       state.viewingProfile = payload;
       console.log("viewing user:", payload);
     },
+
     clearComments(state) {
       state.comments = [];
     },
     addComment(state, payload) {
       state.comments.push(payload);
     },
+    addUpvote(state, payload) {
+      state.upvotes.push(payload);
+    },
+    addDownvote(state, payload) {
+      state.downvotes.push(payload);
+    },
+    removeUpvote(state, payload) {
+      const index = state.upvotes.findIndex((element) => element === payload);
+      state.upvotes.splice(index, 1);
+    },
+    removeDownvote(state, payload) {
+      const index = state.downvotes.findIndex((element) => element === payload);
+      state.downvotes.splice(index, 1);
+    },
+    clearVotes(state) {
+      state.upvotes = [];
+      state.downvotes = [];
+    },
+    addDraft(state, payload) {
+      state.drafts.push(payload);
+    },
+    clearDrafts(state) {
+      state.drafts = [];
+    },
   },
   actions: {
-    async signup(context, { email, password, dname }) {
+    async signup(context, { email, password, confirm, dname }) {
       console.log("signup action");
+      if (confirm != password) {
+        throw new Error("Passwords do not match");
+      }
       const querySnapshot = await getDocs(collection(db, "users"));
       querySnapshot.forEach((doc) => {
         const user = doc.data();
@@ -76,10 +112,15 @@ const store = createStore({
           dname: dname,
           posts: [],
           comments: [],
+          picture: `https://avatars.dicebear.com/api/personas/:${res.user.uid}.svg`,
         });
       } else {
         throw new Error("could not complete signup");
       }
+    },
+    setViewMode(context, payload) {
+      context.commit("setViewMode", payload);
+      console.log("test");
     },
     async login(context, { email, password }) {
       console.log("login action");
@@ -110,8 +151,9 @@ const store = createStore({
       const docSnap = await getDoc(docRef);
       context.commit("setViewing", docSnap.data());
       context.dispatch("getProfilePosts");
+      context.dispatch("getProfileComments");
     },
-    async createPost(context, { title, description, content }) {
+    async createPost(context, { title, content, imageLink, tags, altText }) {
       console.log("create post action");
       const docData = {
         author: {
@@ -119,9 +161,11 @@ const store = createStore({
           dname: this.state.user.displayName,
         },
         content: content,
-        description: description,
         title: title,
+        imageLink: imageLink,
         comments: [],
+        tags: tags,
+        altText: altText,
       };
       const docRef = await addDoc(collection(db, "posts"), docData);
       await setDoc(
@@ -180,7 +224,7 @@ const store = createStore({
       await updateDoc(userRef, {
         comments: arrayUnion(docRef.id),
       });
-    },                                           
+    },
     async searchPosts(context, search) {
       context.commit("clearPosts");
       const querySnapshot = await getDocs(collection(db, "posts"));
@@ -190,41 +234,45 @@ const store = createStore({
       const searchedPosts = this.state.posts.filter((post) => {
         return (
           post.title.toLowerCase().includes(search.search.toLowerCase()) ||
-          post.description.toLowerCase().includes(search.search.toLowerCase()) ||
           post.content.toLowerCase().includes(search.search.toLowerCase())
         );
       });
+      const postsWithTags = this.state.posts.filter(
+        (post) => post.tags && post.tags.length > 0
+      );
+
       context.commit("clearPosts");
       console.log(this.state.posts);
       searchedPosts.forEach((post) => {
         context.commit("addPost", post);
         console.log(post);
       });
+      postsWithTags.forEach((post) => {
+        post.tags.forEach((tag) => {
+          if (
+            tag.toLowerCase().includes(search.search.toLowerCase()) &&
+            !this.state.posts.includes(post)
+          ) {
+            context.commit("addPost", post);
+            console.log("this post passes the filter:", post);
+          } else {
+            console.log("this post does not pass the filter", post);
+          }
+        });
+      });
       console.log(searchedPosts);
       console.log(this.state.posts);
-    }, // So as far as I can tell, this is the best way to search using query(collection blah blah blah). Other than this ig i can figure out a system using getPosts or something: 
-  /*   async searchPosts(context, search) {
-      context.commit("clearPosts");
-      const titleSearch = await getDocs(query(collection(db, "posts"), where(`title`, ">=", `${search.search}`)))//https://cloud.google.com/firestore/docs/query-data/queries#query_operators desperatly needs .toLowerCase and .includes type things
-      const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, ">=", `<p>${search.search}</p>`))) // content value in database has paragraph tags so i need them in the search
-      const contentSearch = await getDocs(query(collection(db, "posts"), where(`content`, ">=", `<p>${search.search}</p>`))) // content value in database has paragraph tags so i need them in the search. the special indent and bold stuff is not possible with the way query works (did not test that i will do later).
-      const descriptionSearch = await getDocs (query(collection(db, "posts"), where(`description`, ">=", `${search.search}`)))
-      if (descriptionSearch === titleSearch || contentSearch === titleSearch) {
-        titleSearch.forEach((doc) => {
-          context.commit("addPost", doc.data());
-        }); 
-      }
-      else if (descriptionSearch === contentSearch) {
-        descriptionSearch.forEach((doc) => {
-          context.commit("addPost", doc.data());
-        });
-      }
-      else {
-        contentSearch.forEach((doc) => {
-          context.commit("addPost", doc.data());
-        });
-      }
-    }, */
+      console.log(postsWithTags);
+    },
+    async getProfileComments(context) {
+      context.commit("clearComments");
+      const commentIds = this.state.viewingProfile.comments;
+      commentIds.forEach(async (commentId) => {
+        const docRef = doc(db, "comments", commentId);
+        const docSnap = await getDoc(docRef);
+        context.commit("addComment", docSnap.data());
+      });
+    },
     async getComments(context) {
       context.commit("clearComments");
       const commentIds = this.state.posts[0].comments;
@@ -246,6 +294,187 @@ const store = createStore({
           posts: arrayRemove(postID),
         });
       }
+    },
+    async deleteComment(context, { commentID, postID }) {
+      await deleteDoc(doc(db, "comments", commentID));
+      const postRef = doc(db, "posts", postID);
+      await updateDoc(postRef, {
+        comments: arrayRemove(commentID),
+      });
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(userRef, {
+        comments: arrayRemove(commentID),
+      });
+    },
+    async passwordReset(context, email) {
+      sendPasswordResetEmail(auth, email)
+        .then(() => {
+          console.log("email sent to:", email);
+        })
+        .catch((err) => {
+          throw new Error(err);
+        });
+    },
+    async changePicture(context, pictureLink) {
+      const userRef = doc(db, "users", this.state.user.uid);
+      console.log(pictureLink);
+      await updateDoc(userRef, {
+        picture: `${pictureLink.picture}`,
+      });
+    },
+    async vote(context, { targetID, type, value }) {
+      const docRef = doc(db, type, targetID);
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(docRef, {
+        // increments post/comment's score
+        score: increment(value),
+      });
+      const docSnap = await getDoc(docRef);
+      const docData = docSnap.data();
+      const authorRef = doc(db, "users", docData.author.uid);
+
+      await updateDoc(authorRef, {
+        // increments author's karma
+        karma: increment(value),
+      });
+
+      if (value == 1) {
+        updateDoc(doc(db, "users", this.state.user.uid), {
+          upvotes: arrayUnion(docRef.id),
+        });
+        context.commit("addUpvote", docRef.id);
+      } else if (value == -1) {
+        updateDoc(doc(db, "users", this.state.user.uid), {
+          downvotes: arrayUnion(docRef.id),
+        });
+        context.commit("addDownvote", docRef.id);
+      }
+    },
+    async unvote(context, { targetID, type, value }) {
+      const docRef = doc(db, type, targetID);
+      const userRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(docRef, {
+        // increments post/comment's score
+        score: increment(-value),
+      });
+      const docSnap = await getDoc(docRef);
+      const docData = docSnap.data();
+      const authorRef = doc(db, "users", docData.author.uid);
+
+      await updateDoc(authorRef, {
+        // increments author's karma
+        karma: increment(-value),
+      });
+
+      if (value === 1) {
+        await updateDoc(userRef, {
+          // removes post from user's list of upvotes
+          upvotes: arrayRemove(targetID),
+        });
+        context.commit("removeUpvote", targetID);
+      } else if (value === -1) {
+        // removes post from user's list of downvotes
+        await updateDoc(userRef, {
+          downvotes: arrayRemove(targetID),
+        });
+        context.commit("removeDownvote", targetID);
+      }
+    },
+    async getVotes(context) {
+      context.commit("clearVotes");
+
+      const userRef = doc(db, "users", this.state.user.uid);
+      const userSnap = await getDoc(userRef);
+      const userData = userSnap.data();
+
+      userData.upvotes.forEach((upvote) => {
+        if (!this.state.upvotes.includes(upvote))
+          context.commit("addUpvote", upvote);
+      });
+      userData.downvotes.forEach((downvote) => {
+        if (!this.state.downvotes.includes(downvote))
+          context.commit("addDownvote", downvote);
+      });
+    },
+    async sortPosts(context, order) {
+      let posts = this.state.posts;
+      if (order === "ascending")
+        posts.sort(function (post1, post2) {
+          return post2.score - post1.score;
+        });
+      if (order === "descending")
+        posts.sort(function (post1, post2) {
+          return post1.score - post2.score;
+        });
+      console.log(posts);
+      context.commit("clearPosts");
+      posts.forEach((post) => {
+        context.commit("addPost", post);
+      });
+      console.log(this.state.posts);
+    },
+    async editPost(context, { title, content, imageLink, tags, id, altText }) {
+      const docData = {
+        author: {
+          uid: this.state.user.uid,
+          dname: this.state.user.displayName,
+        },
+        content: content,
+        title: title,
+        imageLink: imageLink,
+        comments: [],
+        tags: tags,
+        altText: altText,
+      };
+      await setDoc(doc(db, "posts", id), docData, { merge: true });
+    },
+    async createDraft(context, { title, content, imageLink, tags, altText }) {
+      const docData = {
+        author: {
+          uid: this.state.user.uid,
+          dname: this.state.user.displayName,
+        },
+        content: content,
+        title: title,
+        imageLink: imageLink,
+        comments: [],
+        tags: tags,
+        altText: altText,
+      };
+      const docRef = await addDoc(collection(db, "drafts"), docData);
+      await setDoc(
+        doc(db, "drafts", docRef.id),
+        { id: docRef.id },
+        { merge: true }
+      );
+      const postRef = doc(db, "users", this.state.user.uid);
+      await updateDoc(postRef, {
+        drafts: arrayUnion(docRef.id),
+      });
+    },
+    async getDrafts(context) {
+      context.commit("clearDrafts");
+      const userRef = doc(db, "users", this.state.user.uid);
+      const userData = await getDoc(userRef);
+      const user = userData.data();
+      console.log("drafts gotten");
+      if (user.drafts) {
+        user.drafts.forEach(async (id) => {
+          console.log(id);
+          const draftRef = doc(db, "drafts", id);
+          const draftData = await getDoc(draftRef);
+          const draft = draftData.data();
+          if (draft.title.trim() === "") draft.title = "[Untitled]";
+          context.commit("addDraft", draft);
+        });
+      }
+    },
+    async getSingleDraft(context, id) {
+      context.commit("clearPosts");
+      const docRef = doc(db, "drafts", id);
+      const docSnap = await getDoc(docRef);
+      const docu = docSnap.data();
+      context.commit("addPost", docu);
     },
   },
 });
