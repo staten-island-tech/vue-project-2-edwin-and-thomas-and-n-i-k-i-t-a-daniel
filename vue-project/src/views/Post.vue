@@ -231,7 +231,10 @@ label {
     }
 @media (prefers-color-scheme: dark) {
     .radio h3{
-    color: var(--color-contrast-text);
+    color: var(--color-dark-text);
+    }
+    .post{
+        color: var(--color-contrast-text);
     }
 }
 
