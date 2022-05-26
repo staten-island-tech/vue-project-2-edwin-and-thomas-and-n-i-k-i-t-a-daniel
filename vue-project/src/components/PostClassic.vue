@@ -131,6 +131,8 @@ const subtextEnter = (el) => {
   .post {
     height: fit-content;
     display: flex;
+    flex-flow: column;
+    flex-wrap: wrap;
   }
   img{
     display: none;
