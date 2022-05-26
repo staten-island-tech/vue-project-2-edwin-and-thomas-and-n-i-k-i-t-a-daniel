@@ -17,7 +17,7 @@
         <div v-if="radio === 'comments'" class="commentHolder">
             <h2>Comments</h2>
             <div v-for="comment in comments" :key="comment.id" class="comment"  >
-                <em>{{ comment.content }}</em>
+                <em lang="en">{{ comment.content }}</em>
                 <div v-if="comment.content.trim() != ''">
                     <Votes :key="comment.id" :id="comment.id" :type="'comments'"/>
                     <h5 @click="userClick(comment.author.uid)" class="clickable">-{{ comment.author.dname }}</h5>
@@ -140,6 +140,8 @@ document.title = 'Viewing Post | Review Site'
     display: flex;
     flex-flow: row nowrap;
     align-items: center;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .commentHolder{
     background-color:rgb(114, 73, 73, 0.2);
@@ -176,9 +178,14 @@ document.title = 'Viewing Post | Review Site'
     margin: 1rem;
     color: var(--color-contrast-text);
     border-radius: 1.5rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
+
 .comment div h5 {
-    margin-left: 0.5rem
+    margin-left: 0.5rem;    
+    word-wrap: break-word;
+    overflow-wrap: break-word;
 }
 .commentContent {
     margin-left: 0.7rem;
