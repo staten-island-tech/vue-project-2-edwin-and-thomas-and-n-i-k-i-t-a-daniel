@@ -136,6 +136,7 @@ document.title = 'Editing Post | Review Site'
     align-items: center;
     flex-flow: column nowrap;
     padding-top: 3rem;
+    color: var(--color-contrast-text);
 }
 h3 {
     margin-top: 10rem
