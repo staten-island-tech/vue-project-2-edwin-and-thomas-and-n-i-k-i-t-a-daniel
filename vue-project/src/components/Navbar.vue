@@ -15,12 +15,10 @@
       </nav>
       <transition-group> 
         <div v-if="showDropdown" class="dropdown">
-          <label for="searchBar" class=top-item>Search Posts:</label>
-          <input id=searchBar v-if="user" type="search" name="search" v-model="search" class="dropdown-item search " @keypress.enter="searchBar(), close()"/>
+          <input id=searchBar v-if="user" type="search" name="search" v-model="search" class="dropdown-item search top-item" @keypress.enter="searchBar(), close()"/>
           <router-link v-if="user" :to="`/user/${user.uid}/`" class="dropdown-item">Your Posts</router-link>
           <router-link v-if="!user" to="/login" class="dropdown-item" :class="{ 'top-item': !user }">Login</router-link>
           <router-link v-if="user" to="/create" class="dropdown-item">Create</router-link>
-          <!-- <router-link v-if="user" to="/theme" class="dropdown-item">Theme</router-link> -->
           <button v-if="viewClassic === true && $route.name==='home'" @click="toggleViewCard" class="dropdown-item">Card View</button>
           <button v-if="viewClassic === false && $route.name==='home'" @click="toggleViewClassic" class="dropdown-item">Classic View</button>
           <router-link v-if="user" to="/" class="dropdown-item" @click="handleClick()">Sign Out</router-link>
@@ -163,10 +161,8 @@ a {
   height:100%;
   z-index: 3;
 }
-.search {
-  z-index: 3;}
 
-.top-item {
+.search {
   margin-bottom: 2rem;
   background-color: var(--color-dark-primary);
   background-image: url('../assets/search.svg');
@@ -183,7 +179,8 @@ a {
   text-align: left;
   margin-top: 3rem;
   color: var(--color-light-text);
-  text-indent: 3rem
+  text-indent: 3rem;
+  z-index: 3;
 }
 .top-item {
   margin-top: 3rem;
@@ -207,7 +204,6 @@ button{
 }
 .background{
   z-index: -10;
-
 }
 .v-enter-active,
 .v-leave-active {
